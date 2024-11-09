@@ -1,0 +1,81 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.8 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.8">
+  <diagram name="Strona-1" id="-t5QPv8gA6Sa9QwMNoTY">
+    <mxGraphModel dx="615" dy="2349" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-1" value="Web Controller" style="html=1;dropTarget=0;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="827" y="-870" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-2" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" parent="VTtjrzJ7ES9NDcmLo9DC-1" vertex="1">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-3" value="Mapy" style="html=1;dropTarget=0;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="1157" y="-870" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-4" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" parent="VTtjrzJ7ES9NDcmLo9DC-3" vertex="1">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-5" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=halfCircle;endFill=0;endSize=6;strokeWidth=1;sketch=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="VTtjrzJ7ES9NDcmLo9DC-1" target="VTtjrzJ7ES9NDcmLo9DC-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="997" y="-950" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-6" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=oval;endFill=0;sketch=0;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;endSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="VTtjrzJ7ES9NDcmLo9DC-3" target="VTtjrzJ7ES9NDcmLo9DC-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1267" y="-1045" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-7" value="" style="ellipse;whiteSpace=wrap;html=1;align=center;aspect=fixed;fillColor=none;strokeColor=none;resizable=0;perimeter=centerPerimeter;rotatable=0;allowArrows=0;points=[];outlineConnect=1;" parent="1" vertex="1">
+          <mxGeometry x="1077" y="-830" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-8" value="Repozytorium danych geolokalizacyjnych" style="html=1;dropTarget=0;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="1467" y="-870" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-9" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" parent="VTtjrzJ7ES9NDcmLo9DC-8" vertex="1">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-13" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=halfCircle;endFill=0;endSize=6;strokeWidth=1;sketch=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="VTtjrzJ7ES9NDcmLo9DC-3" target="VTtjrzJ7ES9NDcmLo9DC-15" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1337" y="-885" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-14" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=oval;endFill=0;sketch=0;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;endSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="VTtjrzJ7ES9NDcmLo9DC-8" target="VTtjrzJ7ES9NDcmLo9DC-15" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1461" y="-885" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-15" value="" style="ellipse;whiteSpace=wrap;html=1;align=center;aspect=fixed;fillColor=none;strokeColor=none;resizable=0;perimeter=centerPerimeter;rotatable=0;allowArrows=0;points=[];outlineConnect=1;" parent="1" vertex="1">
+          <mxGeometry x="1397" y="-830" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-16" value="JpaRepository" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="1362" y="-870" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-17" value="dane" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="1052" y="-870" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-18" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Projektanci:&lt;/font&gt;&lt;div style=&quot;font-size: 20px;&quot;&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;• Natalia Nosowicz&lt;br&gt;•&amp;nbsp;&lt;/font&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Nikola Maciejewska&lt;/span&gt;&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=15;spacingBottom=0;" parent="1" vertex="1">
+          <mxGeometry x="827" y="-1169" width="240" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-19" value="Założenia:&lt;br&gt;&lt;div&gt;• moduł ma umożliwić pobieranie danych geolokalizacyjnych poprzez interakcję użytkownika z wyświetlaną mapą i ich utrwalanie&lt;/div&gt;&lt;div&gt;• wyświetlanie na mapie dodanych lokalizacji poszkodowanych, punktów dystrybucji pomocy, obszarów dotkniętych katastrofą oraz tras dostaw&lt;/div&gt;&lt;div&gt;&lt;br&gt;Moduł obejmuje część interfejsu graficznego umożliwającego interakcję z mapami i przekazywanie danych do kontrolera.&lt;br&gt;&lt;/div&gt;" style="shape=note;size=20;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=5;" parent="1" vertex="1">
+          <mxGeometry x="1170" y="-1169" width="484" height="209" as="geometry" />
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-21" value="" style="endArrow=none;dashed=1;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="VTtjrzJ7ES9NDcmLo9DC-22" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1040" y="-690" as="sourcePoint" />
+            <mxPoint x="1080" y="-810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VTtjrzJ7ES9NDcmLo9DC-22" value="Interfejs udostępniający funkcje:&lt;br&gt;&amp;nbsp;- przekazywania zasobów do wyświetlenia odpowiedniej mapy&lt;br&gt;&amp;nbsp;- zapisu danych" style="shape=note;size=20;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=5;" parent="1" vertex="1">
+          <mxGeometry x="860" y="-664" width="250" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

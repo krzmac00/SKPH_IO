@@ -1,0 +1,168 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.8 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.8">
+  <diagram name="Strona-1" id="OO6VD64f7BHOe15v-oo2">
+    <mxGraphModel dx="3293" dy="4540" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-4" value="" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="3zi4Oo3-LqThBj80HZsF-10" target="3zi4Oo3-LqThBj80HZsF-52" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="1799" y="-999" as="sourcePoint" />
+            <mxPoint x="1725" y="-810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-5" value="Repozytorium użytkowników" style="html=1;dropTarget=0;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="1857" y="-958.5" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-6" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" parent="3zi4Oo3-LqThBj80HZsF-5" vertex="1">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-7" value="użytkownik" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="1455" y="-958.5" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-12" value="" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="3zi4Oo3-LqThBj80HZsF-8" target="3zi4Oo3-LqThBj80HZsF-52" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="1670" y="-759" as="sourcePoint" />
+            <mxPoint x="1815" y="-810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-46" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Projektanci:&lt;/font&gt;&lt;div style=&quot;font-size: 20px;&quot;&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;• Piotr Pinkier&amp;nbsp;&lt;br&gt;• Jakub Kopeć&lt;/font&gt;&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=15;spacingBottom=0;" parent="1" vertex="1">
+          <mxGeometry x="827" y="-1169" width="240" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-47" value="Założenia:&lt;br&gt;&lt;div&gt;•&amp;nbsp; moduł ma umożliwiać przekazywanie środków finansowych i darów przez darczyńców oraz udostępniać funkcje dalszego zarządzania tymi zasobami przez przedstawiciele władz i organizacje pomocowe&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="shape=note;size=20;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=5;" parent="1" vertex="1">
+          <mxGeometry x="970" y="-320" width="440" height="159.5" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-52" value="Zarządzanie użytkownikami" style="html=1;dropTarget=0;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="1540" y="-959.5" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-53" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" parent="3zi4Oo3-LqThBj80HZsF-52" vertex="1">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-56" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=halfCircle;endFill=0;endSize=6;strokeWidth=1;sketch=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="3zi4Oo3-LqThBj80HZsF-52" target="3zi4Oo3-LqThBj80HZsF-58" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1760" y="-979.5" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-57" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=oval;endFill=0;sketch=0;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;endSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="3zi4Oo3-LqThBj80HZsF-5" target="3zi4Oo3-LqThBj80HZsF-58" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1761" y="-914.5" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-58" value="" style="ellipse;whiteSpace=wrap;html=1;align=center;aspect=fixed;fillColor=none;strokeColor=none;resizable=0;perimeter=centerPerimeter;rotatable=0;allowArrows=0;points=[];outlineConnect=1;" parent="1" vertex="1">
+          <mxGeometry x="1780" y="-919.5" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-59" value="JpaRepository" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="1745" y="-958.5" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-66" value="Repozytorium zasobów" style="html=1;dropTarget=0;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="827" y="-959" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-67" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" parent="3zi4Oo3-LqThBj80HZsF-66" vertex="1">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-69" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=oval;endFill=0;sketch=0;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;endSize=10;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="3zi4Oo3-LqThBj80HZsF-66" target="3zi4Oo3-LqThBj80HZsF-70" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1323" y="-948" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-72" value="" style="swimlane;startSize=0;" parent="1" vertex="1">
+          <mxGeometry x="890" y="-800" width="600" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-74" value="&lt;b&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Moduł zarządzania darczyńcami i darowiznami&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="3zi4Oo3-LqThBj80HZsF-72" vertex="1">
+          <mxGeometry x="20" y="360" width="420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-10" value="Zarządzanie darczyńcami" style="html=1;dropTarget=0;whiteSpace=wrap;" parent="3zi4Oo3-LqThBj80HZsF-72" vertex="1">
+          <mxGeometry x="390" y="200" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-11" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" parent="3zi4Oo3-LqThBj80HZsF-10" vertex="1">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-64" value="Zarządzanie darowiznami" style="html=1;dropTarget=0;whiteSpace=wrap;" parent="3zi4Oo3-LqThBj80HZsF-72" vertex="1">
+          <mxGeometry x="160" y="90" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-65" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" parent="3zi4Oo3-LqThBj80HZsF-64" vertex="1">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ala_3AtGj_UdRv85r-mN-1" value="" style="swimlane;startSize=0;" parent="1" vertex="1">
+          <mxGeometry x="1630" y="-730" width="450" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="ala_3AtGj_UdRv85r-mN-2" value="&lt;b&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Moduł zarządzania wolontariuszami&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="ala_3AtGj_UdRv85r-mN-1" vertex="1">
+          <mxGeometry x="20" y="290" width="330" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-8" value="Zarządzanie wolontariuszami" style="html=1;dropTarget=0;whiteSpace=wrap;" parent="ala_3AtGj_UdRv85r-mN-1" vertex="1">
+          <mxGeometry x="140" y="130" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-9" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" parent="3zi4Oo3-LqThBj80HZsF-8" vertex="1">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-61" value="Zarządzanie zasobami" style="html=1;dropTarget=0;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="1144" y="-960" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-62" value="" style="shape=module;jettyWidth=8;jettyHeight=4;" parent="3zi4Oo3-LqThBj80HZsF-61" vertex="1">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-27" y="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-63" value="" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="3zi4Oo3-LqThBj80HZsF-64" target="3zi4Oo3-LqThBj80HZsF-61" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="1122" y="-650" as="sourcePoint" />
+            <mxPoint x="775" y="-270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-68" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=halfCircle;endFill=0;endSize=6;strokeWidth=1;sketch=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="3zi4Oo3-LqThBj80HZsF-61" target="3zi4Oo3-LqThBj80HZsF-70" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1286" y="-949" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-70" value="" style="ellipse;whiteSpace=wrap;html=1;align=center;aspect=fixed;fillColor=none;strokeColor=none;resizable=0;perimeter=centerPerimeter;rotatable=0;allowArrows=0;points=[];outlineConnect=1;" parent="1" vertex="1">
+          <mxGeometry x="1070" y="-920" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="3zi4Oo3-LqThBj80HZsF-71" value="JpaRepository" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="1035" y="-960" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ala_3AtGj_UdRv85r-mN-11" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=halfCircle;endFill=0;endSize=6;strokeWidth=1;sketch=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="3zi4Oo3-LqThBj80HZsF-61" target="ala_3AtGj_UdRv85r-mN-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1600" y="-1285" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ala_3AtGj_UdRv85r-mN-12" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=oval;endFill=0;sketch=0;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;endSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="3zi4Oo3-LqThBj80HZsF-52" target="ala_3AtGj_UdRv85r-mN-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1560" y="-1285" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ala_3AtGj_UdRv85r-mN-13" value="" style="ellipse;whiteSpace=wrap;html=1;align=center;aspect=fixed;fillColor=none;strokeColor=none;resizable=0;perimeter=centerPerimeter;rotatable=0;allowArrows=0;points=[];outlineConnect=1;" parent="1" vertex="1">
+          <mxGeometry x="1480" y="-918.5" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="ala_3AtGj_UdRv85r-mN-15" value="&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Moduły obejmują implementację części interfejsu graficznego realizującego panel darczyńców i wolontariuszy udostępniający funkcjonalności opisane w założeniach z uwzględniem zdefiniowania odpowiednich punktów końcowych i wywołań w kontrolerze. Ponadto moduł zapewnia funkcję utrwalania danych.&lt;/span&gt;&lt;br&gt;&lt;/div&gt;" style="shape=note;size=20;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=5;" parent="1" vertex="1">
+          <mxGeometry x="1626" y="-1169" width="454" height="141" as="geometry" />
+        </mxCell>
+        <mxCell id="ala_3AtGj_UdRv85r-mN-16" value="" style="endArrow=none;dashed=1;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="3zi4Oo3-LqThBj80HZsF-47" target="3zi4Oo3-LqThBj80HZsF-72" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1992" y="510" as="sourcePoint" />
+            <mxPoint x="2007" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ala_3AtGj_UdRv85r-mN-17" value="Założenia:&lt;br&gt;&lt;div&gt;•&amp;nbsp; moduł ma umożliwiać przekazywanie środków finansowych i darów przez darczyńców oraz udostępniać funkcje dalszego zarządzania tymi zasobami&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" style="shape=note;size=20;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=5;" parent="1" vertex="1">
+          <mxGeometry x="1635" y="-320" width="440" height="159.5" as="geometry" />
+        </mxCell>
+        <mxCell id="ala_3AtGj_UdRv85r-mN-18" value="" style="endArrow=none;dashed=1;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="ala_3AtGj_UdRv85r-mN-17" target="ala_3AtGj_UdRv85r-mN-1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1120" y="-310" as="sourcePoint" />
+            <mxPoint x="1200" y="-370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
