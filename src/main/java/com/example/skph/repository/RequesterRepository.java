@@ -10,12 +10,12 @@ import java.util.List;
 
 @Repository
 public interface RequesterRepository extends JpaRepository<Requester, Long> {
-    @Query("SELECT r.id, r.firstName, r.lastName FROM Requester r WHERE r.id = :id")
+    @Query("SELECT r FROM Requester r WHERE r.id = :id")
     List<Requester> findById(@Param("id") long id);
 
-    @Query("SELECT r.id, r.firstName, r.lastName FROM Requester r WHERE r.lastName = :lastName")
+    @Query("SELECT r FROM Requester r WHERE r.lastName = :lastName")
     List<Requester> findByLastName(@Param("id") long id);
 
-    @Query("SELECT r.id, r.firstName, r.lastName FROM Requester r WHERE r.lastName = :lastName AND r.firstName = :firstName")
+    @Query("SELECT r FROM Requester r WHERE r.lastName = :lastName AND r.firstName = :firstName")
     List<Requester> findByFirstAndLastName(@Param("id") long id);
 }

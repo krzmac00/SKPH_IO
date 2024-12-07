@@ -1,9 +1,6 @@
 package com.example.skph.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,23 +8,29 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+@jakarta.persistence.Entity
+@Table(name="request")
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "requester")
     @Column
     @NotNull
     @Getter
     @Setter
     private Requester requester;
 
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "address")
     @NotNull
     @Getter
     @Setter
     private Address address;
 
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @NotNull
     @Getter
     @Setter
@@ -38,15 +41,17 @@ public class Request {
     @Getter
     private boolean accomplished;
 
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @NotNull
     private ArrayList<Resource> resourceList = new ArrayList<>();
 
     @Column
     @NotNull
+    @Getter
     private LocalDate startDate;
 
     @Column
-    //@NotNull
+    @Getter
     private LocalDate endDate;
 
     private ArrayList<Task> generateTasks() {
@@ -56,7 +61,7 @@ public class Request {
             int resourceAmount = resource.getAmount();
             for (int i = 0; i < resourceAmount + 1; i++) {
                 //change instead of last day giving final status, it will have 1 additional "day" that will represent that
-                status.add("undone");
+                status.add("created");
             }
             tasks.add(new Task(resource, status));
         }
@@ -73,11 +78,14 @@ public class Request {
         this.endDate = endDate;
     }
 
+    public Request() {
+    }
+
     public boolean accomplishedCheck() {
         boolean accomplished = true;
         for (Task task : this.getTaskList()) {
             String status = task.getDaysList().getLast();
-            if (status.equals("undone") || status.equals("pending") || status.equals("partiallyCompleted")) {
+            if (status.equals("created") || status.equals("pending") || status.equals("inProgress")) {
                 accomplished = false;
             }
         }

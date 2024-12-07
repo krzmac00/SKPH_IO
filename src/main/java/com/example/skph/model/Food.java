@@ -11,4 +11,7 @@ public class Food extends Resource {
     @Getter
     @Setter
     private boolean allergyFree;
+
+    public Food() {
+    }
 }

@@ -7,17 +7,19 @@ import lombok.Setter;
 
 @jakarta.persistence.Entity
 @Table(name="requester")
-@Getter
-@Setter
 public class Requester {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
+    @Getter
+    @Setter
     private String firstName;
 
     @NonNull
+    @Getter
+    @Setter
     private String lastName;
 
     public Requester() {
@@ -27,6 +29,4 @@ public class Requester {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
-
 }
