@@ -1,8 +1,7 @@
 package com.example.skph.service;
 
 import com.example.skph.config.JpaConfig;
-import com.example.skph.model.Entity;
-import com.example.skph.repository.EntityRepository;
+import com.example.skph.model.Requester;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 
-@SpringBootTest(classes = {EntityService.class, EntityRepository.class, Entity.class, JpaConfig.class})
+@SpringBootTest(classes = {EntityService.class, EntityRepository.class, Requester.class, JpaConfig.class})
 public class EntityServiceTest {
 
     @Autowired
@@ -18,7 +17,7 @@ public class EntityServiceTest {
 
     @Test
     void testGetEntity_Found() {
-        Entity entity = new Entity();
+        Requester entity = new Requester();
         Assertions.assertEquals("Entity 1", entityService.getEntity(1L).getName());
     }
 

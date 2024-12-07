@@ -1,7 +1,6 @@
 package com.example.skph.service;
 
-import com.example.skph.model.Entity;
-import com.example.skph.repository.EntityRepository;
+import com.example.skph.model.Requester;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class EntityService {
     }
 
     @Transactional
-    public Entity getEntity(Long id) {
+    public Requester getEntity(Long id) {
         return entityRepository.findById(id).isPresent() ? entityRepository.findById(id).get() : null;
     }
 }

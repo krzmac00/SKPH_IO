@@ -6,19 +6,27 @@ import lombok.NonNull;
 import lombok.Setter;
 
 @jakarta.persistence.Entity
-@Table(name="entity")
+@Table(name="requester")
 @Getter
 @Setter
-public class Entity {
+public class Requester {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     @NotNull
-    private String name;
+    private String firstName;
 
-    public Entity() {
-        this.name = "Null";
+    @NonNull
+    private String lastName;
+
+    public Requester() {
     }
+
+    public Requester(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+
 }
