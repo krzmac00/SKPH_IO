@@ -33,6 +33,6 @@ public class NotificationService {
     }
 
     public List<Notification> getNotificationsForRecipient(Long recipientId) {
-        return notificationRepository.findByRecipientId(recipientId); // Używamy nowej metody repozytorium
+        return notificationRepository.findByRecipientId(recipientId);
     }
 }

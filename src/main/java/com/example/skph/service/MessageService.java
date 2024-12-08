@@ -31,7 +31,6 @@ public class MessageService {
     }
 
     public List<Message> getMessagesForRecipient(Long recipientId) {
-        return messageRepository.findByRecipientId(recipientId); // Używamy nowej metody repozytorium
+        return messageRepository.findByRecipientId(recipientId);
     }
-
 }

@@ -1,6 +1,8 @@
 package com.example.skph.service;
 
+import com.example.skph.model.Messagable;
 import com.example.skph.model.Message;
+import com.example.skph.model.MessageType;
 import com.example.skph.model.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,12 +29,15 @@ public class CommunicationManager {
         return notificationService.createNotification(senderId, recipientId, content, notificationType);
     }
 
-    // Dodanie metody do pobierania wiadomości użytkownika
+    public String createMessage(Messagable messagable, MessageType messageType) {
+        return "Typ komunikatu: " + messageType + "\nTreść: " + messagable.getMessageContent();
+    }
+
+
     public List<Message> getMessagesForRecipient(Long recipientId) {
         return messageService.getMessagesForRecipient(recipientId);
     }
 
-    // Dodanie metody do pobierania powiadomień użytkownika
     public List<Notification> getNotificationsForRecipient(Long recipientId) {
         return notificationService.getNotificationsForRecipient(recipientId);
     }
