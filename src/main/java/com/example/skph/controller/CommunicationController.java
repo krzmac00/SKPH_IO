@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/communication")
 public class CommunicationController {
 
     private final CommunicationManager communicationManager;
@@ -42,17 +42,18 @@ public class CommunicationController {
         return ResponseEntity.ok(notification);
     }
 
-    // Endpoint do pobierania wiadomości użytkownika (id użytkownika z sesji)
-    @GetMapping("/messages")
-    public ResponseEntity<List<Message>> getMessages(@RequestHeader Long userId) {
-        List<Message> messages = communicationManager.getMessagesForRecipient(userId); // id pobierane z nagłówka sesji
+    // Endpoint do pobierania wiadomości użytkownika
+    @GetMapping("/messages/{recipientId}")
+    public ResponseEntity<List<Message>> getMessages(@PathVariable Long recipientId) {
+        List<Message> messages = communicationManager.getMessagesForRecipient(recipientId); // Komunikacja z managerem
         return ResponseEntity.ok(messages);
     }
 
-    // Endpoint do pobierania powiadomień użytkownika (id użytkownika z sesji)
-    @GetMapping("/notifications")
-    public ResponseEntity<List<Notification>> getNotifications(@RequestHeader Long userId) {
-        List<Notification> notifications = communicationManager.getNotificationsForRecipient(userId);
+
+    @GetMapping("/notifications/{recipientId}")
+    public ResponseEntity<List<Notification>> getNotifications(@PathVariable Long recipientId) {
+        List<Notification> notifications = communicationManager.getNotificationsForRecipient(recipientId); // Komunikacja z managerem
         return ResponseEntity.ok(notifications);
     }
+
 }
