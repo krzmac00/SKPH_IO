@@ -7,15 +7,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RequesterRepository extends JpaRepository<Requester, Long> {
     @Query("SELECT r FROM Requester r WHERE r.id = :id")
-    List<Requester> findById(@Param("id") long id);
+    Optional<Requester> findById(@Param("id") Long id);
 
     @Query("SELECT r FROM Requester r WHERE r.lastName = :lastName")
-    List<Requester> findByLastName(@Param("id") long id);
+    List<Requester> findByLastName(@Param("lastName") String lastName);
 
     @Query("SELECT r FROM Requester r WHERE r.lastName = :lastName AND r.firstName = :firstName")
-    List<Requester> findByFirstAndLastName(@Param("id") long id);
+    List<Requester> findByFirstAndLastName(@Param("lastName") String lastName, @Param("firstName") String firstName);
 }

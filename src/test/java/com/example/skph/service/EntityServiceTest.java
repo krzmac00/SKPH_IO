@@ -2,6 +2,7 @@ package com.example.skph.service;
 
 import com.example.skph.config.JpaConfig;
 import com.example.skph.model.Requester;
+import com.example.skph.repository.EntityRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

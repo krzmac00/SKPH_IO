@@ -17,6 +17,7 @@ public class HelloController {
     @GetMapping("/")
     public String index(Model model) {
         String message = entityService.getEntity(1L).getName();
+//        String message = "Zaraz nie wytrzymam.";
         model.addAttribute("message", message);
         return "ThymeleafDemo";
     }
