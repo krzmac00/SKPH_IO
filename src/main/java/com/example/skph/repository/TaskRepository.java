@@ -11,15 +11,12 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Requester, Long> {
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WSZYTKO DO POPRAWY!!!!!!!!!
-
-
     @Query("SELECT r.id, r.firstName, r.lastName FROM Requester r WHERE r.id = :id")
     List<Requester> findById(@Param("id") long id);
 
     @Query("SELECT r.id, r.firstName, r.lastName FROM Requester r WHERE r.lastName = :lastName")
-    List<Requester> findByLastName(@Param("id") long id);
+    List<Requester> findByLastName(@Param("lastName") String lastName);
 
     @Query("SELECT r.id, r.firstName, r.lastName FROM Requester r WHERE r.lastName = :lastName AND r.firstName = :firstName")
-    List<Requester> findByFirstAndLastName(@Param("id") long id);
+    List<Requester> findByFirstAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 }

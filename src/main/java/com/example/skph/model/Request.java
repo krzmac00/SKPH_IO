@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @jakarta.persistence.Entity
 @Table(name="request")
@@ -16,24 +17,23 @@ public class Request {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "requester")
-    @Column
+    @JoinTable(name = "requester")
     @NotNull
     @Getter
     @Setter
     private Requester requester;
 
     @ManyToOne
-    @JoinColumn(name = "address")
+    @JoinTable(name = "address")
     @NotNull
     @Getter
     @Setter
     private Address address;
 
-    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id")
     @NotNull
     @Getter
-    @Setter
     private ArrayList<Task> taskList = new ArrayList<>();
 
     @Column
@@ -41,8 +41,9 @@ public class Request {
     @Getter
     private boolean accomplished;
 
-    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @NotNull
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id")
     private ArrayList<Resource> resourceList = new ArrayList<>();
 
     @Column
