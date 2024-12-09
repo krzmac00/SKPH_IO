@@ -3,5 +3,6 @@
   <component name="DiffGenerationConfig">
     <option name="snapshotDb" value="false" />
     <option name="snapshotModelValue" value="skph:skph" />
+    <option name="updateDbConnectionName" value="c295638e-2eda-446b-8946-02f278a899af" />
   </component>
 </project>

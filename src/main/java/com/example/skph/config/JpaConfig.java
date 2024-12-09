@@ -23,7 +23,7 @@ public class JpaConfig {
     @Bean
     public DataSource dataSource() {
         return DataSourceBuilder.create()
-                .url("jdbc:postgresql://localhost:5432/postgres")
+                .url("jdbc:postgresql://localhost:5433/postgres")
                 .username("postgres")
                 .password("postgres")
                 .driverClassName("org.postgresql.Driver")
