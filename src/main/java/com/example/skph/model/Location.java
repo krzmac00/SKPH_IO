@@ -1,66 +1,53 @@
 package com.example.skph.model;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
+import org.locationtech.jts.geom.Point;
 
-import java.util.List;
-
-@Setter
 @Getter
+@Setter
+@NoArgsConstructor
+@Entity
+@Table(name = "locations")
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double latitude;
-    private double longitude;
-
-    @ElementCollection
-    private List<double[]> polygonCoordinates;
+    @Column(nullable = false)
+    private String name;
 
     @ManyToOne
-    private LocationType type;
+    @JoinColumn(name = "location_type_id", nullable = false)
+    private LocationType locationType;
 
-    public Location(double latitude, double longitude, LocationType type) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.type = type;
+    @JdbcTypeCode(SqlTypes.GEOMETRY)
+    @Column(columnDefinition = "geometry(Point, 4326)", nullable = false)
+    private Point coordinates;
+
+    public Location(String name, LocationType locationType, Point coordinates) {
+        this.name = name;
+        this.locationType = locationType;
+        this.coordinates = coordinates;
     }
 
-    public Location(List<double[]> polygonCoordinates, LocationType type) {
-        this.polygonCoordinates = polygonCoordinates;
-        this.type = type;
-    }
-
-    public String getCoordinates() {
-        return String.format("%.6f, %.6f", latitude, longitude);
-    }
-
-    //Haversine Formula
     public double calculateDistance(Location other) {
-        final int R = 6371; // promień Ziemi w kilometrach
-        double latDistance = Math.toRadians(other.latitude - this.latitude);
-        double lonDistance = Math.toRadians(other.longitude - this.longitude);
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(this.latitude)) * Math.cos(Math.toRadians(other.latitude))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c; // odległość w kilometrach
-    }
-
-    public boolean isWithinRadius(Location center, double radius) {
-        double distance = calculateDistance(center);
-        return distance <= radius;
+        return this.coordinates.distance(other.getCoordinates());
     }
 
     @Override
     public String toString() {
         return "Location{" +
                 "id=" + id +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", type=" + type +
+                ", name='" + name + '\'' +
+                ", locationType=" + locationType.getTypeName() +
+                ", coordinates=" + coordinates +
                 '}';
     }
 }

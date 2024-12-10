@@ -1,9 +1,11 @@
 package com.example.skph.controller;
 
 import com.example.skph.model.Location;
-import com.example.skph.model.Route;
 import com.example.skph.service.MapService;
+import org.locationtech.jts.geom.Geometry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -11,57 +13,67 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/map")
-@CrossOrigin
 public class MapController {
     @Autowired
     private MapService mapService;
 
-    public MapController(MapService mapService) {
-        this.mapService = mapService;
+    @GetMapping
+    public ResponseEntity<Object> getLocations() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(mapService.getLocations());
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Locations not found");
+        }
     }
 
-    @GetMapping("/locations")
-    public List<Location> getAllLocations() {
-        return mapService.getAllLocations();
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getLocation(@PathVariable("id") long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(mapService.getLocation(id));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Location not found");
+        }
     }
 
-    @PostMapping("/locations/point")
-    public Location addPoint(@RequestBody Location location) {
-        return mapService.addLocation(location);
+    @PostMapping
+    public ResponseEntity<Object> addLocation(@RequestBody Location location) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(mapService.addLocation(location));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Location not found");
+        }
     }
 
-    @PostMapping("/locations/polygon")
-    public Location addPolygon(@RequestBody Location location) {
-        return mapService.addLocation(location);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteLocation(@PathVariable("id") long id) {
+        try {
+            mapService.deleteLocation(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Location not found");
+        }
     }
 
-    @DeleteMapping("/locations/{id}")
-    public void deleteLocation(@PathVariable int id) {
-        mapService.deleteLocation(id);
-    }
 
-    @GetMapping("/locations/by-type")
-    public List<Location> getLocationsByType(@RequestParam String typeName) {
-        return mapService.findLocationsByType(typeName);
-    }
-
-    @GetMapping("/locations/by-description")
-    public List<Location> getLocationsByDescription(@RequestParam String description) {
-        return mapService.findLocationsByDescription(description);
-    }
-
-    @GetMapping("/routes")
-    public List<Route> getAllRoutes() {
-        return mapService.getRoutes();
-    }
-
-    @PostMapping("/routes")
-    public Route addRoute(@RequestBody Route route) {
-        return mapService.addRoute(route);
-    }
-
-    @DeleteMapping("/routes/{id}")
-    public void deleteRoute(@PathVariable int id) {
-        mapService.deleteRoute(id);
-    }
+//    @GetMapping("/radius")
+//    public List<Location> findLocationsWithinRadius(
+//            @RequestParam double latitude,
+//            @RequestParam double longitude,
+//            @RequestParam double radius) {
+//        return mapService.findLocationsWithinRadius(latitude, longitude, radius);
+//    }
+//
+//    @PostMapping("/geometry")
+//    public List<Location> findLocationsWithinGeometry(@RequestBody Geometry geometry) {
+//        return mapService.findLocationsWithinPolygon(geometry);
+//    }
+//
+//    @GetMapping("/name")
+//    public List<Location> getLocationsByName(@RequestParam String name) {
+//        return mapService.getLocationsByName(name);
+//    }
 }

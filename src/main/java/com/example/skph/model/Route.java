@@ -1,70 +1,47 @@
 package com.example.skph.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
+import org.locationtech.jts.geom.LineString;
 
-@Setter
 @Getter
+@Setter
+@NoArgsConstructor
+@Entity
+@Table(name = "routes")
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Location start;
-    private Location end;
-    private double distance;
-    private List<Location> waypoints;
-    private double estimatedTime;
+    @Column(nullable = false)
+    private String name;
 
-    public Route(Location start, Location end) {
-        this.start = start;
-        this.end = end;
-        this.distance = calculateDistance();
-        this.waypoints = new ArrayList<>();
+    @JdbcTypeCode(SqlTypes.GEOMETRY)
+    @Column(columnDefinition = "geometry(LineString, 4326)", nullable = false)
+    private LineString path;
+
+    public Route(String name, LineString path) {
+        this.name = name;
+        this.path = path;
     }
 
-    private double calculateDistance() {
-        double totalDistance = 0;
-        Location previous = start;
-
-        for (Location waypoint : waypoints) {
-            totalDistance += previous.calculateDistance(waypoint);
-            previous = waypoint;
-        }
-
-        totalDistance += previous.calculateDistance(end);
-        return totalDistance;
-    }
-
-    public void addWaypoint(Location waypoint) {
-        this.waypoints.add(waypoint);
-        this.distance = calculateDistance();
-    }
-
-    public void removeWaypoint(Location waypoint) {
-        this.waypoints.remove(waypoint);
-        this.distance = calculateDistance();
-    }
-
-    public void estimateTime(double averageSpeed) {
-        this.estimatedTime = distance / averageSpeed; // Czas = dystans / prędkość
+    public double calculateLength() {
+        return this.path.getLength();
     }
 
     @Override
     public String toString() {
         return "Route{" +
                 "id=" + id +
-                ", start=" + start +
-                ", end=" + end +
-                ", distance=" + distance +
-                ", waypoints=" + waypoints +
-                ", estimatedTime=" + estimatedTime +
+                ", name='" + name + '\'' +
+                ", path=" + path +
                 '}';
     }
 }
