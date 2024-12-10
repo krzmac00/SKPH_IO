@@ -4,20 +4,28 @@ import com.example.skph.model.Location;
 import com.example.skph.service.MapService;
 import org.locationtech.jts.geom.Geometry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/map")
+@Controller
+@Profile("dev")
+@RequestMapping("/map")
 public class MapController {
     @Autowired
     private MapService mapService;
 
     @GetMapping
+    public String showMap() {
+        return "map";
+    }
+
+    @GetMapping("/locations")
     public ResponseEntity<Object> getLocations() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(mapService.getLocations());
@@ -27,7 +35,7 @@ public class MapController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/locations/{id}")
     public ResponseEntity<Object> getLocation(@PathVariable("id") long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(mapService.getLocation(id));
@@ -37,7 +45,7 @@ public class MapController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/locations")
     public ResponseEntity<Object> addLocation(@RequestBody Location location) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(mapService.addLocation(location));
@@ -47,7 +55,7 @@ public class MapController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/locations/{id}")
     public ResponseEntity<Object> deleteLocation(@PathVariable("id") long id) {
         try {
             mapService.deleteLocation(id);
