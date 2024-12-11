@@ -17,7 +17,6 @@ public class Donation {
     private int amount;
 
     @ManyToOne
-    @JoinColumn(name = "id")
     private Donor donor;
 
     public Donation() {}

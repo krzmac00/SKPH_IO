@@ -1,4 +1,7 @@
 package com.example.skph.repository;
 
-public interface UserRepository {
+import com.example.skph.model.Entity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<Entity, Long> {
 }

@@ -17,14 +17,13 @@ public class Task {
     private String review;
 
     @ManyToOne
-    @JoinColumn(name = "id")
     private Organisation organisation;
 
     @ManyToOne
-    @JoinColumn(name = "id")
     private Volunteer volunteer;
 
-    public Task() {}
+    public Task() {
+    }
 
     public Task(String status, String review, Organisation organisation, Volunteer volunteer) {
         this.status = status;
@@ -32,4 +31,6 @@ public class Task {
         this.organisation = organisation;
         this.volunteer = volunteer;
     }
+
+
 }
