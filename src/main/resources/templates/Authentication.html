@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ENjdO4Dr2bkBIFxQpeoW35MwC0Hu6Ir4g7ozP8zbSQKtvWQ5K2pO9tWtI9WjQ0I4" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -23,6 +23,26 @@
             background-color: #ff6f61; /* Zmieniony kolor przycisku */
             border-color: #ff6f61;
         }
+
+        .invalid-feedback {
+            color: red;
+            font-size: 0.875em;
+            display: none;
+        }
+
+        .form-control.is-invalid {
+            border-color: red;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group.has-error .invalid-feedback {
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -30,27 +50,37 @@
     <div class="form-container">
         <h3 class="text-center">User Registration</h3>
         <form id="registerForm" novalidate>
-            <div class="mb-3">
-                <label for="firstName" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="firstName" name="firstName" required>
-                <div class="invalid-feedback">First name is required.</div>
-            </div>
-            <div class="mb-3">
-                <label for="lastName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="lastName" name="lastName" required>
-                <div class="invalid-feedback">Last name is required.</div>
-            </div>
-            <div class="mb-3">
+            <div class="mb-3 form-group">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required>
                 <div class="invalid-feedback">Username is required.</div>
             </div>
-            <div class="mb-3">
+
+            <div class="mb-3 form-group">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" name="password" required>
                 <div class="invalid-feedback">Password is required.</div>
             </div>
-            <div class="mb-3">
+
+            <div class="mb-3 form-group">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" required>
+                <div class="invalid-feedback">First name is required.</div>
+            </div>
+
+            <div class="mb-3 form-group">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastName" name="lastName" required>
+                <div class="invalid-feedback">Last name is required.</div>
+            </div>
+
+            <div class="mb-3 form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+                <div class="invalid-feedback">Valid email is required.</div>
+            </div>
+
+            <div class="mb-3 form-group">
                 <label for="role" class="form-label">Role</label>
                 <select class="form-select" id="role" name="role" required>
                     <option value="">Select a role</option>
@@ -61,55 +91,47 @@
                 </select>
                 <div class="invalid-feedback">Role is required.</div>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-                <div class="invalid-feedback">Valid email is required.</div>
-            </div>
-            <div class="mb-3">
+
+            <div class="mb-3 form-group" id="organizationContainer" style="display: none;">
                 <label for="organization" class="form-label">Organization</label>
                 <input type="text" class="form-control" id="organization" name="organization">
             </div>
+
             <button type="submit" class="btn btn-primary w-100">Register</button>
         </form>
     </div>
 </div>
 
 <script>
-    // Enable Bootstrap form validation
-    (() => {
-        'use strict';
-
-        const forms = document.querySelectorAll('.needs-validation');
-
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                if (!form.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-
-                form.classList.add('was-validated');
-            }, false);
-        });
-    })();
-
-    // Submit the form with JavaScript and send data as JSON
     document.getElementById('registerForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
         const form = event.target;
-        if (!form.checkValidity()) {
+        let formIsValid = true;
+
+        // Validate fields
+        const inputs = form.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            const formGroup = input.closest('.form-group');
+            if (!input.checkValidity()) {
+                formGroup.classList.add('has-error');  // Add error class
+                formIsValid = false;
+            } else {
+                formGroup.classList.remove('has-error');  // Remove error class
+            }
+        });
+
+        if (!formIsValid) {
             return;
         }
 
         const payload = {
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
             username: document.getElementById('username').value,
             password: document.getElementById('password').value,
-            role: document.getElementById('role').value,
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
             email: document.getElementById('email').value,
+            role: document.getElementById('role').value,
             organization: document.getElementById('organization').value,
         };
 
@@ -124,12 +146,27 @@
                 if (response.ok) {
                     alert('User registered successfully!');
                     form.reset();
+                    toggleOrganizationField();
                 } else {
                     alert('Error registering user.');
                 }
             })
             .catch(error => console.error('Error:', error));
     });
+
+    function toggleOrganizationField() {
+        const role = document.getElementById('role').value;
+        const organizationContainer = document.getElementById('organizationContainer');
+
+        if (role === 'VOLUNTEER' || role === 'AUTHORITY_REPRESENTATIVE') {
+            organizationContainer.style.display = 'block';
+        } else {
+            organizationContainer.style.display = 'none';
+        }
+    }
+
+    document.getElementById('role').addEventListener('change', toggleOrganizationField);
+    window.addEventListener('load', toggleOrganizationField);
 </script>
 
 </body>
