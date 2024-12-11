@@ -1,103 +1,3 @@
-////package com.example.skph.controller;
-////
-////import com.example.skph.model.Request;
-////import com.example.skph.model.Requester;
-////import com.example.skph.service.RequestService;
-////import org.springframework.beans.factory.annotation.Autowired;
-////import org.springframework.web.bind.annotation.*;
-////
-////import java.time.LocalDate;
-////import java.util.List;
-////
-////@RestController
-////@RequestMapping("/requests")
-////public class RequestController {
-////
-////    private final RequestService requestService;
-////
-////    @Autowired
-////    public RequestController(RequestService requestService) {
-////        this.requestService = requestService;
-////    }
-////
-////    @GetMapping("/{id}")
-////    public Request getRequestById(@PathVariable Long id) {
-////        return requestService.getRequestById(id);
-////    }
-////
-////    @GetMapping("/byRequester")
-////    public List<Request> getRequestsByRequester(@RequestBody Requester requester) {
-////        return requestService.getRequestsByRequester(requester);
-////    }
-////
-////    @GetMapping("/byStartDate")
-////    public List<Request> getRequestsByStartDate(@RequestParam String startDate) {
-////        LocalDate date = LocalDate.parse(startDate);
-////        return requestService.getRequestsByStartDate(date);
-////    }
-////}
-////
-//
-//
-//package com.example.skph.controller;
-//
-//import com.example.skph.model.Request;
-//import com.example.skph.model.Requester;
-//import com.example.skph.service.RequestService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.time.LocalDate;
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("/requests")
-//public class RequestController {
-//
-//    private final RequestService requestService;
-//
-//    @Autowired
-//    public RequestController(RequestService requestService) {
-//        this.requestService = requestService;
-//    }
-//
-//    // Endpointy REST pozostają bez zmian
-//    @GetMapping("/{id}")
-//    public Request getRequestById(@PathVariable Long id) {
-//        return requestService.getRequestById(id);
-//    }
-//
-//    @GetMapping("/byRequester")
-//    public List<Request> getRequestsByRequester(@RequestBody Requester requester) {
-//        return requestService.getRequestsByRequester(requester);
-//    }
-//
-//    @GetMapping("/byStartDate")
-//    public List<Request> getRequestsByStartDate(@RequestParam String startDate) {
-//        LocalDate date = LocalDate.parse(startDate);
-//        return requestService.getRequestsByStartDate(date);
-//    }
-//
-//    // Nowa metoda do wyświetlania formularza
-//    @GetMapping("/form")
-//    public String showRequestForm(Model model) {
-//        model.addAttribute("request", new Request()); // Dodanie pustego obiektu Request do modelu
-//        return "requestForm"; // Użycie Thymeleaf template 'requestForm.html'
-//    }
-//
-//    // Metoda do obsługi zgłoszeń z formularza
-//    @PostMapping("/submit")
-//    public String submitRequest(@ModelAttribute Request request, Model model) {
-//        // Tutaj zapisujesz dane do bazy, możesz dodać logikę walidacji itp.
-//        requestService.saveRequest(request); // Zakładając, że masz metodę saveRequest w RequestService
-//        model.addAttribute("message", "Request submitted successfully!");
-//        return "redirect:/requests/form"; // Przekierowanie z powrotem na formularz lub stronę z potwierdzeniem
-//    }
-//}
-//
-
 package com.example.skph.controller;
 
 import com.example.skph.model.*;
@@ -109,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller  // Zmieniamy na @Controller
@@ -183,7 +82,8 @@ public class RequestController {
         requestService.saveRequest(request);
 
         // Dodaj wiadomość do atrybutów sesji
-        redirectAttributes.addFlashAttribute("message", "Request submitted successfully!");
+        model.addAttribute("successMessage", "Request submitted successfully!");
+//        redirectAttributes.addFlashAttribute("message", "Request submitted successfully!");
 
         // Przekieruj na stronę formularza
         return "formSuccess";

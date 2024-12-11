@@ -8,20 +8,9 @@
 <body>
 <h1>Request Form</h1>
 
-<!-- Wyświetlenie komunikatu -->
-<div th:if="${message}" style="color: green; font-weight: bold;">
-    <p th:text="${message}"></p>
+<div th:if="${successMessage}" style="color: green; font-size: 40px; font-weight: bold;">
+    <p th:text="${successMessage}"></p>
 </div>
 
-<!-- Formularz -->
-<form th:action="@{/requests/submit}" th:object="${request}" method="post">
-    <label>Requester First Name:</label>
-    <input type="text" th:field="*{requester.firstName}" placeholder="First Name" required><br><br>
-
-    <label>Requester Last Name:</label>
-    <input type="text" th:field="*{requester.lastName}" placeholder="Last Name" required><br><br>
-
-    <input type="submit" value="Submit">
-</form>
 </body>
 </html>
