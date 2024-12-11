@@ -1,6 +1,8 @@
 package com.example.skph.controller;
 
-import com.example.skph.service.AuthenticationManager;
+import com.example.skph.service.UserService;
+import com.example.skph.constraints.Register;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -10,32 +12,29 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private UserService userService;
+
+    @Autowired
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestParam String username,
-                                           @RequestParam String password,
-                                           @RequestParam String role,
-                                           @RequestParam String email,
-                                           @RequestParam String organization) {
-        authenticationManager.register(username, password, role, email, organization);
-        return ResponseEntity.ok("User registered successfully!");
-    }
+    public ResponseEntity<String> register(@RequestBody @Valid Register request) {
+        try {
+            userService.register(
+                    request.getFirstName(),
+                    request.getLastName(),
+                    request.getUsername(),
+                    request.getPassword(),
+                    request.getRole(),
+                    request.getEmail(),
+                    request.getOrganization()
+            );
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username,
-                                        @RequestParam String password) {
-        boolean success = authenticationManager.login(username, password);
-        if (success) {
-            return ResponseEntity.ok("Login successful!");
+            return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
         }
-        return ResponseEntity.status(401).body("Invalid credentials!");
-    }
-
-    @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestParam String email,
-                                                @RequestParam String newPassword) {
-        authenticationManager.resetPassword(email, newPassword);
-        return ResponseEntity.ok("Password reset successful!");
     }
 }
