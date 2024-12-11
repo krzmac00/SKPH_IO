@@ -23,7 +23,7 @@ public class UserService {
         try {
             return userRepository.save(newUser);
         } catch (DataIntegrityViolationException e) {
-            throw new IllegalArgumentException("Username already   exists!");
+            throw new IllegalArgumentException("Username already exists!");
         }
     }
 
