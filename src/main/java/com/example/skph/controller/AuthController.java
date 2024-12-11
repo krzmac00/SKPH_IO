@@ -4,11 +4,14 @@ import com.example.skph.service.UserService;
 import com.example.skph.constraints.Register;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.*;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/api/auth")
+@Controller
+@Profile("dev")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -17,6 +20,11 @@ public class AuthController {
     @Autowired
     public AuthController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping
+    public String show() {
+        return "Authentication";
     }
 
     @PostMapping("/register")
