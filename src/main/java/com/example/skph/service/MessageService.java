@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class MessageService {
+public class MessageService implements IMessageService {
 
     private final MessageRepository messageRepository;
 
