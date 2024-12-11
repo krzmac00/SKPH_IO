@@ -17,14 +17,16 @@ public class Request {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "requester")
+//    @JoinTable(name = "requester")
+    @JoinColumn(name = "requester_id")
     @NotNull
     @Getter
     @Setter
     private Requester requester;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "address")
+//    @JoinTable(name = "address")
+    @JoinColumn(name = "address_id")
     @NotNull
     @Getter
     @Setter
