@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ENjdO4Dr2bkBIFxQpeoW35MwC0Hu6Ir4g7ozP8zbSQKtvWQ5K2pO9tWtI9WjQ0I4" crossorigin="anonymous">
     <style>
         body {
@@ -21,8 +20,8 @@
         }
 
         .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: #ff6f61; /* Zmieniony kolor przycisku */
+            border-color: #ff6f61;
         }
     </style>
 </head>
@@ -69,16 +68,13 @@
             </div>
             <div class="mb-3">
                 <label for="organization" class="form-label">Organization</label>
-                <input type="text" class="form-control" id="organization" name="organization" required>
-                <div class="invalid-feedback">Organization name is required.</div>
+                <input type="text" class="form-control" id="organization" name="organization">
             </div>
             <button type="submit" class="btn btn-primary w-100">Register</button>
         </form>
     </div>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-q1QHmxT0c2lSRTZAAQw1KltZIx6qa3R6u3HqIGOGao0I4tL6uwcI7PB04jR5NYzL" crossorigin="anonymous"></script>
 <script>
     // Enable Bootstrap form validation
     (() => {
@@ -98,7 +94,7 @@
         });
     })();
 
-    // Submit the form
+    // Submit the form with JavaScript and send data as JSON
     document.getElementById('registerForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -135,5 +131,6 @@
             .catch(error => console.error('Error:', error));
     });
 </script>
+
 </body>
 </html>

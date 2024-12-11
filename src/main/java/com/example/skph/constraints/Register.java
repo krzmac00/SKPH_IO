@@ -21,12 +21,10 @@ public class Register {
     @NotBlank(message = "Password is required")
     private String password;
 
-    @NotBlank(message = "Role name is required")
     private UserRole role;
 
     @NotBlank(message = "Email is required")
     private String email;
 
-    @NotBlank(message = "Organization name is required")
     private String organization;
 }
