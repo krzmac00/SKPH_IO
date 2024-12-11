@@ -1,5 +1,6 @@
 package com.example.skph.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -23,31 +24,49 @@ public class Location {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "location_type_id", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "location_type")
+    @JsonDeserialize(using = LocationTypeDeserializer.class)
     private LocationType locationType;
 
-    @JdbcTypeCode(SqlTypes.GEOMETRY)
-    @Column(columnDefinition = "geometry(Point, 4326)", nullable = false)
-    private Point coordinates;
+    @Column(nullable = false)
+    private Double latitude;
 
-    public Location(String name, LocationType locationType, Point coordinates) {
+    @Column(nullable = false)
+    private Double longitude;
+
+    public Location(String name, LocationType locationType, Double latitude, Double longitude) {
         this.name = name;
         this.locationType = locationType;
-        this.coordinates = coordinates;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    public double calculateDistance(Location other) {
-        return this.coordinates.distance(other.getCoordinates());
-    }
+
+//    @JdbcTypeCode(SqlTypes.GEOMETRY)
+//    @Column(columnDefinition = "geometry(Point, 4326)", nullable = false)
+//    private Point coordinates;
+//
+//    public Location(String name, LocationType locationType, Point coordinates) {
+//        this.name = name;
+//        this.locationType = locationType;
+//        this.coordinates = coordinates;
+//    }
+//
+//    public double calculateDistance(Location other) {
+//        return this.coordinates.distance(other.getCoordinates());
+//    }
+
 
     @Override
     public String toString() {
         return "Location{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", locationType=" + locationType.getTypeName() +
-                ", coordinates=" + coordinates +
+                //", locationType=" + locationType.getTypeName() +
+                //", coordinates=" + coordinates +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
                 '}';
     }
 }

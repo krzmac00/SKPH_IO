@@ -2,7 +2,7 @@ package com.example.skph.service;
 
 import com.example.skph.model.GeometryHelper;
 import com.example.skph.model.Location;
-import com.example.skph.model.Route;
+//import com.example.skph.model.Route;
 import com.example.skph.repository.LocationRepository;
 import org.locationtech.jts.geom.*;
 import org.springframework.beans.factory.annotation.Autowired;
