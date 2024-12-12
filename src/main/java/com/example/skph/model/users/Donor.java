@@ -4,8 +4,8 @@ import com.example.skph.model.Resource;
 import com.example.skph.model.User;
 import com.example.skph.model.enums.ResourceStatus;
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -16,11 +16,11 @@ import lombok.experimental.SuperBuilder;
 public class Donor extends User {
 
     public void declareDonation(Resource resource) {
-        // Implementacja deklaracji darowizny
+        resource.setStatus(ResourceStatus.ALLOCATED);
+        resource.setAssignedOrganization(null); // Na razie bez przypisania
     }
 
     public ResourceStatus trackResourceStatus(Resource resource) {
-        // Implementacja śledzenia statusu zasobu
         return resource.getStatus();
     }
 }

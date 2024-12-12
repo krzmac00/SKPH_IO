@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 @Table(name = "tasks")
 public class Task {
 
@@ -21,9 +21,6 @@ public class Task {
     private Long id;
 
     private String name;
-
-//    @OneToOne
-//    private Location location;
 
     @OneToMany(mappedBy = "assignedTask", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Resource> assignedResources = new ArrayList<>();
@@ -45,9 +42,5 @@ public class Task {
     public void assignResource(Resource resource) {
         assignedResources.add(resource);
         resource.assignTask(this);
-    }
-
-    public void releaseResource(Resource resource) {
-        assignedResources.remove(resource);
     }
 }

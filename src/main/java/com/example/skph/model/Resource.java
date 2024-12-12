@@ -9,13 +9,13 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Data
 @NoArgsConstructor
 @SuperBuilder
+@Entity
 @Table(name = "resources")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Resource {
+public abstract class Resource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +44,14 @@ public class Resource {
     }
 
     public void assignTask(Task task) {
-        // Implementacja przypisania zadania
+        if (status == ResourceStatus.AVAILABLE) {
+            status = ResourceStatus.IN_USE;
+        } else {
+            throw new IllegalStateException("Resource is not available for assignment.");
+        }
     }
+
+    // Abstract method to be implemented by subclasses
+    public abstract boolean isAvailable();
 }
+

@@ -7,13 +7,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-//
+
+import com.example.skph.model.enums.ResourceStatus;
+
+
+@Entity
 @Data
 @NoArgsConstructor
 @SuperBuilder
-@Entity
-@DiscriminatorValue("OTHER")
+@Table(name = "other_resources")
 public class OtherResource extends Resource {
-    private String description; // Opis zasobu
-    private String type; // Typ zasobu (np. niestandardowy typ)
+
+    private String description;
+
+    public boolean isAvailable() {
+        return getStatus() == ResourceStatus.AVAILABLE;
+    }
 }
+

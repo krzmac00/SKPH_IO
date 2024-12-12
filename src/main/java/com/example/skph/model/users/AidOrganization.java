@@ -5,7 +5,6 @@ import com.example.skph.model.Organization;
 import com.example.skph.model.Task;
 import com.example.skph.model.User;
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -21,7 +20,24 @@ public class AidOrganization extends User {
     @OneToOne
     private Organization organization;
 
+    @OneToMany(mappedBy = "assignedOrganization")
+    private List<Resource> assignedResources;
+
     public void assignResourcesToTask(Task task, List<Resource> resources) {
-        resources.forEach(resource -> resource.assignTask(task));
+        for (Resource resource : resources) {
+            if (resource.isAvailable()) {
+                resource.assignTask(task);
+            } else {
+                throw new IllegalStateException("Resource " + resource.getName() + " is not available.");
+            }
+        }
+    }
+
+    public void recruitVolunteer(Volunteer volunteer) {
+        if (volunteer.isAvailable()) {
+            volunteer.setAssignedOrganization(this);
+        } else {
+            throw new IllegalStateException("Volunteer is not available.");
+        }
     }
 }

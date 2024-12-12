@@ -12,11 +12,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name = "organizations")
 public class Organization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;  // Nazwa organizacji
+
     private String type;  // Typ organizacji (np. NGO, fundacja, rządowa)
+
     private String contactInfo;  // Dane kontaktowe organizacji
 }
