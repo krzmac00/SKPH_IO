@@ -1,5 +1,6 @@
-package com.example.skph.model;
+package com.example.skph.model.resources.physical;
 
+import com.example.skph.model.Resource;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;

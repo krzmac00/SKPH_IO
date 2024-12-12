@@ -1,9 +1,9 @@
 package com.example.skph.service;
 
 import com.example.skph.model.Messagable;
-import com.example.skph.model.Message;
-import com.example.skph.model.MessageType;
-import com.example.skph.model.Notification;
+import com.example.skph.model.communication.Message;
+import com.example.skph.model.communication.MessageType;
+import com.example.skph.model.communication.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

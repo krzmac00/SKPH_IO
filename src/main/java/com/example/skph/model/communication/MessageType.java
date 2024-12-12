@@ -1,4 +1,4 @@
-package com.example.skph.model;
+package com.example.skph.model.communication;
 
 public enum MessageType {
     TASK_ASSIGNMENT,

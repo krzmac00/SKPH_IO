@@ -1,5 +1,6 @@
 package com.example.skph.model;
 
+import com.example.skph.model.users.Organisation;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;

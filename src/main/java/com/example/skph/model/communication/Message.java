@@ -1,4 +1,4 @@
-package com.example.skph.model;
+package com.example.skph.model.communication;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

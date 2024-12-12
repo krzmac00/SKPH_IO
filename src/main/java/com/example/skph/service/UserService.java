@@ -1,7 +1,7 @@
 package com.example.skph.service;
 import com.example.skph.model.User;
 import com.example.skph.repository.UserRepository;
-import com.example.skph.enums.UserRole;
+import com.example.skph.model.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;

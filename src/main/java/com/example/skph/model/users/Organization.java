@@ -1,4 +1,4 @@
-package com.example.skph.model;
+package com.example.skph.model.users;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;

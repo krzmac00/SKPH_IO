@@ -1,5 +1,6 @@
-package com.example.skph.model;
+package com.example.skph.model.resources;
 
+import com.example.skph.model.users.Donor;
 import com.example.skph.model.enums.ResourceStatus;
 import com.example.skph.model.enums.ResourceType;
 import jakarta.persistence.*;

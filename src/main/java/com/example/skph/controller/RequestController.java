@@ -1,6 +1,9 @@
 package com.example.skph.controller;
 
 import com.example.skph.model.*;
+import com.example.skph.model.resources.Shelter;
+import com.example.skph.model.resources.physical.Clothes;
+import com.example.skph.model.resources.physical.Food;
 import com.example.skph.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

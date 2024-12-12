@@ -1,6 +1,6 @@
 package com.example.skph.repository;
 
-import com.example.skph.model.Notification;
+import com.example.skph.model.communication.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

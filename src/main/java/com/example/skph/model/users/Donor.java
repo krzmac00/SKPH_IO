@@ -6,14 +6,18 @@ import com.example.skph.model.enums.ResourceStatus;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 @Entity
 @Data
 @NoArgsConstructor
-@SuperBuilder
-@Table(name = "donors")
+@Table(name = "donor")
 public class Donor extends User {
+    private String bankAccountNumber;
+
+    public Donor(String bankAccountNumber) {
+        super();
+        this.bankAccountNumber = bankAccountNumber;
+    }
 
     public void declareDonation(Resource resource) {
         // Implementacja deklaracji darowizny

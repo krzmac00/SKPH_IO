@@ -1,6 +1,6 @@
 package com.example.skph.constraints;
 
-import com.example.skph.enums.UserRole;
+import com.example.skph.model.enums.UserRole;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;

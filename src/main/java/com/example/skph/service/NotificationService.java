@@ -1,7 +1,7 @@
 package com.example.skph.service;
 
-import com.example.skph.model.Notification;
-import com.example.skph.model.NotificationType;
+import com.example.skph.model.communication.Notification;
+import com.example.skph.model.communication.NotificationType;
 import com.example.skph.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

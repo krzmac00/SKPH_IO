@@ -1,6 +1,6 @@
 package com.example.skph.service;
 
-import com.example.skph.model.Message;
+import com.example.skph.model.communication.Message;
 
 import java.util.List;
 

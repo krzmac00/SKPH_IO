@@ -24,6 +24,7 @@ public class User {
     private String username;
     private String passwordHash;
 
+    private String organization;
     //private Organization organization;
 
     @Enumerated(EnumType.STRING)
