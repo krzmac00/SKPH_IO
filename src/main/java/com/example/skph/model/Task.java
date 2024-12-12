@@ -1,44 +1,55 @@
 package com.example.skph.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
-@jakarta.persistence.Entity
-@Table(name="task")
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "task")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Getter
-    @Setter
-    @OneToOne
-    @JoinColumn(name = "resource")
-    private Resource resource;
+    private String name;
 
-    @NotNull
-    @Getter
-    @Setter
-    private boolean accomplished;
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
 
-    @ElementCollection
-    @CollectionTable(name = "daysList")
-    @NotNull
-    @Getter
-    private ArrayList<String> daysList = new ArrayList<>();
-    //status: created, pending, inProgress, completed, closed, canceled
+    //    @OneToOne
+    //    private Location location;
 
-    public Task() {
+    @OneToMany(mappedBy = "assignedTask", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Resource> assignedResources = new ArrayList<>();
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void onCreate() {
+        createdAt = LocalDateTime.now();
     }
 
-    public Task(Resource resource, ArrayList<String> daysList) {
-        this.resource = resource;
-        this.accomplished = false;
-        this.daysList = daysList;
+    @PreUpdate
+    public void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
+
+    public void assignResource(Resource resource) {
+        assignedResources.add(resource);
+        resource.assignTask(this);
+    }
+
+    public void releaseResource(Resource resource) {
+        assignedResources.remove(resource);
+    }
+
 }
