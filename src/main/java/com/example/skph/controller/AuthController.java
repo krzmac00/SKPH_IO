@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,7 @@ public class AuthController {
 
     @GetMapping("/register")
     public String showRegister() {
-        return "Authentication";
+        return "Register";
     }
     @GetMapping("/login")
     public String showLogin() {
@@ -50,6 +49,7 @@ public class AuthController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
+
     }
 
     @PostMapping("/login")

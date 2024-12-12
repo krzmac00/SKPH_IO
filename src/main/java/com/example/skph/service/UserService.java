@@ -28,17 +28,22 @@ public class UserService {
         try {
             return userRepository.save(newUser);
         } catch (DataIntegrityViolationException e) {
-            throw new IllegalArgumentException("Username already exists!");
+            throw new IllegalArgumentException("An error occurred during registration!");
         }
     }
     public Boolean login(String username, String password) {
         User user = userRepository.findByUsername(username);
-        Boolean isCorrect = passwordEncoder.matches(password, user.getPassword());
-
-        if (isCorrect) {
-            return true;
-        } else {
-            return false;
+        if (user == null) {
+            throw new IllegalArgumentException("Invalid username or password!");
         }
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Invalid username or password!");
+        }
+        Boolean isCorrect = passwordEncoder.matches(password,user.getPassword());
+        if (isCorrect) {
+            userRepository.save(user);
+        }
+        return isCorrect;
     }
 }
