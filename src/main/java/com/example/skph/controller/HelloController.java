@@ -1,5 +1,7 @@
 package com.example.skph.controller;
 
+import com.example.skph.model.Request;
+import com.example.skph.model.Requester;
 import com.example.skph.service.EntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;

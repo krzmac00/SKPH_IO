@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Form</title>
+</head>
+<body>
+<h1>Request Form</h1>
+<!--action="@{/requests/submit}"-->
+<form th:action="@{/requests/submit}" th:object="${request}" method="post">
+<!--    action="/requests/submit"-->
+<!--    th:action="@{/submit}"-->
+
+    <!-- Requester Information -->
+    <label>Requester First Name:</label>
+    <input type="text" name="requesterFirstName" th:field="*{requester.firstName}" placeholder="First Name" required><br><br>
+
+    <label>Requester Last Name:</label>
+    <input type="text" name="requesterLastName" th:field="*{requester.lastName}" placeholder="Last Name" required><br><br>
+
+    <!-- Address Information -->
+    <label>Address:</label>
+    <input type="text" name="address" th:field="*{address.address}" placeholder="Address" required><br><br>
+
+<!--    th:field="*{resurceList}"-->
+    <!-- Select Resource Type -->
+<!--    <label>Select Resource Type:</label>-->
+<!--    <select name="resourceType" id="resourceSelect" required>-->
+<!--        <option value="food">Food</option>-->
+<!--        <option value="clothes">Clothes</option>-->
+<!--        <option value="shelter">Shelter</option>-->
+<!--        <option value="other">Other</option>-->
+<!--    </select><br><br>-->
+
+    <label>Select Resource Type: </label>
+    <select id="resourceSelect" required>
+        <option value="" disabled selected>choose resource</option> <!-- Placeholder -->
+        <option value="food">Food</option>
+        <option value="clothes">Clothes</option>
+        <option value="shelter">Shelter</option>
+        <option value="other">Other</option>
+    </select><br><br>
+
+    <!-- Dynamic fields for each resource -->
+    <div id="foodFields" style="display:none;">
+        <label>Name:</label>
+        <input type="text" name="foodName" th:field="${food.name}" placeholder="Name"><br><br>
+        <label>Amount:</label>
+        <input type="number" name="foodAmount" th:field="${food.amount}"><br><br>
+        <label>Temperature:</label>
+        <input type="text" name="foodTemperature" th:field="${food.temperature}" placeholder="Temperature"><br><br>
+        <label>Allergy Free:</label>
+        <input type="checkbox" name="foodAllergyFree" th:field="${food.allergyFree}"><br><br>
+    </div>
+
+
+    <div id="clothesFields" style="display:none;">
+        <label>Name:</label>
+        <input type="text" name="clothesName" th:field="${clothes.name}" placeholder="Name"><br><br>
+        <label>Amount:</label>
+        <input type="number" name="clothesAmount" th:field="${clothes.amount}"><br><br>
+        <label>Size:</label>
+        <input type="text" name="clothesSize" th:field="${clothes.size}" placeholder="Size"><br><br>
+        <label>Sex:</label>
+        <input type="text" name="clothesSex" th:field="${clothes.sex}" placeholder="Sex"><br><br>
+    </div>
+
+
+    <div id="shelterFields" style="display:none;">
+        <label>Name:</label>
+        <input type="text" name="shelterName" th:field="${shelter.name}" placeholder="Name"><br><br>
+        <label>Amount:</label>
+        <input type="number" name="shelterAmount" th:field="${shelter.amount}"><br><br>
+        <label>With Animals:</label>
+        <input type="checkbox" name="shelterWithAnimals" th:field="${shelter.withAnimals}"><br><br>
+    </div>
+
+    <div id="otherFields" style="display:none;">
+        <label>Name:</label>
+        <input type="text" name="otherName" th:field="${other.name}" placeholder="Name"><br><br>
+        <label>Amount:</label>
+        <input type="number" name="otherAmount" th:field="${other.amount}"><br><br>
+        <label>Description:</label>
+        <input type="text" name="otherDescription" th:field="${other.description}" placeholder="Description"><br><br>
+    </div>
+
+    <input type="submit" value="Submit">
+</form>
+
+<script>
+    const resourceSelect = document.getElementById('resourceSelect');
+    const foodFields = document.getElementById('foodFields');
+    const clothesFields = document.getElementById('clothesFields');
+    const shelterFields = document.getElementById('shelterFields');
+    const otherFields = document.getElementById('otherFields');
+
+    resourceSelect.addEventListener('change', function() {
+        const selectedValue = this.value;
+
+        // Hide all fields initially
+        foodFields.style.display = 'none';
+        clothesFields.style.display = 'none';
+        shelterFields.style.display = 'none';
+        otherFields.style.display = 'none';
+
+        // Show fields based on selected resource type
+        if (selectedValue === 'food') {
+            foodFields.style.display = 'block';
+        } else if (selectedValue === 'clothes') {
+            clothesFields.style.display = 'block';
+        } else if (selectedValue === 'shelter') {
+            shelterFields.style.display = 'block';
+        } else if (selectedValue === 'other') {
+            otherFields.style.display = 'block';
+        }
+    });
+</script>
+
+</body>
+</html>
+
