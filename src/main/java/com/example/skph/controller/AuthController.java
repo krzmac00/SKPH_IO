@@ -1,11 +1,13 @@
 package com.example.skph.controller;
 
+import com.example.skph.constraints.Login;
 import com.example.skph.service.UserService;
 import com.example.skph.constraints.Register;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +24,13 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public String show() {
+    @GetMapping("/register")
+    public String showRegister() {
         return "Authentication";
+    }
+    @GetMapping("/login")
+    public String showLogin() {
+        return "Login";
     }
 
     @PostMapping("/register")
@@ -41,6 +47,15 @@ public class AuthController {
             );
 
             return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Boolean> login(@RequestBody @Valid Login request) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.login(request.getUsername(), request.getPassword()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
