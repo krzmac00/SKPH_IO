@@ -1,5 +1,6 @@
 package com.example.skph.model;
 
+import com.example.skph.model.enums.TaskStatus;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -10,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "task")
 public class Task {
@@ -21,7 +21,7 @@ public class Task {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus status;
+    private TaskStatus status = TaskStatus.CREATED;
 
     //    @OneToOne
     //    private Location location;
@@ -43,6 +43,10 @@ public class Task {
         updatedAt = LocalDateTime.now();
     }
 
+    public Task() {
+        createdAt = LocalDateTime.now();
+    }
+
     public void assignResource(Resource resource) {
         assignedResources.add(resource);
         resource.assignTask(this);
@@ -52,4 +56,9 @@ public class Task {
         assignedResources.remove(resource);
     }
 
+
+    public void setStatus(TaskStatus status) {
+        this.updatedAt = LocalDateTime.now();
+        this.status = status;
+    }
 }

@@ -27,6 +27,7 @@ public class Resource {
     @Setter
     public int amount;
 
+    @Getter
     @Enumerated(EnumType.STRING)
     private ResourceStatus status;
 

@@ -1,5 +1,6 @@
 package com.example.skph.model;
 
+import com.example.skph.model.enums.TaskStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -82,11 +83,9 @@ public class Request {
             if (resource != null) {
                 ArrayList<String> status = new ArrayList<>();
                 int resourceAmount = resource.getAmount();
-                for (int i = 0; i < resourceAmount + 1; i++) {
-                    //change instead of last day giving final status, it will have 1 additional "day" that will represent that
-                    status.add("created");
-                }
-                tasks.add(new Task(resource, status));
+                Task task = new Task();
+                task.assignResource(resource);
+                tasks.add(task);
             }
         }
         return tasks;
@@ -127,8 +126,8 @@ public class Request {
     public boolean accomplishedCheck() {
         boolean accomplished = true;
         for (Task task : this.getTaskList()) {
-            String status = task.getDaysList().getLast();
-            if (status.equals("created") || status.equals("pending") || status.equals("inProgress")) {
+            TaskStatus status = task.getStatus();
+            if (status == TaskStatus.CREATED || status == TaskStatus.PENDING || status == TaskStatus.IN_PROGRESS) {
                 accomplished = false;
             }
         }

@@ -1,6 +1,7 @@
 package com.example.skph.service;
 
 import com.example.skph.model.Task;
+import com.example.skph.model.enums.TaskStatus;
 import com.example.skph.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class TaskService {
         Optional<Task> optionalTask = taskRepository.findById(taskId);
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
-            task.setAccomplished(accomplished);
+            task.setStatus(TaskStatus.CLOSED);
             return taskRepository.save(task);
         } else {
             throw new IllegalArgumentException("Task o podanym ID nie istnieje: " + taskId);
