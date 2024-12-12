@@ -1,5 +1,7 @@
 package com.example.skph.model.users;
 
+// Reprezentuje organizacje pomocowe w systemie.
+// Dziedziczy właściwości i metody z klasy bazowej User.
 import com.example.skph.model.Resource;
 import com.example.skph.model.Organization;
 import com.example.skph.model.Task;
@@ -17,12 +19,15 @@ import java.util.List;
 @Table(name = "aid_organizations")
 public class AidOrganization extends User {
 
+    // Organizacja, którą reprezentuje użytkownik.
     @OneToOne
     private Organization organization;
 
+    // Lista zasobów przypisanych do organizacji.
     @OneToMany(mappedBy = "assignedOrganization")
     private List<Resource> assignedResources;
 
+    // Przypisuje zasoby do konkretnego zadania.
     public void assignResourcesToTask(Task task, List<Resource> resources) {
         for (Resource resource : resources) {
             if (resource.isAvailable()) {
@@ -33,6 +38,7 @@ public class AidOrganization extends User {
         }
     }
 
+    // Rekrutuje ochotnika do organizacji.
     public void recruitVolunteer(Volunteer volunteer) {
         if (volunteer.isAvailable()) {
             volunteer.setAssignedOrganization(this);

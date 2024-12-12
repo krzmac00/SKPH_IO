@@ -1,5 +1,7 @@
 package com.example.skph.model.users;
 
+// Reprezentuje przedstawiciela władz w systemie.
+// Dziedziczy właściwości i metody z klasy bazowej User.
 import com.example.skph.model.Resource;
 import com.example.skph.model.Task;
 import com.example.skph.model.enums.ResourceStatus;
@@ -18,8 +20,9 @@ import java.util.stream.Collectors;
 @Entity
 public class Authority extends User {
 
+    // Lista zasobów dodanych przez przedstawiciela władz.
     @OneToMany
-    @JoinColumn(name = "authority_id") // Powiązanie zasobów dodawanych przez Authority
+    @JoinColumn(name = "authority_id")
     private List<Resource> resources;
 
     /**
@@ -52,7 +55,6 @@ public class Authority extends User {
      */
     public List<Resource> viewAllResources() {
         // Przy założeniu, że mamy dostęp do repozytorium zasobów.
-        // W rzeczywistym przypadku mogłoby być to repozytorium lub serwis.
         return resources;
     }
 
