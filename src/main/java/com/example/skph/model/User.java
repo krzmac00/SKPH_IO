@@ -1,6 +1,7 @@
 package com.example.skph.model;
 
 import com.example.skph.model.enums.UserRole;
+import com.example.skph.model.users.Organization;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -20,6 +21,11 @@ public class User {
     private String email;
     private String contactNumber;
 
+    private String username;
+    private String passwordHash;
+
+    //private Organization organization;
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
@@ -28,5 +34,15 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.contactNumber = contactNumber;
+    }
+
+    public User(String firstName, String lastName, String username, String passwordHash, UserRole role, String email, String organization) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.role = role;
+        this.email = email;
+        this.organization = organization;
     }
 }
