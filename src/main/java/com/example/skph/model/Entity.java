@@ -1,4 +1,6 @@
 package com.example.skph.model;
+
+// Reprezentuje ogólny byt w systemie.
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -12,13 +14,13 @@ import lombok.Setter;
 public class Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // Identyfikator bytu.
 
     @NonNull
     @NotNull
-    private String name;
+    private String name; // Nazwa bytu.
 
     public Entity() {
-        this.name = "Null";
+        this.name = "Null"; // Domyślna nazwa w przypadku braku wartości.
     }
 }

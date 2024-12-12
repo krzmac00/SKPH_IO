@@ -1,5 +1,6 @@
 package com.example.skph.model;
 
+// Reprezentuje darowiznę w systemie.
 import com.example.skph.model.enums.ResourceStatus;
 import com.example.skph.model.enums.ResourceType;
 import jakarta.persistence.*;
@@ -20,19 +21,19 @@ import java.math.BigDecimal;
 public class Donation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long donationID;
+    private Long donationID; // Identyfikator darowizny.
 
-    private Long donorID;
+    private Long donorID; // Identyfikator darczyńcy.
 
-    private BigDecimal value;
-
-    @Enumerated(EnumType.STRING)
-    private ResourceType resourceType;
+    private BigDecimal value; // Wartość darowizny.
 
     @Enumerated(EnumType.STRING)
-    private ResourceStatus status;
+    private ResourceType resourceType; // Typ zasobu darowizny.
+
+    @Enumerated(EnumType.STRING)
+    private ResourceStatus status; // Status darowizny.
 
     @ManyToOne
     @JoinColumn(name = "resource_id")
-    private Resource resource;
+    private Resource resource; // Powiązany zasób.
 }

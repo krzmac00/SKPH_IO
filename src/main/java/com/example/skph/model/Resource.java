@@ -1,5 +1,6 @@
 package com.example.skph.model;
 
+// Abstrakcyjna klasa reprezentująca zasób w systemie.
 import com.example.skph.model.enums.ResourceStatus;
 import com.example.skph.model.users.AidOrganization;
 import jakarta.persistence.*;
@@ -19,30 +20,31 @@ public abstract class Resource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // Identyfikator zasobu.
 
-    private String name;
+    private String name; // Nazwa zasobu.
 
     @Enumerated(EnumType.STRING)
-    private ResourceStatus status;
+    private ResourceStatus status; // Status zasobu.
 
     @ManyToOne
-    private AidOrganization assignedOrganization;
+    private AidOrganization assignedOrganization; // Organizacja przypisana do zasobu.
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt; // Data utworzenia zasobu.
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt; // Data ostatniej aktualizacji zasobu.
 
     @PrePersist
     public void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now(); // Ustawia datę utworzenia przed zapisaniem.
     }
 
     @PreUpdate
     public void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now(); // Ustawia datę aktualizacji przed zapisaniem.
     }
 
+    // Przypisuje zasób do zadania, zmieniając jego status.
     public void assignTask(Task task) {
         if (status == ResourceStatus.AVAILABLE) {
             status = ResourceStatus.IN_USE;
@@ -51,7 +53,6 @@ public abstract class Resource {
         }
     }
 
-    // Abstract method to be implemented by subclasses
+    // Abstrakcyjna metoda sprawdzająca dostępność zasobu, implementowana przez klasy dziedziczące.
     public abstract boolean isAvailable();
 }
-

@@ -1,5 +1,6 @@
 package com.example.skph.model;
 
+// Reprezentuje zadanie w systemie.
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -18,27 +19,28 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // Identyfikator zadania.
 
-    private String name;
+    private String name; // Nazwa zadania.
 
     @OneToMany(mappedBy = "assignedTask", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Resource> assignedResources = new ArrayList<>();
+    private List<Resource> assignedResources = new ArrayList<>(); // Lista przypisanych zasobów.
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt; // Data utworzenia zadania.
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt; // Data ostatniej aktualizacji zadania.
 
     @PrePersist
     public void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now(); // Ustawia datę utworzenia przed zapisaniem.
     }
 
     @PreUpdate
     public void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now(); // Ustawia datę aktualizacji przed zapisaniem.
     }
 
+    // Przypisuje zasób do zadania.
     public void assignResource(Resource resource) {
         assignedResources.add(resource);
         resource.assignTask(this);

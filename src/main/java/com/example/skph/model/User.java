@@ -1,5 +1,6 @@
 package com.example.skph.model;
 
+// Reprezentuje użytkownika w systemie.
 import com.example.skph.model.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
@@ -15,12 +16,12 @@ import lombok.experimental.SuperBuilder;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // Identyfikator użytkownika.
 
-    private String name;
+    private String name; // Nazwa użytkownika.
 
-    private String email;
+    private String email; // Adres e-mail użytkownika.
 
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private UserRole role; // Rola użytkownika w systemie.
 }
