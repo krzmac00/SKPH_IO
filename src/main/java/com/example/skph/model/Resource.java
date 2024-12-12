@@ -38,6 +38,9 @@ public class Resource {
 
     private LocalDateTime updatedAt;
 
+    @ManyToOne
+    private Task assignedTask;
+
     @PrePersist
     public void onCreate() {
         createdAt = LocalDateTime.now();

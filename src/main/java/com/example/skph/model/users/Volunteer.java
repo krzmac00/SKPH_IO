@@ -6,14 +6,22 @@ import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
 
+import java.util.Collection;
+
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "volunteers")
+@Table(name = "volunteer")
 public class Volunteer extends User {
 
-    @OneToOne
-    private Task task;
+    private String skills;
+    private Collection<Task> tasks;
+    private boolean available;
 
-    private boolean availability;
+
+    public Volunteer(String skills, Organization organization) {
+        super();
+        this.skills = skills;
+    }
+
 }

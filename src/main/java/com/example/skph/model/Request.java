@@ -26,7 +26,6 @@ public class Request {
     private Requester requester;
 
     @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinTable(name = "address")
     @JoinColumn(name = "address_id")
     @NotNull
     @Getter
@@ -48,7 +47,6 @@ public class Request {
 //    private ArrayList<Task> taskList = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "request_id")
     @NotNull
     @Getter
     private List<Task> taskList = new ArrayList<>();

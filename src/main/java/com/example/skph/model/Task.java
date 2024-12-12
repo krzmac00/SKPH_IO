@@ -26,6 +26,9 @@ public class Task {
     //    @OneToOne
     //    private Location location;
 
+    @ManyToOne
+    Request request;
+
     @OneToMany(mappedBy = "assignedTask", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Resource> assignedResources = new ArrayList<>();
 

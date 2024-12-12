@@ -24,8 +24,9 @@ public class User {
     private String username;
     private String passwordHash;
 
-    private String organization;
-    //private Organization organization;
+    @ManyToOne
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -37,9 +38,13 @@ public class User {
         this.contactNumber = contactNumber;
     }
 
-    public User(String firstName, String lastName, String username, String passwordHash, UserRole role, String email, String organization) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String firstName,
+                String lastName,
+                String username,
+                String passwordHash,
+                UserRole role,
+                String email,
+                Organization organization) {
         this.username = username;
         this.passwordHash = passwordHash;
         this.role = role;

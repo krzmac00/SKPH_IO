@@ -1,5 +1,6 @@
 package com.example.skph.service;
 import com.example.skph.model.User;
+import com.example.skph.model.users.Organization;
 import com.example.skph.repository.UserRepository;
 import com.example.skph.model.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User register(String firstName, String lastName, String username, String passwordHash, UserRole role, String email, String organization) {
+    public User register(String firstName, String lastName, String username, String passwordHash, UserRole role, String email, String organizationName) {
+
+        Organization organization = new Organization();
+        organization.setName(organizationName);
 
         User newUser = new User(firstName, lastName, username, passwordHash, role, email, organization);
 
