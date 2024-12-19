@@ -59,9 +59,9 @@ public class TaskService {
 //    }
 
     // Wyszukanie Task po Resource ID i stanie ukończenia
-    public List<Task> getTasksByResourceAndAccomplished(Long resourceId, boolean accomplished) {
-        return taskRepository.findByResourceAndAccomplished(resourceId, accomplished);
-    }
+//    public List<Task> getTasksByResourceAndAccomplished(Long resourceId, boolean accomplished) {
+//        return taskRepository.findByResourceAndAccomplished(resourceId, accomplished);
+//    }
 
     // Aktualizacja stanu ukończenia Task
     public Task updateTaskAccomplished(Long taskId, boolean accomplished) {

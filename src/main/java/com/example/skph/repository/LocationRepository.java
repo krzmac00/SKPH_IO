@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface LocationRepository extends JpaRepository<Location, Integer> {
+public interface LocationRepository /*extends JpaRepository<Location, Integer>*/ { // trzeba zapewnić mapowanie ORM dla Loacation i wszystkich powiązanych klas
     List<Location> findByType_TypeName(String typeName);
 
     List<Location> findByDescriptionContainingIgnoreCase(String description);

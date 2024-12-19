@@ -8,7 +8,6 @@ import java.util.List;
 
 @Setter
 @Getter
-@Entity
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
