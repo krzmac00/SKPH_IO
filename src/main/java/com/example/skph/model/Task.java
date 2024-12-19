@@ -1,6 +1,7 @@
 package com.example.skph.model;
 
 import com.example.skph.model.enums.TaskStatus;
+import com.example.skph.model.victimRequest.Request;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;

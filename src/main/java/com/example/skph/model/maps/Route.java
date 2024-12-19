@@ -1,4 +1,4 @@
-package com.example.skph.model;
+package com.example.skph.model.maps;
 
 import java.util.ArrayList;
 import java.util.List;

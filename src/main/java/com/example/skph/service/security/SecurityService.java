@@ -1,4 +1,4 @@
-package com.example.skph.service;
+package com.example.skph.service.security;
 
 import org.springframework.stereotype.Service;
 

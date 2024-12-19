@@ -1,6 +1,6 @@
 package com.example.skph.repository;
 
-import com.example.skph.model.Route;
+import com.example.skph.model.maps.Route;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

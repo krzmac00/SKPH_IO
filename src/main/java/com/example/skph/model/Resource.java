@@ -2,11 +2,13 @@ package com.example.skph.model;
 
 import com.example.skph.model.enums.ResourceStatus;
 import com.example.skph.model.users.AidOrganization;
+import com.example.skph.model.victimRequest.Request;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -40,6 +42,11 @@ public class Resource {
 
     @ManyToOne
     private Task assignedTask;
+
+    @ManyToOne
+    private Request request;
+    
+
 
     @PrePersist
     public void onCreate() {

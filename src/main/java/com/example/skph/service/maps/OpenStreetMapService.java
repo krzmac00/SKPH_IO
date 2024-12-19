@@ -1,6 +1,6 @@
-package com.example.skph.service;
+package com.example.skph.service.maps;
 
-import com.example.skph.model.Location;
+import com.example.skph.model.maps.Location;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

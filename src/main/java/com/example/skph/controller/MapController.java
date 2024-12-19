@@ -1,8 +1,8 @@
 package com.example.skph.controller;
 
-import com.example.skph.model.Location;
-import com.example.skph.model.Route;
-import com.example.skph.service.MapService;
+import com.example.skph.model.maps.Location;
+import com.example.skph.model.maps.Route;
+import com.example.skph.service.maps.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

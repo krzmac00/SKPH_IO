@@ -1,6 +1,6 @@
-package com.example.skph.service;
+package com.example.skph.service.victimRequest;
 
-import com.example.skph.model.Requester;
+import com.example.skph.model.victimRequest.Requester;
 import com.example.skph.repository.RequesterRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.example.skph.model;
+package com.example.skph.model.maps;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,6 +8,7 @@ import java.util.List;
 
 @Setter
 @Getter
+@Entity
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

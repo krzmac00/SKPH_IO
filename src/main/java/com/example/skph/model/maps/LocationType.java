@@ -1,6 +1,5 @@
-package com.example.skph.model;
+package com.example.skph.model.maps;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 

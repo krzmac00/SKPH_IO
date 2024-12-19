@@ -1,12 +1,11 @@
-package com.example.skph.service;
+package com.example.skph.service.maps;
 
-import com.example.skph.model.Location;
-import com.example.skph.model.Route;
+import com.example.skph.model.maps.Location;
+import com.example.skph.model.maps.Route;
 import com.example.skph.repository.LocationRepository;
 import com.example.skph.repository.RouteRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

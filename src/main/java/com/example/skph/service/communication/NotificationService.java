@@ -1,4 +1,4 @@
-package com.example.skph.service;
+package com.example.skph.service.communication;
 
 import com.example.skph.model.communication.Notification;
 import com.example.skph.model.communication.NotificationType;

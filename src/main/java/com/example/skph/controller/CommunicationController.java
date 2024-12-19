@@ -2,7 +2,7 @@ package com.example.skph.controller;
 
 import com.example.skph.model.communication.Message;
 import com.example.skph.model.communication.Notification;
-import com.example.skph.service.CommunicationManager;
+import com.example.skph.service.communication.CommunicationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

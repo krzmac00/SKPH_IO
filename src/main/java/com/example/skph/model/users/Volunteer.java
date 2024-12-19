@@ -5,8 +5,7 @@ import com.example.skph.model.User;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
-
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,7 +14,8 @@ import java.util.Collection;
 public class Volunteer extends User {
 
     private String skills;
-    private Collection<Task> tasks;
+    @OneToMany
+    private List<Task> tasks;
     private boolean available;
 
 

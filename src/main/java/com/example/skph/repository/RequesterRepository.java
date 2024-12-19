@@ -1,6 +1,6 @@
 package com.example.skph.repository;
 
-import com.example.skph.model.Requester;
+import com.example.skph.model.victimRequest.Requester;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

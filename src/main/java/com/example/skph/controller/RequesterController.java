@@ -1,7 +1,7 @@
 package com.example.skph.controller;
 
-import com.example.skph.model.Requester;
-import com.example.skph.service.RequesterService;
+import com.example.skph.model.victimRequest.Requester;
+import com.example.skph.service.victimRequest.RequesterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

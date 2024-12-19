@@ -1,6 +1,6 @@
-package com.example.skph.service;
+package com.example.skph.service.communication;
 
-import com.example.skph.model.Messagable;
+import com.example.skph.model.communication.Messagable;
 import com.example.skph.model.communication.Message;
 import com.example.skph.model.communication.MessageType;
 import com.example.skph.model.communication.Notification;

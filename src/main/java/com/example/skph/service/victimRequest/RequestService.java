@@ -1,7 +1,7 @@
 //package com.example.skph.service;
 //
-//import com.example.skph.model.Request;
-//import com.example.skph.model.Requester;
+//import com.example.skph.model.victimRequest.Request;
+//import com.example.skph.model.victimRequest.Requester;
 //import com.example.skph.repository.RequestRepository;
 //import jakarta.transaction.Transactional;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +35,9 @@
 //    }
 //}
 
-package com.example.skph.service;
+package com.example.skph.service.victimRequest;
 
-import com.example.skph.model.Request;
-import com.example.skph.model.Requester;
+import com.example.skph.model.victimRequest.Request;
 import com.example.skph.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

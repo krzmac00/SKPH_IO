@@ -1,11 +1,15 @@
-package com.example.skph.model;
+package com.example.skph.model.victimRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
-@jakarta.persistence.Entity
+import java.util.List;
+
+@Entity
+@NoArgsConstructor
 @Table(name="requester")
 public class Requester {
     @Id
@@ -13,19 +17,21 @@ public class Requester {
     private Long id;
 
     @NotNull
+    @NonNull
     @Getter
     @Setter
     private String firstName;
 
+    @NotNull
     @NonNull
     @Getter
     @Setter
     private String lastName;
 
-    public Requester() {
-    }
+    @OneToMany(mappedBy = "requester", cascade=CascadeType.ALL)
+    private List<Request> requests;
 
-    public Requester(String firstName, String lastName) {
+    public Requester(@NonNull String firstName, @NonNull String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
