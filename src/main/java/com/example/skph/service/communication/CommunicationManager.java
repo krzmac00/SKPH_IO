@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
+
 
 @Service
 public class CommunicationManager {
@@ -15,24 +17,18 @@ public class CommunicationManager {
     private final MessageService messageService;
     private final NotificationService notificationService;
 
-    @Autowired
     public CommunicationManager(MessageService messageService, NotificationService notificationService) {
         this.messageService = messageService;
         this.notificationService = notificationService;
     }
 
-    public Message sendMessage(Long senderId, Long recipientId, String content, String messageType) {
-        return messageService.createMessage(senderId, recipientId, content, messageType);
+    public Message sendMessage(Long senderId, Long recipientId, String content, String messageType, Locale locale) {
+        return messageService.createMessage(senderId, recipientId, content, messageType, locale);
     }
 
-    public Notification sendNotification(Long senderId, Long recipientId, String content, String notificationType) {
-        return notificationService.createNotification(senderId, recipientId, content, notificationType);
+    public Notification sendNotification(Long senderId, Long recipientId, String content, String notificationType, Locale locale) {
+        return notificationService.createNotification(senderId, recipientId, content, notificationType, locale);
     }
-
-    public String createMessage(Messagable messagable, MessageType messageType) {
-        return "Typ komunikatu: " + messageType + "\nTreść: " + messagable.getMessageContent();
-    }
-
 
     public List<Message> getMessagesForRecipient(Long recipientId) {
         return messageService.getMessagesForRecipient(recipientId);
