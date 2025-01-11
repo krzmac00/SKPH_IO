@@ -117,10 +117,8 @@ public class RequestController {
             requestResourceService.saveRequestResource(rr);
         }
         request.setResourceList(requestResources);
-        requestService.saveRequest(request);
-        //requestResourceService.saveRequestResource();
-        //resourceService.saveResource();
-
+        requestService.saveRequest(request); //saveRequest uses save method which in case of finding a request with same
+        //id should modify an existing one, instead of creating a new one
 
         // Dodaj wiadomość do atrybutów sesji
         model.addAttribute("successMessage", "Request submitted successfully!");

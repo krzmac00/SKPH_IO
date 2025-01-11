@@ -1,5 +1,6 @@
 package com.example.skph.model;
 
+import com.example.skph.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -30,15 +31,17 @@ public class Task {
     @CollectionTable(name = "daysList")
     @NotNull
     @Getter
-    private ArrayList<String> daysList = new ArrayList<>();
+    private ArrayList<Status> daysList = new ArrayList<>();
     //status: created, pending, inProgress, completed, closed, canceled
 
-
+    @ManyToOne
+    @JoinColumn(name = "request_id") //resource department use it to access address of task;
+    private Request request;
 
     public Task() {
     }
 
-    public Task(Resource resource, ArrayList<String> daysList) {
+    public Task(Resource resource, ArrayList<Status> daysList) {
         this.resource = resource;
         this.accomplished = false;
         this.daysList = daysList;

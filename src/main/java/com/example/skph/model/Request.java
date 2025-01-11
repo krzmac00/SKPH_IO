@@ -1,5 +1,6 @@
 package com.example.skph.model;
 
+import com.example.skph.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -108,21 +109,21 @@ public class Request {
 //        return tasks;
 //    }
 
-//    private ArrayList<Task> generateTasks() {
-//        ArrayList<Task> tasks = new ArrayList<>();
-//        for (RequestResource rr : resourceList) {
-//            if (rr != null) {
-//                ArrayList<String> status = new ArrayList<>();
-//                int resourceAmount = rr.getResource().getAmount();
-//                for (int i = 0; i < resourceAmount + 1; i++) {
-//                    //change instead of last day giving final status, it will have 1 additional "day" that will represent that
-//                    status.add("created");
-//                }
-//                tasks.add(new Task(rr.getResource(), status));
-//            }
-//        }
-//        return tasks;
-//    }
+    private ArrayList<Task> generateTasks() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        for (RequestResource rr : resourceList) {
+            if (rr != null) {
+                ArrayList<Status> statuses = new ArrayList<>();
+                int resourceAmount = rr.getResource().getAmount();
+                for (int i = 0; i < resourceAmount + 1; i++) {
+                    //change instead of last day giving final status, it will have 1 additional "day" that will represent that
+                    statuses.add(Status.fromValue(1));
+                }
+                tasks.add(new Task(rr.getResource(), statuses));
+            }
+        }
+        return tasks;
+    }
 
     public Request(Requester requester, Address address,/* Set<Resource> resourceList,*/ LocalDate endDate) {
         this.requester = requester;
@@ -143,8 +144,9 @@ public class Request {
     public boolean accomplishedCheck() {
         boolean accomplished = true;
         for (Task task : this.getTaskList()) {
-            String status = task.getDaysList().getLast();
-            if (status.equals("created") || status.equals("pending") || status.equals("inProgress")) {
+            Status status = task.getDaysList().getLast();
+            if (status.equals(Status.fromValue(1)) || status.equals(Status.fromValue(2))
+                    || status.equals(Status.fromValue(3))) {
                 accomplished = false;
             }
         }
