@@ -18,12 +18,21 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Getter
     private Long id;
 
-    @NotNull
+    //@NotNull
     @Getter
     @Setter
     private String address;
+
+    /*@Getter
+    @Setter
+    private String coordinates;
+
+    @Getter
+    @Setter
+    private boolean isCoordinates;*/
 
 //    @NonNull
 //    @Getter
@@ -33,6 +42,13 @@ public class Address {
     public Address() {
     }
 
+    /*public Address(String place, boolean isCoordinates) {
+        if (isCoordinates) {
+            this.coordinates = place;
+        } else {
+            this.address = place;
+        }
+    }*/
     public Address(String address) {
         this.address = address;
     }

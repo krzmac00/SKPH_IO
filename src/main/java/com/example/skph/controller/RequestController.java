@@ -1,7 +1,9 @@
 package com.example.skph.controller;
 
 import com.example.skph.model.*;
+import com.example.skph.service.RequestResourceService;
 import com.example.skph.service.RequestService;
+import com.example.skph.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,17 +11,23 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller  // Zmieniamy na @Controller
 @RequestMapping("/requests")
 public class RequestController {
 
     private final RequestService requestService;
+    private final RequestResourceService requestResourceService;
+    private final ResourceService resourceService;
 
     @Autowired
-    public RequestController(RequestService requestService) {
+    public RequestController(RequestService requestService, RequestResourceService requestResourceService, ResourceService resourceService) {
         this.requestService = requestService;
+        this.requestResourceService = requestResourceService;
+        this.resourceService = resourceService;
     }
 
     // Endpointy REST pozostają bez zmian
@@ -55,10 +63,10 @@ public class RequestController {
         model.addAttribute("other", other);
 
 
-//        model.addAttribute("food", new Food());
-//        model.addAttribute("clothes", new Clothes());
-//        model.addAttribute("shelter", new Shelter());
-//        model.addAttribute("other", new Other());
+        /*model.addAttribute("food", new Food());
+        model.addAttribute("clothes", new Clothes());
+        model.addAttribute("shelter", new Shelter());
+        model.addAttribute("other", new Other());*/
         return "requestForm"; // Użycie Thymeleaf template 'requestForm.html'
     }
 
@@ -72,14 +80,47 @@ public class RequestController {
 //    }
 
     @PostMapping("/submit")
-    public String submitRequest(@ModelAttribute Request request, Model model, RedirectAttributes redirectAttributes) {
-        // Zapisz zgłoszenie do bazy danych
-//        List<Resource> resourceList = new ArrayList<>();
-//        if (food != null) resourceList.add(food);
-//        if (clothes != null) resourceList.add(clothes);
-//        if (shelter != null) resourceList.add(shelter);
-//        if (other != null) resourceList.add(other);
+    //public String submitRequest(@ModelAttribute Request request, Model model, RedirectAttributes redirectAttributes) {
+    public String submitRequest(
+            @ModelAttribute Request request,
+            @ModelAttribute Food food,
+            @ModelAttribute Clothes clothes,
+            @ModelAttribute Shelter shelter,
+            @ModelAttribute Other other,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        HashSet<RequestResource> requestResources = new HashSet<>();
+
         requestService.saveRequest(request);
+        if (food != null) {
+            resourceService.saveResource(food);
+            RequestResource rr = new RequestResource(request, food);
+            requestResources.add(rr);
+            requestResourceService.saveRequestResource(rr);
+        }
+        if (clothes != null) {
+            resourceService.saveResource(clothes);
+            RequestResource rr = new RequestResource(request, clothes);
+            requestResources.add(rr);
+            requestResourceService.saveRequestResource(rr);
+        }
+        if (shelter != null) {
+            resourceService.saveResource(shelter);
+            RequestResource rr = new RequestResource(request, shelter);
+            requestResources.add(rr);
+            requestResourceService.saveRequestResource(rr);
+        }
+        if (other != null) {
+            resourceService.saveResource(other);
+            RequestResource rr = new RequestResource(request, other);
+            requestResources.add(rr);
+            requestResourceService.saveRequestResource(rr);
+        }
+        request.setResourceList(requestResources);
+        requestService.saveRequest(request);
+        //requestResourceService.saveRequestResource();
+        //resourceService.saveResource();
+
 
         // Dodaj wiadomość do atrybutów sesji
         model.addAttribute("successMessage", "Request submitted successfully!");
@@ -88,6 +129,5 @@ public class RequestController {
         // Przekieruj na stronę formularza
         return "formSuccess";
     }
-
 }
 

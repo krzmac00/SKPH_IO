@@ -33,6 +33,8 @@ public class Task {
     private ArrayList<String> daysList = new ArrayList<>();
     //status: created, pending, inProgress, completed, closed, canceled
 
+
+
     public Task() {
     }
 

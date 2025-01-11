@@ -10,6 +10,7 @@ import lombok.Setter;
 public class Requester {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Getter
     private Long id;
 
     @NotNull
