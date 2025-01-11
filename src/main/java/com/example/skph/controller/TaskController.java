@@ -62,7 +62,7 @@ public class TaskController {
         Optional<Task> existingTask = taskService.getTaskById(id);
         if (existingTask.isPresent()) {
             Task task = existingTask.get();
-            task.setAccomplished(updatedTask.isAccomplished());
+            //task.setAccomplished(updatedTask.isAccomplished());
 //            task.setDaysList(updatedTask.getDaysList());
             task.setResource(updatedTask.getResource());
             taskService.saveTask(task);

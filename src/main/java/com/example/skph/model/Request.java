@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @jakarta.persistence.Entity
 @Table(name="request")
@@ -109,15 +106,23 @@ public class Request {
 //        return tasks;
 //    }
 
-    private ArrayList<Task> generateTasks() {
+    public ArrayList<Task> generateTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
         for (RequestResource rr : resourceList) {
             if (rr != null) {
-                ArrayList<Status> statuses = new ArrayList<>();
-                int resourceAmount = rr.getResource().getAmount();
-                for (int i = 0; i < resourceAmount + 1; i++) {
-                    //change instead of last day giving final status, it will have 1 additional "day" that will represent that
-                    statuses.add(Status.fromValue(1));
+//                ArrayList<Status> statuses = new ArrayList<>();
+//                int dayAmount = rr.getResource().getAmount(); //remember to change to days somehow
+//                for (int i = 0; i < dayAmount + 1; i++) {
+//                    //change instead of last day giving final status, it will have 1 additional "day" that will represent that
+//                    statuses.add(Status.fromValue(1));
+//                }
+//                tasks.add(new Task(rr.getResource(), statuses));
+                List<Day> statuses = new ArrayList<>();
+                int dayAmount = rr.getResource().getAmount();
+                for (int i = 0; i <= dayAmount; i++) {
+                    //change instead of last day giving final status, it will have 1 additional "day"
+                    //that will represent that
+                    statuses.add(new Day(Status.fromValue(1), i));
                 }
                 tasks.add(new Task(rr.getResource(), statuses));
             }
@@ -129,7 +134,6 @@ public class Request {
         this.requester = requester;
         this.address = address;
 //        this.taskList = generateTasks();
-        //this.taskList = generateTasks();
         this.accomplished = false;
 //        this.resourceList = resourceList;
         this.resourceList = new HashSet<>();
@@ -143,15 +147,35 @@ public class Request {
 
     public boolean accomplishedCheck() {
         boolean accomplished = true;
+
         for (Task task : this.getTaskList()) {
-            Status status = task.getDaysList().getLast();
-            if (status.equals(Status.fromValue(1)) || status.equals(Status.fromValue(2))
-                    || status.equals(Status.fromValue(3))) {
-                accomplished = false;
+            Optional<Day> lastDayEntry = task.getDaysList().stream()
+                    .max(Comparator.comparingInt(Day::getDayIndex));
+
+            if (lastDayEntry.isPresent()) {
+                Status lastDayStatus = lastDayEntry.get().getStatus();
+                //Check if the last day's status is CREATED, PENDING, or IN_PROGRESS
+                if (lastDayStatus.equals(Status.fromValue(1)) || //CREATED
+                        lastDayStatus.equals(Status.fromValue(2)) || //PENDING
+                        lastDayStatus.equals(Status.fromValue(3))) { //IN_PROGRESS
+                    accomplished = false;
+                }
             }
         }
+
         return accomplished;
     }
+//    public boolean accomplishedCheck() {
+//        boolean accomplished = true;
+//        for (Task task : this.getTaskList()) {
+//            Status status = task.getDaysList().getLast();
+//            if (status.equals(Status.fromValue(1)) || status.equals(Status.fromValue(2))
+//                    || status.equals(Status.fromValue(3))) {
+//                accomplished = false;
+//            }
+//        }
+//        return accomplished;
+//    }
 }
 
 //package com.example.skph.model;

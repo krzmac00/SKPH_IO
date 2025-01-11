@@ -4,6 +4,8 @@ import com.example.skph.model.*;
 import com.example.skph.service.RequestResourceService;
 import com.example.skph.service.RequestService;
 import com.example.skph.service.ResourceService;
+import com.example.skph.service.TaskService;
+import com.example.skph.service.DaysListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller  // Zmieniamy na @Controller
 @RequestMapping("/requests")
@@ -22,12 +23,17 @@ public class RequestController {
     private final RequestService requestService;
     private final RequestResourceService requestResourceService;
     private final ResourceService resourceService;
+    private final TaskService taskService;
+    private final DaysListService daysListService;
 
     @Autowired
-    public RequestController(RequestService requestService, RequestResourceService requestResourceService, ResourceService resourceService) {
+    public RequestController(RequestService requestService, RequestResourceService requestResourceService,
+                             ResourceService resourceService, TaskService taskService, DaysListService daysListService) {
         this.requestService = requestService;
         this.requestResourceService = requestResourceService;
         this.resourceService = resourceService;
+        this.taskService = taskService;
+        this.daysListService = daysListService;
     }
 
     // Endpointy REST pozostają bez zmian
@@ -117,6 +123,16 @@ public class RequestController {
             requestResourceService.saveRequestResource(rr);
         }
         request.setResourceList(requestResources);
+        request.generateTasks();
+        for (Task task : request.getTaskList()) {
+            taskService.saveTask(task);
+            int amountOfDays = task.getDaysList().getLast().getDayIndex();
+            for (int i = 0; i < amountOfDays; i ++) {
+                Day day = task.getDaysList().get(i);
+                daysListService.saveDaysList(day);
+            }
+            taskService.saveTask(task);
+        }
         requestService.saveRequest(request); //saveRequest uses save method which in case of finding a request with same
         //id should modify an existing one, instead of creating a new one
 

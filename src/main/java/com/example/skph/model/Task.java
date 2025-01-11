@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @jakarta.persistence.Entity
 @Table(name="task")
@@ -22,16 +23,17 @@ public class Task {
     @JoinColumn(name = "resource")
     private Resource resource;
 
+    /*@NotNull
+    @Getter
+    @Setter
+    private boolean accomplished;*/
+
     @NotNull
     @Getter
     @Setter
-    private boolean accomplished;
-
     @ElementCollection
-    @CollectionTable(name = "daysList")
-    @NotNull
-    @Getter
-    private ArrayList<Status> daysList = new ArrayList<>();
+    @CollectionTable(name = "days_list", joinColumns = @JoinColumn(name = "task_id"))
+    private List<Day> daysList;
     //status: created, pending, inProgress, completed, closed, canceled
 
     @ManyToOne
@@ -41,9 +43,8 @@ public class Task {
     public Task() {
     }
 
-    public Task(Resource resource, ArrayList<Status> daysList) {
+    public Task(Resource resource, List<Day> daysList) {
         this.resource = resource;
-        this.accomplished = false;
         this.daysList = daysList;
     }
 }

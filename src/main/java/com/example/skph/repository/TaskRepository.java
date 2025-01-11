@@ -16,15 +16,15 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByResourceId(@Param("resourceId") Long resourceId);
 
     // Wyszukaj wszystkie Task, które są ukończone
-    @Query("SELECT t FROM Task t WHERE t.accomplished = true")
-    List<Task> findAccomplishedTasks();
+    //@Query("SELECT t FROM Task t WHERE t.accomplished = true")
+    //List<Task> findAccomplishedTasks();
 
 //    // Wyszukaj Task po liście dni (dokładne dopasowanie listy dni)
 //    @Query("SELECT t FROM Task t WHERE t.daysList = :daysList")
 //    List<Task> findByDaysList(@Param("daysList") List<String> daysList);
 
     // Wyszukaj Task po zasobie (Resource) i stanie ukończenia
-    @Query("SELECT t FROM Task t WHERE t.resource.id = :resourceId AND t.accomplished = :accomplished")
-    List<Task> findByResourceAndAccomplished(@Param("resourceId") Long resourceId, @Param("accomplished") boolean accomplished);
+    //@Query("SELECT t FROM Task t WHERE t.resource.id = :resourceId AND t.accomplished = :accomplished")
+    //List<Task> findByResourceAndAccomplished(@Param("resourceId") Long resourceId, @Param("accomplished") boolean accomplished);
 }
 

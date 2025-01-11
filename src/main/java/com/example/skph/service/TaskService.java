@@ -48,9 +48,9 @@ public class TaskService {
     }
 
     // Wyszukanie ukończonych Task
-    public List<Task> getAccomplishedTasks() {
-        return taskRepository.findAccomplishedTasks();
-    }
+//    public List<Task> getAccomplishedTasks() {
+//        return taskRepository.findAccomplishedTasks();
+//    }
 
 //    // Wyszukanie Task po liście dni
 //    public List<Task> getTasksByDaysList(List<String> daysList) {
@@ -58,19 +58,19 @@ public class TaskService {
 //    }
 
     // Wyszukanie Task po Resource ID i stanie ukończenia
-    public List<Task> getTasksByResourceAndAccomplished(Long resourceId, boolean accomplished) {
-        return taskRepository.findByResourceAndAccomplished(resourceId, accomplished);
-    }
+//    public List<Task> getTasksByResourceAndAccomplished(Long resourceId, boolean accomplished) {
+//        return taskRepository.findByResourceAndAccomplished(resourceId, accomplished);
+//    }
 
     // Aktualizacja stanu ukończenia Task
-    public Task updateTaskAccomplished(Long taskId, boolean accomplished) {
-        Optional<Task> optionalTask = taskRepository.findById(taskId);
-        if (optionalTask.isPresent()) {
-            Task task = optionalTask.get();
-            task.setAccomplished(accomplished);
-            return taskRepository.save(task);
-        } else {
-            throw new IllegalArgumentException("Task o podanym ID nie istnieje: " + taskId);
-        }
-    }
+//    public Task updateTaskAccomplished(Long taskId/*, boolean accomplished*/) {
+//        Optional<Task> optionalTask = taskRepository.findById(taskId);
+//        if (optionalTask.isPresent()) {
+//            Task task = optionalTask.get();
+//            //task.setAccomplished(accomplished);
+//            return taskRepository.save(task);
+//        } else {
+//            throw new IllegalArgumentException("Task o podanym ID nie istnieje: " + taskId);
+//        }
+//    }
 }
