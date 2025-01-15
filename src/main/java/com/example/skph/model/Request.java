@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @jakarta.persistence.Entity
@@ -84,11 +85,12 @@ public class Request {
     @Column
     @NotNull
     @Getter
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column
     @Getter
-    private LocalDate endDate;
+    @Setter
+    private LocalDateTime endDate;
 
 //    private ArrayList<Task> generateTasks() {
 //        ArrayList<Task> tasks = new ArrayList<>();
@@ -117,52 +119,56 @@ public class Request {
 //                    statuses.add(Status.fromValue(1));
 //                }
 //                tasks.add(new Task(rr.getResource(), statuses));
-                List<Day> statuses = new ArrayList<>();
-                int dayAmount = rr.getResource().getAmount();
-                for (int i = 0; i <= dayAmount; i++) {
-                    //change instead of last day giving final status, it will have 1 additional "day"
-                    //that will represent that
-                    statuses.add(new Day(Status.fromValue(1), i));
-                }
-                tasks.add(new Task(rr.getResource(), statuses));
+//                List<Day> statuses = new ArrayList<>();
+//                int dayAmount = rr.getResource().getAmount();
+//                for (int i = 0; i <= dayAmount; i++) {
+//                    //change instead of last day giving final status, it will have 1 additional "day"
+//                    //that will represent that
+//                    statuses.add(new Day(Status.fromValue(1), i));
+//                }
+                tasks.add(new Task(rr.getResource()/*, statuses*/));
             }
         }
         return tasks;
     }
 
-    public Request(Requester requester, Address address,/* Set<Resource> resourceList,*/ LocalDate endDate) {
+    public Request(Requester requester, Address address,/* Set<Resource> resourceList,*/ LocalDateTime endDate) {
         this.requester = requester;
         this.address = address;
 //        this.taskList = generateTasks();
         this.accomplished = false;
 //        this.resourceList = resourceList;
         this.resourceList = new HashSet<>();
-        this.startDate = LocalDate.now();
+        this.startDate = LocalDateTime.now();
         this.endDate = endDate;
     }
 
     public Request() {
-        this.startDate = LocalDate.now();
+        this.startDate = LocalDateTime.now();
     }
 
     public boolean accomplishedCheck() {
         boolean accomplished = true;
 
         for (Task task : this.getTaskList()) {
-            Optional<Day> lastDayEntry = task.getDaysList().stream()
+            Optional<Day> lastDay = task.getDaysList().stream()
                     .max(Comparator.comparingInt(Day::getDayIndex));
 
-            if (lastDayEntry.isPresent()) {
-                Status lastDayStatus = lastDayEntry.get().getStatus();
-                //Check if the last day's status is CREATED, PENDING, or IN_PROGRESS
+            if (lastDay.isPresent()) {
+                Status lastDayStatus = lastDay.get().getStatus();
+                //Check if the last day's status is CREATED, PENDING, IN_PROGRESS or COMPLETED
                 if (lastDayStatus.equals(Status.fromValue(1)) || //CREATED
                         lastDayStatus.equals(Status.fromValue(2)) || //PENDING
-                        lastDayStatus.equals(Status.fromValue(3))) { //IN_PROGRESS
+                        lastDayStatus.equals(Status.fromValue(3)) || //IN_PROGRESS
+                        lastDayStatus.equals(Status.fromValue(4))) { //COMPLETED
                     accomplished = false;
                 }
             }
         }
 
+        if (accomplished) { //set endDate when request is accomplished. Otherwise just leave it null
+            setEndDate(LocalDateTime.now());
+        }
         return accomplished;
     }
 //    public boolean accomplishedCheck() {

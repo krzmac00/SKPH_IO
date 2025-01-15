@@ -23,11 +23,6 @@ public class Task {
     @JoinColumn(name = "resource")
     private Resource resource;
 
-    /*@NotNull
-    @Getter
-    @Setter
-    private boolean accomplished;*/
-
     @NotNull
     @Getter
     @Setter
@@ -40,11 +35,35 @@ public class Task {
     @JoinColumn(name = "request_id") //resource department use it to access address of task;
     private Request request;
 
+    @Getter
+    @Setter
+    int grade; //type will be assigned by volunteer module
+
+    @Getter
+    @Setter
+    String volunteer; //type will be assigned by volunteer module
+
     public Task() {
     }
 
-    public Task(Resource resource, List<Day> daysList) {
+    public Task(Resource resource/*, List<Day> daysList*/) {
         this.resource = resource;
-        this.daysList = daysList;
+        List<Day> statuses = new ArrayList<>();
+        Day day = new Day(Status.fromValue(1), 0);
+        statuses.add(day);
+        this.daysList = statuses;
+//        int dayAmount = rr.getResource().getAmount();
+//        for (int i = 0; i <= dayAmount; i++) {
+//            //change instead of last day giving final status, it will have 1 additional "day"
+//            //that will represent that
+//            statuses.add(new Day(Status.fromValue(1), i));
+//        }
+//        this.daysList = statuses;
+    }
+
+    public void setStatus(Status status) { //or a number i dont know
+        int newDay = daysList.getLast().getDayIndex() + 1;
+        Day day = new Day(status, newDay);
+        this.daysList.add(day);
     }
 }

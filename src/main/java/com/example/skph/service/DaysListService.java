@@ -14,10 +14,6 @@ public class DaysListService {
         this.daysListRepository = daysListRepository;
     }
 
-    public void saveDaysList(Day day) {
-        daysListRepository.save(day);
-    }
-
     public Day getDaysListById(Long id) {
         return daysListRepository.findById(id).orElse(null);
     }
