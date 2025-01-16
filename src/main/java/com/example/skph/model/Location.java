@@ -43,6 +43,8 @@ public class Location {
     }
 
 
+
+
 //    @JdbcTypeCode(SqlTypes.GEOMETRY)
 //    @Column(columnDefinition = "geometry(Point, 4326)", nullable = false)
 //    private Point coordinates;
