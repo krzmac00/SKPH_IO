@@ -21,8 +21,6 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Identyfikator zadania.
 
-    private String name; // Nazwa zadania.
-
     @OneToMany(mappedBy = "assignedTask", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Resource> assignedResources = new ArrayList<>(); // Lista przypisanych zasobów.
 

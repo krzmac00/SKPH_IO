@@ -27,8 +27,13 @@ public abstract class Resource {
     @Enumerated(EnumType.STRING)
     private ResourceStatus status; // Status zasobu.
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aid_organization_id")
     private AidOrganization assignedOrganization; // Organizacja przypisana do zasobu.
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_id")
+    private Task assignedTask; // Zadanie przypisane do zasobu.
 
     private LocalDateTime createdAt; // Data utworzenia zasobu.
 
@@ -47,6 +52,7 @@ public abstract class Resource {
     // Przypisuje zasób do zadania, zmieniając jego status.
     public void assignTask(Task task) {
         if (status == ResourceStatus.AVAILABLE) {
+            this.assignedTask = task;
             status = ResourceStatus.IN_USE;
         } else {
             throw new IllegalStateException("Resource is not available for assignment.");
