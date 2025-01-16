@@ -7,5 +7,6 @@ import java.util.Locale;
 
 public interface INotificationService {
     Notification createNotification(Long senderId, Long recipientId, String content, String notificationType, Locale locale);
-    List<Notification> getNotificationsForRecipient(Long recipientId);
+    List<Notification> getNotificationsForRecipient(Long recipientId, Locale locale);
 }
+

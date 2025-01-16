@@ -11,14 +11,11 @@ import java.util.List;
 import java.util.Locale;
 
 @RestController
-@RequestMapping("/api/communication")
+@RequestMapping("/communication")
 public class CommunicationController {
 
-    private final CommunicationManager communicationManager;
-
-    public CommunicationController(CommunicationManager communicationManager) {
-        this.communicationManager = communicationManager;
-    }
+    @Autowired
+    private CommunicationManager communicationManager;
 
     @PostMapping("/message")
     public ResponseEntity<Message> sendMessage(
@@ -47,14 +44,23 @@ public class CommunicationController {
     }
 
     @GetMapping("/messages/{recipientId}")
-    public ResponseEntity<List<Message>> getMessages(@PathVariable Long recipientId) {
-        List<Message> messages = communicationManager.getMessagesForRecipient(recipientId);
+    public ResponseEntity<List<Message>> getMessages(
+            @PathVariable Long recipientId,
+            @RequestHeader(value = "Accept-Language", defaultValue = "pl") String language) {
+
+        Locale locale = Locale.forLanguageTag(language);
+        List<Message> messages = communicationManager.getMessagesForRecipient(recipientId, locale);
         return ResponseEntity.ok(messages);
     }
 
     @GetMapping("/notifications/{recipientId}")
-    public ResponseEntity<List<Notification>> getNotifications(@PathVariable Long recipientId) {
-        List<Notification> notifications = communicationManager.getNotificationsForRecipient(recipientId);
+    public ResponseEntity<List<Notification>> getNotifications(
+            @PathVariable Long recipientId,
+            @RequestHeader(value = "Accept-Language", defaultValue = "pl") String language) {
+
+        Locale locale = Locale.forLanguageTag(language);
+        List<Notification> notifications = communicationManager.getNotificationsForRecipient(recipientId, locale);
         return ResponseEntity.ok(notifications);
     }
 }
+

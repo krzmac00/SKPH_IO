@@ -14,23 +14,21 @@ import java.util.Locale;
 @Service
 public class NotificationService implements INotificationService {
 
-    private final NotificationRepository notificationRepository;
-    private final MessageSource messageSource;
+    @Autowired
+    private NotificationRepository notificationRepository;
 
-    public NotificationService(NotificationRepository notificationRepository, MessageSource messageSource) {
-        this.notificationRepository = notificationRepository;
-        this.messageSource = messageSource;
-    }
+    @Autowired
+    private MessageSource messageSource;
 
+    @Override
     public Notification createNotification(Long senderId, Long recipientId, String content, String notificationType, Locale locale) {
         Notification notification = new Notification();
 
         notification.setSenderId(senderId);
         notification.setRecipientId(recipientId);
 
-        // Tłumaczenie treści powiadomienia
-        String translatedContent = messageSource.getMessage(content, null, locale);
-        notification.setContent(translatedContent);
+        // Przechowujemy treść oryginalną, bez tłumaczenia
+        notification.setContent(content);
 
         notification.setNotificationType(Enum.valueOf(NotificationType.class, notificationType));
         notification.setTimestamp(LocalDateTime.now());
@@ -39,7 +37,17 @@ public class NotificationService implements INotificationService {
         return notificationRepository.save(notification);
     }
 
-    public List<Notification> getNotificationsForRecipient(Long recipientId) {
-        return notificationRepository.findByRecipientId(recipientId);
+    @Override
+    public List<Notification> getNotificationsForRecipient(Long recipientId, Locale locale) {
+        List<Notification> notifications = notificationRepository.findByRecipientId(recipientId);
+
+        // Tłumaczenie treści powiadomienia na podstawie lokalizacji
+        for (Notification notification : notifications) {
+            String translatedContent = messageSource.getMessage(notification.getContent(), null, locale);
+            notification.setContent(translatedContent);
+        }
+
+        return notifications;
     }
 }
+

@@ -14,22 +14,20 @@ import java.util.Locale;
 @Service
 public class MessageService implements IMessageService {
 
-    private final MessageRepository messageRepository;
-    private final MessageSource messageSource;
+    @Autowired
+    private MessageRepository messageRepository;
 
-    public MessageService(MessageRepository messageRepository, MessageSource messageSource) {
-        this.messageRepository = messageRepository;
-        this.messageSource = messageSource;
-    }
+    @Autowired
+    private MessageSource messageSource;
 
+    @Override
     public Message createMessage(Long senderId, Long recipientId, String content, String messageType, Locale locale) {
         Message message = new Message();
         message.setSenderId(senderId);
         message.setRecipientId(recipientId);
 
-        // Tłumaczenie treści komunikatu
-        String translatedContent = messageSource.getMessage(content, null, locale);
-        message.setContent(translatedContent);
+        // Przechowujemy treść oryginalną, bez tłumaczenia
+        message.setContent(content);
 
         message.setMessageType(Enum.valueOf(MessageType.class, messageType));
         message.setTimestamp(LocalDateTime.now());
@@ -37,7 +35,18 @@ public class MessageService implements IMessageService {
         return messageRepository.save(message);
     }
 
-    public List<Message> getMessagesForRecipient(Long recipientId) {
-        return messageRepository.findByRecipientId(recipientId);
+    @Override
+    public List<Message> getMessagesForRecipient(Long recipientId, Locale locale) {
+        List<Message> messages = messageRepository.findByRecipientId(recipientId);
+
+        // Tłumaczenie treści wiadomości na podstawie lokalizacji
+        for (Message message : messages) {
+            String translatedContent = messageSource.getMessage(message.getContent(), null, locale);
+            message.setContent(translatedContent);
+        }
+
+        return messages;
     }
 }
+
+

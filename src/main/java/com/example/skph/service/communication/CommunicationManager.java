@@ -1,8 +1,6 @@
 package com.example.skph.service.communication;
 
-import com.example.skph.model.communication.Messagable;
 import com.example.skph.model.communication.Message;
-import com.example.skph.model.communication.MessageType;
 import com.example.skph.model.communication.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,17 +8,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Locale;
 
-
 @Service
 public class CommunicationManager {
 
-    private final MessageService messageService;
-    private final NotificationService notificationService;
+    @Autowired
+    private IMessageService messageService;
 
-    public CommunicationManager(MessageService messageService, NotificationService notificationService) {
-        this.messageService = messageService;
-        this.notificationService = notificationService;
-    }
+    @Autowired
+    private INotificationService notificationService;
 
     public Message sendMessage(Long senderId, Long recipientId, String content, String messageType, Locale locale) {
         return messageService.createMessage(senderId, recipientId, content, messageType, locale);
@@ -30,11 +25,12 @@ public class CommunicationManager {
         return notificationService.createNotification(senderId, recipientId, content, notificationType, locale);
     }
 
-    public List<Message> getMessagesForRecipient(Long recipientId) {
-        return messageService.getMessagesForRecipient(recipientId);
+    public List<Message> getMessagesForRecipient(Long recipientId, Locale locale) {
+        return messageService.getMessagesForRecipient(recipientId, locale);
     }
 
-    public List<Notification> getNotificationsForRecipient(Long recipientId) {
-        return notificationService.getNotificationsForRecipient(recipientId);
+    public List<Notification> getNotificationsForRecipient(Long recipientId, Locale locale) {
+        return notificationService.getNotificationsForRecipient(recipientId, locale);
     }
 }
+

@@ -7,5 +7,6 @@ import java.util.Locale;
 
 public interface IMessageService {
     Message createMessage(Long senderId, Long recipientId, String content, String messageType, Locale locale);
-    List<Message> getMessagesForRecipient(Long recipientId);
+    List<Message> getMessagesForRecipient(Long recipientId, Locale locale);
 }
+

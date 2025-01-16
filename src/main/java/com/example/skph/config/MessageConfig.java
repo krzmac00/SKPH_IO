@@ -9,19 +9,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 @Configuration
-public class MessageConfig extends AcceptHeaderLocaleResolver {
+public class MessageConfig {
 
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setCacheSeconds(3600); // Cache tłumaczeń przez godzinę (opcjonalne)
         return messageSource;
     }
-
-    @Override
-    public Locale resolveLocale(HttpServletRequest request) {
-        String language = request.getHeader("Accept-Language");
-        return language == null || language.isEmpty() ? Locale.getDefault() : Locale.forLanguageTag(language);
-    }
 }
+
