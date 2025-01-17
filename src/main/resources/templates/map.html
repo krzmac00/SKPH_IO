@@ -185,27 +185,32 @@
         })
         .then(locations => {
             console.log('Fetched locations:', locations);
+
             locations.forEach(location => {
+                // Obsługa punktów (Point Locations)
                 if (location.coordinates) {
                     const latLng = location.coordinates
-                        .match(/POINT\(([^ ]+) ([^ ]+)\)/)
+                        .match(/POINT\s*\(([^ ]+)\s+([^ ]+)\)/) // Regex dla "POINT (x y)"
                         .slice(1)
-                        .map(Number);
+                        .map(Number); // Zamiana na liczby
 
-                    L.marker([latLng[1], latLng[0]])
+                    // Dodaj marker na mapie
+                    L.marker([latLng[1], latLng[0]]) // [latitude, longitude]
                         .addTo(map)
-                        .bindPopup(location.name);
+                        .bindPopup(`<strong>${location.name}</strong><br>Type: ${location.locationType}`);
                 }
 
+                // Obsługa poligonów (Polygon Locations)
                 if (location.disasterArea) {
                     const latLngs = location.disasterArea
-                        .match(/POLYGON\(\((.+)\)\)/)[1]
-                        .split(', ')
-                        .map(coord => coord.split(' ').map(Number).reverse());
+                        .match(/POLYGON\s*\(\(\s*(.+)\s*\)\)/)[1] // Regex dla "POLYGON ((x1 y1, x2 y2, ...))"
+                        .split(', ') // Rozdzielenie punktów
+                        .map(coord => coord.split(' ').map(Number).reverse()); // Odwrócenie [x, y] -> [y, x]
 
+                    // Dodaj poligon na mapie
                     L.polygon(latLngs, { color: 'red' })
                         .addTo(map)
-                        .bindPopup(location.name);
+                        .bindPopup(`<strong>${location.name}</strong><br>Type: ${location.locationType}`);
                 }
             });
         })
@@ -220,7 +225,7 @@
         const longitude = parseFloat(document.getElementById('longitude').value);
         const locationType = parseInt(document.getElementById('pointType').value);
 
-        fetch('/locations/point', {
+        fetch('/map/locations/point', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -255,7 +260,7 @@
             if (name) {
                 const locationType = parseInt(prompt("Enter location type (1: Victim, 2: Volunteer, 3: Aid Organization, 4: Authority Representative):"), 10);
                 if ([1, 2, 3, 4].includes(locationType)) {
-                    fetch('/locations/point', {
+                    fetch('/map/locations/point', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ name, locationType, latitude: lat, longitude: lng })
@@ -273,7 +278,7 @@
             if (name) {
                 const locationType = parseInt(prompt("Enter location type (1: Disaster Area, 2: Other):"), 10);
                 if ([1, 2].includes(locationType)) {
-                    fetch('/locations/polygon', {
+                    fetch('/map/locations/polygon', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ name, locationType, coordinates: latLngs })
