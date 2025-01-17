@@ -24,7 +24,7 @@ public class User {
     private String username;
     private String password;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @JsonDeserialize(using = UserRoleDeserializer.class)
     @Column(name = "role")
     private UserRole role;

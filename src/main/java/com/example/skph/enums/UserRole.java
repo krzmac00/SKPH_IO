@@ -1,23 +1,26 @@
 package com.example.skph.enums;
 
+
+
 public enum UserRole {
 
-    VICTIM(1),
-    VOLUNTEER(2),
-    AID_ORGANIZATION(3),
-    AUTHORITY_REPRESENTATIVE(4);
+    VICTIM("victim"),
+    VOLUNTEER("volunteer"),
+    AID_ORGANIZATION("aid_organization"),
+    AUTHORITY_REPRESENTATIVE("authotiry_representative"),
+    DONOR("donor");
 
-    private final int value;
+    private final String value;
 
-    UserRole(int value) {
+    UserRole(String value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 
-    public static UserRole fromValue(int value) {
+    public static UserRole fromValue(String value) {
         for (UserRole type : UserRole.values()) {
             if (type.value == value) {
                 return type;
