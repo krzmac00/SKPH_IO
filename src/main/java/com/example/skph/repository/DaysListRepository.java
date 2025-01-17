@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface DaysListRepository extends JpaRepository<Day, Long> {
-    @Query("SELECT r FROM Request r WHERE r.id = :id")
-    Optional<Day> findById(@Param("id") Long id);
+    @Query("SELECT dl FROM Day dl WHERE dl.id = :id")
+    List<Day> findByDayId(@Param("id") Long id);
 }

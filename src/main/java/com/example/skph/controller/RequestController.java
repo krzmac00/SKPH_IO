@@ -1,5 +1,6 @@
 package com.example.skph.controller;
 
+import com.example.skph.enums.Status;
 import com.example.skph.model.*;
 import com.example.skph.service.RequestResourceService;
 import com.example.skph.service.RequestService;
@@ -126,11 +127,14 @@ public class RequestController {
         request.generateTasks();
         for (Task task : request.getTaskList()) {
             taskService.saveTask(task);
-            int amountOfDays = task.getDaysList().getLast().getDayIndex();
-            for (int i = 0; i < amountOfDays; i ++) {
-                Day day = task.getDaysList().get(i);
-                daysListService.saveDaysList(day);
-            }
+//            int amountOfDays = task.getDaysList().getLast().getDayIndex();
+//            for (int i = 0; i < amountOfDays; i ++) {
+//                Day day = task.getDaysList().get(i);
+//                daysListService.saveDaysList(day);
+//            }
+            Day day = new Day(Status.fromValue(1), 0);
+
+            daysListService.saveDaysList(day);
             taskService.saveTask(task);
         }
         requestService.saveRequest(request); //saveRequest uses save method which in case of finding a request with same

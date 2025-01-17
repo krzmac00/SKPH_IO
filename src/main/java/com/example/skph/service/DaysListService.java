@@ -17,4 +17,8 @@ public class DaysListService {
     public Day getDaysListById(Long id) {
         return daysListRepository.findById(id).orElse(null);
     }
+
+    public void saveDaysList(Day day) {
+        daysListRepository.save(day);
+    }
 }

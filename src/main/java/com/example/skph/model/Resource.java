@@ -20,8 +20,6 @@ public abstract class Resource {
     @Setter
     public String name;
 
-//    @ManyToMany(mappedBy = "resourceList")
-//    private Set<Request> requests = new HashSet<>();
     @OneToMany(mappedBy = "resource")
     Set<RequestResource> resourceList;
 

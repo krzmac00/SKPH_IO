@@ -26,9 +26,10 @@ public class Task {
     @NotNull
     @Getter
     @Setter
-    @ElementCollection
-    @CollectionTable(name = "days_list", joinColumns = @JoinColumn(name = "task_id"))
+    @OneToMany
+    @JoinColumn(name = "task_id")
     private List<Day> daysList;
+    //private DaysList daysList;
     //status: created, pending, inProgress, completed, closed, canceled
 
     @ManyToOne
@@ -37,12 +38,12 @@ public class Task {
 
     @Getter
     @Setter
-    int grade; //type will be assigned by volunteer module
+    int grade; //type will be assigned by volunteer module, needs to be inserted as a column of task table
 
     @Getter
     @Setter
-    String volunteer; //type will be assigned by volunteer module
-
+    Volunteer volunteer; //type will be assigned by volunteer module, needs to be inserted as a column of task table
+    //type Volunteer is not created in this module
     public Task() {
     }
 
@@ -52,13 +53,6 @@ public class Task {
         Day day = new Day(Status.fromValue(1), 0);
         statuses.add(day);
         this.daysList = statuses;
-//        int dayAmount = rr.getResource().getAmount();
-//        for (int i = 0; i <= dayAmount; i++) {
-//            //change instead of last day giving final status, it will have 1 additional "day"
-//            //that will represent that
-//            statuses.add(new Day(Status.fromValue(1), i));
-//        }
-//        this.daysList = statuses;
     }
 
     public void setStatus(Status status) { //or a number i dont know

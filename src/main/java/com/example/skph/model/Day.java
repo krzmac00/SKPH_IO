@@ -1,29 +1,29 @@
 package com.example.skph.model;
 
 import com.example.skph.enums.Status;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Embeddable
+@Getter
+@jakarta.persistence.Entity
+@Table(name = "day")
 public class Day {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Getter
     @NotNull
     @Enumerated(EnumType.STRING) // Store Status as a string
     private Status status;
 
-    @Getter
     @Setter
     @NotNull
     private int dayIndex; // Represents the day or sequence of the status
 
-    @Getter
     @Setter
     private LocalDateTime time;
 

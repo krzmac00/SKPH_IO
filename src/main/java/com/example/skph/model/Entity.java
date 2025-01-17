@@ -14,7 +14,6 @@ public class Entity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     @NotNull
     private String name;
 
