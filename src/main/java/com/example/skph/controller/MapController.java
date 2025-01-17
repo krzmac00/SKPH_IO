@@ -66,6 +66,11 @@ public class MapController {
     @PostMapping("/locations/polygon")
     public ResponseEntity<Object> addPolygonLocation(@RequestBody LocationRequestDTO request) {
         try {
+            // Walidacja locationType
+            if (request.getLocationType() < 1 || request.getLocationType() > 5) {
+                throw new IllegalArgumentException("Invalid locationType: " + request.getLocationType());
+            }
+
             Coordinate[] polygonCoordinates = request.getCoordinates().stream()
                     .map(coord -> new Coordinate(coord.get(0), coord.get(1)))
                     .toArray(Coordinate[]::new);

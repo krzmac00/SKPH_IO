@@ -17,7 +17,7 @@ public class LocationDTO {
     public LocationDTO(Location location) {
         this.id = location.getId();
         this.name = location.getName();
-        this.locationType = LocationType.fromValue(location.getLocationType().getValue() - 1);
+        this.locationType = LocationType.fromValue(location.getLocationType().getValue()-1);
         this.coordinates = location.getCoordinates() != null ? location.getCoordinates().toText() : null;
         this.disasterArea = location.getDisasterArea() != null ? location.getDisasterArea().toText() : null;
     }

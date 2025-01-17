@@ -108,10 +108,11 @@
 
                 <label for="pointType">Location Type:</label>
                 <select id="pointType" name="locationType" required>
-                    <option value="1">Victim</option>
-                    <option value="2">Volunteer</option>
-                    <option value="3">Aid Organization</option>
-                    <option value="4">Authority Representative</option>
+                    <option value="1">Select Type</option>
+                    <option value="2">Victim</option>
+                    <option value="3">Volunteer</option>
+                    <option value="4">Aid Organization</option>
+                    <option value="5">Authority Representative</option>
                 </select>
 
                 <label for="latitude">Latitude:</label>
@@ -203,9 +204,9 @@
                 // Obsługa poligonów (Polygon Locations)
                 if (location.disasterArea) {
                     const latLngs = location.disasterArea
-                        .match(/POLYGON\s*\(\(\s*(.+)\s*\)\)/)[1] // Regex dla "POLYGON ((x1 y1, x2 y2, ...))"
+                        .match(/POLYGON\s*\(\(\s*(.+)\s*\)\)/)[1]
                         .split(', ') // Rozdzielenie punktów
-                        .map(coord => coord.split(' ').map(Number).reverse()); // Odwrócenie [x, y] -> [y, x]
+                        .map(coord => coord.split(' ').map(Number).reverse());
 
                     // Dodaj poligon na mapie
                     L.polygon(latLngs, { color: 'red' })
@@ -236,18 +237,14 @@
             })
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Failed to add point: ${response.statusText}`);
+                if (response.ok) {
+                    alert('Point location added successfully!');
+                    location.reload();
+                } else {
+                    alert('Error adding point location.');
                 }
-                return response.json();
-            })
-            .then(data => {
-                alert('Point location added successfully!');
-                console.log('Added location data:', data);
-                location.reload();
             })
             .catch(error => console.error('Error adding point location:', error));
-
     });
 
     // Handle drawing events for interactive mode
@@ -276,12 +273,12 @@
             const latLngs = layer.getLatLngs()[0].map(latLng => [latLng.lat, latLng.lng]);
             const name = prompt("Enter a name for this polygon:");
             if (name) {
-                const locationType = parseInt(prompt("Enter location type (1: Disaster Area, 2: Other):"), 10);
-                if ([1, 2].includes(locationType)) {
+                const locationType = prompt("Select location type:\n1: Victims\n2: Volunteers\n3: Aid Organization\n4: Authority Representative\n5: Disaster Area");
+                if (['1', '2', '3', '4', '5'].includes(locationType)) {
                     fetch('/map/locations/polygon', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ name, locationType, coordinates: latLngs })
+                        body: JSON.stringify({ name, locationType: parseInt(locationType, 10), coordinates: latLngs })
                     })
                         .then(response => response.ok ? alert('Polygon added successfully!') : alert('Error adding polygon.'))
                         .catch(error => console.error('Error:', error));

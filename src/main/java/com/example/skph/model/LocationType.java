@@ -18,7 +18,7 @@ public enum LocationType {
     }
 
     public static LocationType fromValue(int value) {
-        for (LocationType type : LocationType.values()) {
+        for (LocationType type : values()) {
             if (type.getValue() == value) {
                 return type;
             }
