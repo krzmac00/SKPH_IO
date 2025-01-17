@@ -1,5 +1,7 @@
 package com.example.skph.controller;
 
+import com.example.skph.dto.LocationDTO;
+import com.example.skph.dto.LocationRequestDTO;
 import com.example.skph.model.Location;
 import com.example.skph.model.LocationType;
 import com.example.skph.service.MapService;
@@ -29,53 +31,53 @@ public class MapController {
     }
 
     @GetMapping("/locations")
-    public ResponseEntity<Object> getLocations() {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(mapService.getLocations());
-        }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Locations not found");
-        }
+    ResponseEntity<List<LocationDTO>> getLocations() {
+        List<LocationDTO> locations = mapService.getLocations().stream()
+                .map(LocationDTO::new)
+                .toList();
+        return ResponseEntity.status(HttpStatus.OK).body(locations);
     }
 
     @GetMapping("/locations/{id}")
     public ResponseEntity<Object> getLocation(@PathVariable("id") long id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(mapService.getLocation(id));
-        }
-        catch (Exception e) {
+            LocationDTO locationDTO = mapService.getLocation(id);
+            return ResponseEntity.status(HttpStatus.OK).body(locationDTO);
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Location not found");
         }
     }
 
     @PostMapping("/locations/point")
-    public ResponseEntity<Object> addPointLocation(@RequestParam String name,
-                                                   @RequestParam int locationType,
-                                                   @RequestParam double latitude,
-                                                   @RequestParam double longitude) {
+    public ResponseEntity<Object> addPointLocation(@RequestBody LocationRequestDTO request) {
         try {
-            Location location = mapService.addPointLocation(name, LocationType.fromValue(locationType), latitude, longitude);
-            return ResponseEntity.status(HttpStatus.CREATED).body(location);
+            Location location = mapService.addPointLocation(
+                    request.getName(),
+                    LocationType.fromValue(request.getLocationType()),
+                    request.getLatitude(),
+                    request.getLongitude()
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body(new LocationDTO(location));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Error creating point location: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating point location: " + e.getMessage());
         }
     }
 
     @PostMapping("/locations/polygon")
-    public ResponseEntity<Object> addPolygonLocation(@RequestParam String name,
-                                                     @RequestParam int locationType,
-                                                     @RequestBody List<List<Double>> coordinates) {
+    public ResponseEntity<Object> addPolygonLocation(@RequestBody LocationRequestDTO request) {
         try {
-            Coordinate[] polygonCoordinates = coordinates.stream()
+            Coordinate[] polygonCoordinates = request.getCoordinates().stream()
                     .map(coord -> new Coordinate(coord.get(0), coord.get(1)))
                     .toArray(Coordinate[]::new);
 
-            Location location = mapService.addPolygonLocation(name, LocationType.fromValue(locationType), polygonCoordinates);
-            return ResponseEntity.status(HttpStatus.CREATED).body(location);
+            Location location = mapService.addPolygonLocation(
+                    request.getName(),
+                    LocationType.fromValue(request.getLocationType()),
+                    polygonCoordinates
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body(new LocationDTO(location));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Error creating polygon location: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating polygon location: " + e.getMessage());
         }
     }
 

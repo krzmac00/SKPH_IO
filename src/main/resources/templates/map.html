@@ -3,14 +3,11 @@
 <head>
     <title>SKPH MAP</title>
     <meta charset="utf-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <!-- Get the leaflet CSS file -->
-    <link rel="stylesheet" href=
-            "https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
           integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
           crossorigin="" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -65,16 +62,28 @@
             border-radius: 4px;
         }
 
-        input[type="submit"] {
+        input[type="submit"], button {
             background-color: #404040;
             color: white;
             border: none;
             cursor: pointer;
             font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 4px;
         }
 
-        input[type="submit"]:hover {
+        input[type="submit"]:hover, button:hover {
             background-color: #303030;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -83,107 +92,126 @@
     <h1>SKPH APPLICATION MAP</h1>
 </div>
 <div id="container">
-    <!-- Map Section -->
     <div id="map"></div>
-
-    <!-- Form Section -->
     <div id="formContainer">
-        <h3>Add Point Location</h3>
-        <form id="pointForm">
-            <label for="pointName">Name:</label>
-            <input type="text" id="pointName" name="name" required>
+        <div class="toggle-buttons">
+            <button id="manualModeBtn">Manual Entry</button>
+            <button id="interactiveModeBtn">Interactive Mode</button>
+        </div>
 
-            <label for="pointType">Location Type:</label>
-            <select id="pointType" name="locationType" required>
-                <option value="1">Victim</option>
-                <option value="2">Volunteer</option>
-                <option value="3">Aid Organization</option>
-                <option value="4">Authority Representative</option>
-            </select>
+        <!-- Manual Form Section -->
+        <div id="manualForm" class="hidden">
+            <h3>Add Point Location (Manual)</h3>
+            <form id="pointForm">
+                <label for="pointName">Name:</label>
+                <input type="text" id="pointName" name="name" required>
 
-            <label for="latitude">Latitude:</label>
-            <input type="text" id="latitude" name="latitude" required>
+                <label for="pointType">Location Type:</label>
+                <select id="pointType" name="locationType" required>
+                    <option value="1">Victim</option>
+                    <option value="2">Volunteer</option>
+                    <option value="3">Aid Organization</option>
+                    <option value="4">Authority Representative</option>
+                </select>
 
-            <label for="longitude">Longitude:</label>
-            <input type="text" id="longitude" name="longitude" required>
+                <label for="latitude">Latitude:</label>
+                <input type="text" id="latitude" name="latitude" required>
 
-            <input type="submit" value="Add Point">
-        </form>
+                <label for="longitude">Longitude:</label>
+                <input type="text" id="longitude" name="longitude" required>
 
-        <h3>Add Polygon Location</h3>
-        <form id="polygonForm">
-            <label for="polygonName">Name:</label>
-            <input type="text" id="polygonName" name="name" required>
+                <input type="submit" value="Add Point">
+            </form>
+        </div>
 
-            <label for="polygonType">Location Type:</label>
-            <select id="polygonType" name="locationType" required>
-                <option value="1">Disaster Area</option>
-                <option value="2">Other</option>
-            </select>
-
-            <label for="coordinates">Coordinates (JSON Array):</label>
-            <textarea id="coordinates" name="coordinates" placeholder="[[lat1, lng1], [lat2, lng2], [lat3, lng3], ...]" required></textarea>
-
-            <input type="submit" value="Add Polygon">
-        </form>
+        <!-- Interactive Instructions -->
+        <div id="interactiveInstructions">
+            <h3>Interactive Mode</h3>
+            <p>Click on the map to add a point or use the polygon tool to draw an area.</p>
+        </div>
     </div>
 </div>
 
-
-<!-- Get the leaflet JavaScript file -->
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 <script>
     // Initialize the map
-    const map = L.map('map')
+    const map = L.map('map');
 
-    // Get the tile layer from OpenStreetMaps
+    // Try to get user's location
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const { latitude, longitude } = position.coords;
+
+            map.setView([latitude, longitude], 16);
+
+            const userMarker = L.marker([latitude, longitude]).addTo(map);
+
+            userMarker.bindPopup("<strong>You're here!</strong>").openPopup();
+        },
+        () => {
+            map.setView([51.7592, 19.4560], 15);
+        }
+    );
+
+
+    // Tile layer from OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-
-        // Specify the maximum zoom of the map
         maxZoom: 19,
-
-        // Set the attribution for OpenStreetMaps
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Set the view of the map
-    // with the latitude, longitude and the zoom value
-    //map.setView([51.7592, 19.4560], 13);
-
-    // Set the map view to the user's location
-    // Uncomment below to set map according to user location
-    map.locate({setView: true, maxZoom: 16});
-    map.on('locationfound', function(e) {
-        const userMarker = L.marker(e.latlng).addTo(map)
-            .bindPopup(`<strong>You're here</strong>`).openPopup();
+    // Add leaflet.draw controls
+    const drawControl = new L.Control.Draw({
+        draw: {
+            polyline: false,
+            rectangle: false,
+            circle: false,
+            marker: true,
+            polygon: true
+        }
     });
+    map.addControl(drawControl);
 
+    // Fetch existing locations and display on the map
     fetch('/map/locations')
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(location => {
-                const { name, locationType, coordinates, disasterArea } = location;
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch locations: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(locations => {
+            console.log('Fetched locations:', locations);
+            locations.forEach(location => {
+                if (location.coordinates) {
+                    const latLng = location.coordinates
+                        .match(/POINT\(([^ ]+) ([^ ]+)\)/)
+                        .slice(1)
+                        .map(Number);
 
-                // Add point locations
-                if (coordinates) {
-                    L.marker([coordinates.y, coordinates.x]).addTo(map)
-                        .bindPopup(`<strong>${name}</strong>`);
+                    L.marker([latLng[1], latLng[0]])
+                        .addTo(map)
+                        .bindPopup(location.name);
                 }
 
-                // Add polygon locations
-                if (disasterArea) {
-                    const polygon = L.polygon(disasterArea.coordinates[0].map(coord => [coord[1], coord[0]]), {
-                        color: 'blue'
-                    }).addTo(map)
-                        .bindPopup(`<strong>${name}</strong>`);
+                if (location.disasterArea) {
+                    const latLngs = location.disasterArea
+                        .match(/POLYGON\(\((.+)\)\)/)[1]
+                        .split(', ')
+                        .map(coord => coord.split(' ').map(Number).reverse());
+
+                    L.polygon(latLngs, { color: 'red' })
+                        .addTo(map)
+                        .bindPopup(location.name);
                 }
             });
         })
         .catch(error => console.error('Error fetching locations:', error));
 
-    // Handle Point Location Form Submission
+    // Handle Point Form Submission
     document.getElementById('pointForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
@@ -194,46 +222,83 @@
 
         fetch('/locations/point', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, locationType, latitude, longitude })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name,
+                locationType,
+                latitude,
+                longitude
+            })
         })
             .then(response => {
-                if (response.ok) {
-                    alert('Point location added successfully!');
-                    location.reload();
-                } else {
-                    alert('Error adding point location.');
+                if (!response.ok) {
+                    throw new Error(`Failed to add point: ${response.statusText}`);
                 }
+                return response.json();
+            })
+            .then(data => {
+                alert('Point location added successfully!');
+                console.log('Added location data:', data);
+                location.reload();
             })
             .catch(error => console.error('Error adding point location:', error));
+
     });
 
-    // Handle Polygon Location Form Submission
-    document.getElementById('polygonForm').addEventListener('submit', function (event) {
-        event.preventDefault();
+    // Handle drawing events for interactive mode
+    map.on(L.Draw.Event.CREATED, function (event) {
+        const layer = event.layer;
 
-        const name = document.getElementById('polygonName').value;
-        const locationType = parseInt(document.getElementById('polygonType').value);
-        const coordinates = JSON.parse(document.getElementById('coordinates').value);
-
-        fetch('/locations/polygon', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, locationType, coordinates })
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert('Polygon location added successfully!');
-                    location.reload();
+        if (layer instanceof L.Marker) {
+            const { lat, lng } = layer.getLatLng();
+            const name = prompt("Enter a name for this point:");
+            if (name) {
+                const locationType = parseInt(prompt("Enter location type (1: Victim, 2: Volunteer, 3: Aid Organization, 4: Authority Representative):"), 10);
+                if ([1, 2, 3, 4].includes(locationType)) {
+                    fetch('/locations/point', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, locationType, latitude: lat, longitude: lng })
+                    })
+                        .then(response => response.ok ? alert('Point added successfully!') : alert('Error adding point.'))
+                        .catch(error => console.error('Error:', error));
                 } else {
-                    alert('Error adding polygon location.');
+                    alert('Invalid location type!');
                 }
-            })
-            .catch(error => console.error('Error adding polygon location:', error));
+            }
+            layer.addTo(map).bindPopup(name).openPopup();
+        } else if (layer instanceof L.Polygon) {
+            const latLngs = layer.getLatLngs()[0].map(latLng => [latLng.lat, latLng.lng]);
+            const name = prompt("Enter a name for this polygon:");
+            if (name) {
+                const locationType = parseInt(prompt("Enter location type (1: Disaster Area, 2: Other):"), 10);
+                if ([1, 2].includes(locationType)) {
+                    fetch('/locations/polygon', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, locationType, coordinates: latLngs })
+                    })
+                        .then(response => response.ok ? alert('Polygon added successfully!') : alert('Error adding polygon.'))
+                        .catch(error => console.error('Error:', error));
+                } else {
+                    alert('Invalid location type!');
+                }
+            }
+            layer.addTo(map).bindPopup(name).openPopup();
+        }
+    });
+
+    // Toggle between manual and interactive modes
+    const manualForm = document.getElementById('manualForm');
+    const interactiveInstructions = document.getElementById('interactiveInstructions');
+    document.getElementById('manualModeBtn').addEventListener('click', () => {
+        manualForm.classList.remove('hidden');
+        interactiveInstructions.classList.add('hidden');
+    });
+
+    document.getElementById('interactiveModeBtn').addEventListener('click', () => {
+        interactiveInstructions.classList.remove('hidden');
+        manualForm.classList.add('hidden');
     });
 </script>
 </body>

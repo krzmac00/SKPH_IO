@@ -76,16 +76,4 @@ public class Location {
 //        return this.coordinates.distance(other.getCoordinates());
 //    }
 
-
-    @Override
-    public String toString() {
-        return "Location{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                //", locationType=" + locationType.getTypeName() +
-                //", coordinates=" + coordinates +
-                //", longitude=" + longitude +
-                //", latitude=" + latitude +
-                '}';
-    }
 }

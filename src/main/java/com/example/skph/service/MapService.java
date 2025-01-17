@@ -24,35 +24,31 @@ public class MapService {
     @Autowired
     private LocationRepository locationRepository;
 
+    public LocationDTO getLocation(long id) {
+        Location location = locationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Location not found"));
+        return new LocationDTO(location);
+    }
+
     public Location addPointLocation(String name, LocationType locationType, double latitude, double longitude) {
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+        GeometryFactory geometryFactory = new GeometryFactory();
         Point coordinates = geometryFactory.createPoint(new Coordinate(longitude, latitude));
-        coordinates.setSRID(4326);
+
         Location location = new Location(name, locationType, coordinates);
         return locationRepository.save(location);
     }
 
     public Location addPolygonLocation(String name, LocationType locationType, Coordinate[] coordinates) {
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+        GeometryFactory geometryFactory = new GeometryFactory();
         Polygon polygon = geometryFactory.createPolygon(coordinates);
-        polygon.setSRID(4326);
+
         Location location = new Location(name, locationType, polygon);
         return locationRepository.save(location);
     }
 
 
-    public List<LocationDTO> getLocations() {
-        WKTWriter writer = new WKTWriter();
-
-        return locationRepository.findAll().stream()
-                .map(location -> new LocationDTO(
-                        location.getId(),
-                        location.getName(),
-                        location.getLocationType(),
-                        location.getCoordinates() != null ? writer.write(location.getCoordinates()) : null,
-                        location.getDisasterArea() != null ? writer.write(location.getDisasterArea()) : null
-                ))
-                .collect(Collectors.toList());
+    public List<Location> getLocations() {
+        return locationRepository.findAll();
     }
 
     public Location getLocation(Long id) {

@@ -1,5 +1,6 @@
 package com.example.skph.dto;
 
+import com.example.skph.model.Location;
 import com.example.skph.model.LocationType;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,11 +14,11 @@ public class LocationDTO {
     private String coordinates;
     private String disasterArea;
 
-    public LocationDTO(Long id, String name, LocationType locationType, String coordinates, String disasterArea) {
-        this.id = id;
-        this.name = name;
-        this.locationType = locationType;
-        this.coordinates = coordinates;
-        this.disasterArea = disasterArea;
+    public LocationDTO(Location location) {
+        this.id = location.getId();
+        this.name = location.getName();
+        this.locationType = LocationType.fromValue(location.getLocationType().getValue() - 1);
+        this.coordinates = location.getCoordinates() != null ? location.getCoordinates().toText() : null;
+        this.disasterArea = location.getDisasterArea() != null ? location.getDisasterArea().toText() : null;
     }
 }

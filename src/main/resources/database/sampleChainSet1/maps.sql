@@ -11,7 +11,10 @@ CREATE TABLE location_types (
 
 INSERT INTO location_types (typename, description)
 VALUES
-    ('Point', 'Poszkodowany'),
+    ('Victim', 'Poszkodowany'),
+    ('Volunteer', 'Wolontariusz'),
+    ('Aid', 'Organizacja Pomocowa'),
+    ('Authority', 'Przedstawiciel Władz'),
     ('Area', 'Obszar katastrofy');
 
 CREATE TABLE locations (
@@ -27,12 +30,12 @@ CREATE TABLE locations (
 
 INSERT INTO locations (name, locationtype, coordinates)
 VALUES
-    ('PŁ', 1, ST_SetSRID(ST_MakePoint(19.455646, 51.746985), 4326));
+    ('Student Debil', 1, ST_SetSRID(ST_MakePoint(19.455646, 51.746985), 4326));
 
 
 INSERT INTO locations (name, locationtype, disasterarea)
 VALUES
-    ('Katastrofa', 2, ST_SetSRID(ST_GeomFromText('POLYGON((19.45 51.74, 19.46 51.74, 19.46 51.75, 19.45 51.75, 19.45 51.74))'), 4326));
+    ('Katastrofa', 3, ST_SetSRID(ST_GeomFromText('POLYGON((19.45 51.74, 19.46 51.74, 19.46 51.75, 19.45 51.75, 19.45 51.74))'), 4326));
 --DROP TABLE IF EXISTS location_types CASCADE;
 /*
 CREATE TABLE location_types (
