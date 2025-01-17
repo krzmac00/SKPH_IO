@@ -1,19 +1,26 @@
 package com.example.skph.model;
 
 public enum LocationType {
-    VICTIM(1),
-    VOLUNTEER(2),
-    AID_ORGANIZATION(3),
-    AUTHORITY_REPRESENTATIVE(4);
+    VICTIM(1, "red"),
+    VOLUNTEER(2, "green"),
+    AID_ORGANIZATION(3, "blue"),
+    AUTHORITY_REPRESENTATIVE(4, "yellow"),
+    DISASTER_AREA(5, "black");
 
     private final int value;
+    private final String color;
 
-    LocationType(int value) {
+    LocationType(int value,  String color) {
         this.value = value;
+        this.color = color;
     }
 
     public int getValue() {
         return value;
+    }
+
+    public String getColor() {
+        return color;
     }
 
     public static LocationType fromValue(int value) {
@@ -25,50 +32,3 @@ public enum LocationType {
         throw new IllegalArgumentException("Invalid LocationType value: " + value);
     }
 }
-
-//import jakarta.persistence.*;
-//import jakarta.persistence.Entity;
-//import lombok.Getter;
-//import lombok.NoArgsConstructor;
-//import lombok.Setter;
-//
-//@Getter
-//@Setter
-//@NoArgsConstructor
-//@Entity
-//@Table(name = "location_types")
-//public class LocationType {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//
-//    @Column(nullable = false, unique = true)
-//    private String typeName;
-//
-//    @Column
-//    private String description;
-//
-////    @Column(nullable = false)
-////    private boolean isPolygon;
-//
-//    public LocationType(String typeName, String description /*boolean isPolygon*/) {
-//        this.typeName = typeName;
-//        this.description = description;
-//       // this.isPolygon = isPolygon;
-//    }
-//
-//    public void updateDetails(String newName, String newDescription) {
-//        this.typeName = newName;
-//        this.description = newDescription;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "LocationType{" +
-//                "id=" + id +
-//                ", typeName='" + typeName + '\'' +
-//                ", description='" + description + '\'' +
-//                //", isPolygon=" + isPolygon +
-//                '}';
-//    }
-//}

@@ -1,7 +1,9 @@
 package com.example.skph.controller;
 
 import com.example.skph.model.Location;
+import com.example.skph.model.LocationType;
 import com.example.skph.service.MapService;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -46,13 +48,34 @@ public class MapController {
         }
     }
 
-    @PostMapping("/locations")
-    public ResponseEntity<Object> addLocation(@RequestBody Location location) {
+    @PostMapping("/locations/point")
+    public ResponseEntity<Object> addPointLocation(@RequestParam String name,
+                                                   @RequestParam int locationType,
+                                                   @RequestParam double latitude,
+                                                   @RequestParam double longitude) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(mapService.addLocation(location));
+            Location location = mapService.addPointLocation(name, LocationType.fromValue(locationType), latitude, longitude);
+            return ResponseEntity.status(HttpStatus.CREATED).body(location);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error creating point location: " + e.getMessage());
         }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Location not found");
+    }
+
+    @PostMapping("/locations/polygon")
+    public ResponseEntity<Object> addPolygonLocation(@RequestParam String name,
+                                                     @RequestParam int locationType,
+                                                     @RequestBody List<List<Double>> coordinates) {
+        try {
+            Coordinate[] polygonCoordinates = coordinates.stream()
+                    .map(coord -> new Coordinate(coord.get(0), coord.get(1)))
+                    .toArray(Coordinate[]::new);
+
+            Location location = mapService.addPolygonLocation(name, LocationType.fromValue(locationType), polygonCoordinates);
+            return ResponseEntity.status(HttpStatus.CREATED).body(location);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error creating polygon location: " + e.getMessage());
         }
     }
 

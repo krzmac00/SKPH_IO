@@ -9,7 +9,10 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+
 
 @Getter
 @Setter
@@ -25,24 +28,38 @@ public class Location {
     private String name;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "location_type")
+//    @Column(name = "location_type")
     @JsonDeserialize(using = LocationTypeDeserializer.class)
     private LocationType locationType;
 
-    @Column(nullable = false)
-    private Double latitude;
+//    @Column(nullable = false)
+//    private Double latitude;
 
-    @Column(nullable = false)
-    private Double longitude;
+//   @Column(nullable = false)
+//    private Double longitude;
+    @JdbcTypeCode(SqlTypes.GEOMETRY)
+    @Column(columnDefinition = "geometry(Point, 4326)", nullable = true)
+    private Point coordinates;
 
-    public Location(String name, LocationType locationType, Double latitude, Double longitude) {
+    @JdbcTypeCode(SqlTypes.GEOMETRY)
+    @Column(columnDefinition = "geometry(Polygon, 4326)", nullable = true)
+    private Polygon disasterArea;
+
+    public Location(String name, LocationType locationType, Point coordinates) {
         this.name = name;
         this.locationType = locationType;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.coordinates = coordinates;
+        //this.latitude = latitude;
+        //this.longitude = longitude;
     }
 
-
+    public Location(String name, LocationType locationType, Polygon disasterArea) {
+        this.name = name;
+        this.locationType = locationType;
+        this.disasterArea = disasterArea;
+        //this.latitude = latitude;
+        //this.longitude = longitude;
+    }
 
 
 //    @JdbcTypeCode(SqlTypes.GEOMETRY)
@@ -67,8 +84,8 @@ public class Location {
                 ", name='" + name + '\'' +
                 //", locationType=" + locationType.getTypeName() +
                 //", coordinates=" + coordinates +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
+                //", longitude=" + longitude +
+                //", latitude=" + latitude +
                 '}';
     }
 }

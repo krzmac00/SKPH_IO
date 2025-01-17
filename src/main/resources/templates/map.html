@@ -10,11 +10,125 @@
             "https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
           integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
           crossorigin="" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #header {
+            background-color: #303030;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        #container {
+            display: flex;
+            flex: 1;
+        }
+
+        #map {
+            flex: 2;
+            height: 100%;
+        }
+
+        #formContainer {
+            flex: 1;
+            padding: 20px;
+            background-color: #f9f9f9;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #404040;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #303030;
+        }
+    </style>
 </head>
 <body>
-<h1>SKPH APPLICATION MAP</h1>
-<!-- Specify the map and it's dimensions -->
-<div id="map" style="width: 960px; height: 500px"></div>
+<div id="header">
+    <h1>SKPH APPLICATION MAP</h1>
+</div>
+<div id="container">
+    <!-- Map Section -->
+    <div id="map"></div>
+
+    <!-- Form Section -->
+    <div id="formContainer">
+        <h3>Add Point Location</h3>
+        <form id="pointForm">
+            <label for="pointName">Name:</label>
+            <input type="text" id="pointName" name="name" required>
+
+            <label for="pointType">Location Type:</label>
+            <select id="pointType" name="locationType" required>
+                <option value="1">Victim</option>
+                <option value="2">Volunteer</option>
+                <option value="3">Aid Organization</option>
+                <option value="4">Authority Representative</option>
+            </select>
+
+            <label for="latitude">Latitude:</label>
+            <input type="text" id="latitude" name="latitude" required>
+
+            <label for="longitude">Longitude:</label>
+            <input type="text" id="longitude" name="longitude" required>
+
+            <input type="submit" value="Add Point">
+        </form>
+
+        <h3>Add Polygon Location</h3>
+        <form id="polygonForm">
+            <label for="polygonName">Name:</label>
+            <input type="text" id="polygonName" name="name" required>
+
+            <label for="polygonType">Location Type:</label>
+            <select id="polygonType" name="locationType" required>
+                <option value="1">Disaster Area</option>
+                <option value="2">Other</option>
+            </select>
+
+            <label for="coordinates">Coordinates (JSON Array):</label>
+            <textarea id="coordinates" name="coordinates" placeholder="[[lat1, lng1], [lat2, lng2], [lat3, lng3], ...]" required></textarea>
+
+            <input type="submit" value="Add Polygon">
+        </form>
+    </div>
+</div>
+
 
 <!-- Get the leaflet JavaScript file -->
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
@@ -50,68 +164,77 @@
         .then(response => response.json())
         .then(data => {
             data.forEach(location => {
-                const { name, latitude, longitude } = location; // Assuming API returns these fields
-                L.marker([latitude, longitude]).addTo(map)
-                    .bindPopup(`<strong>${name}</strong>`);
+                const { name, locationType, coordinates, disasterArea } = location;
+
+                // Add point locations
+                if (coordinates) {
+                    L.marker([coordinates.y, coordinates.x]).addTo(map)
+                        .bindPopup(`<strong>${name}</strong>`);
+                }
+
+                // Add polygon locations
+                if (disasterArea) {
+                    const polygon = L.polygon(disasterArea.coordinates[0].map(coord => [coord[1], coord[0]]), {
+                        color: 'blue'
+                    }).addTo(map)
+                        .bindPopup(`<strong>${name}</strong>`);
+                }
             });
         })
         .catch(error => console.error('Error fetching locations:', error));
-</script>
-<div style="margin-top: 20px;">
-    <form id="locationForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
 
-        <label for="locationType">Location Type:</label>
-        <select id="locationType" name="locationType" required>
-            <option value="1">Victim</option>
-            <option value="2">Volunteer</option>
-            <option value="3">Aid_Organization</option>
-            <option value="4">Authority_Representative</option>
-        </select><br>
-
-        <label for="latitude">Latitude:</label>
-        <input type="text" id="latitude" name="latitude" required><br>
-
-        <label for="longitude">Longitude:</label>
-        <input type="text" id="longitude" name="longitude" required><br>
-
-        <input type="submit" value="Add Location">
-    </form>
-</div>
-
-<script>
-    document.getElementById('locationForm').addEventListener('submit', function (event) {
+    // Handle Point Location Form Submission
+    document.getElementById('pointForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
-        const name = document.getElementById('name').value;
+        const name = document.getElementById('pointName').value;
         const latitude = parseFloat(document.getElementById('latitude').value);
         const longitude = parseFloat(document.getElementById('longitude').value);
-        const locationType = parseInt(document.getElementById('locationType').value); // Pobieramy liczbę
+        const locationType = parseInt(document.getElementById('pointType').value);
 
-        fetch('/map/locations', {
+        fetch('/locations/point', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                name: name,
-                locationType: locationType, // Przesyłamy liczbę
-                latitude: latitude,
-                longitude: longitude
-            })
+            body: JSON.stringify({ name, locationType, latitude, longitude })
         })
             .then(response => {
                 if (response.ok) {
-                    alert('Location added successfully!');
+                    alert('Point location added successfully!');
                     location.reload();
                 } else {
-                    alert('Error adding location.');
+                    alert('Error adding point location.');
                 }
             })
-            .catch(error => console.error('Error adding location:', error));
+            .catch(error => console.error('Error adding point location:', error));
     });
 
+    // Handle Polygon Location Form Submission
+    document.getElementById('polygonForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const name = document.getElementById('polygonName').value;
+        const locationType = parseInt(document.getElementById('polygonType').value);
+        const coordinates = JSON.parse(document.getElementById('coordinates').value);
+
+        fetch('/locations/polygon', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, locationType, coordinates })
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Polygon location added successfully!');
+                    location.reload();
+                } else {
+                    alert('Error adding polygon location.');
+                }
+            })
+            .catch(error => console.error('Error adding polygon location:', error));
+    });
 </script>
 </body>
 </html>
