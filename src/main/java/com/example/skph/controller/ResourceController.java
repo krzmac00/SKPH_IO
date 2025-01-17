@@ -44,10 +44,7 @@ public class ResourceController {
 
     @PostMapping("/{resourceId}/assign/{taskId}")
     public ResponseEntity<Resource> assignResourceToTask(@PathVariable Long resourceId, @PathVariable Long taskId) {
-        Task task = taskService.getTaskById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found with ID: " + taskId));
-        Resource updatedResource = resourceService.assignResourceToTask(resourceId, task);
+        Resource updatedResource = resourceService.assignResourceToTask(resourceId, taskId);
         return ResponseEntity.ok(updatedResource);
     }
-
 }
