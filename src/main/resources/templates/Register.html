@@ -143,6 +143,21 @@
         if (!formIsValid) {
             return;
         }
+        function loadOrganizations() {
+            fetch('/api/organizations')
+                .then(response => response.json())
+                .then(organizations => {
+                    const orgSelect = document.getElementById('organization');
+                    organizations.forEach(org => {
+                        const option = document.createElement('option');
+                        option.value = org;
+                        option.textContent = org;
+                        orgSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error loading organizations:', error));
+        }
+
 
         const payload = {
             username: document.getElementById('username').value,

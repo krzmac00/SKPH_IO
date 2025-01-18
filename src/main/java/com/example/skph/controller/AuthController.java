@@ -49,8 +49,8 @@ public class AuthController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
-
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<Boolean> login(@RequestBody @Valid Login request) {
@@ -59,5 +59,9 @@ public class AuthController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+    @GetMapping("/change_password")
+    public String showChangePasswd() {
+        return "ChangePasswd";
     }
 }

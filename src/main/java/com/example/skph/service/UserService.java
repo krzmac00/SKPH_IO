@@ -1,4 +1,5 @@
 package com.example.skph.service;
+import com.example.skph.model.Role;
 import com.example.skph.model.User;
 import com.example.skph.repository.UserRepository;
 import com.example.skph.enums.UserRole;
@@ -8,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.skph.config.PasswordConfig;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -46,4 +49,10 @@ public class UserService {
         }
         return isCorrect;
     }
+    //public List<String> searchRoles(String query) {
+        //List<Role> roles = userRepository.findDistinctRoles(query);
+        //return roles.stream()
+                //.map(Role::name)  // Konwertuje enum na String
+                //.collect(Collectors.toList());
+   // }
 }

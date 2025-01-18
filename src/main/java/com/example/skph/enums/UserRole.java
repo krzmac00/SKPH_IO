@@ -1,7 +1,5 @@
 package com.example.skph.enums;
 
-
-
 public enum UserRole {
 
     VICTIM("victim"),
