@@ -200,46 +200,124 @@
     }
 
     let routingControl = null;
+    let routePoints = []; // To store start, end, and intermediate points
+    let routeMarkers = []; // To store markers related to the route (start, end, and intermediates)
 
     // Function to add routing control
-    function addRoutingControl(start, end) {
+    function addRoutingControl(points) {
         // Remove existing route
         if (routingControl) {
             map.removeControl(routingControl);
         }
 
-        // Create a new route
+        // Create a custom ReversablePlan
+        const ReversablePlan = L.Routing.Plan.extend({
+            createGeocoders: function () {
+                const container = L.Routing.Plan.prototype.createGeocoders.call(this);
+
+                // Add reverse button to the plan container
+                const reverseButton = createButton('↑↓ Reverse Route', container);
+                L.DomEvent.on(reverseButton, 'click', function () {
+                    // Reverse the waypoints and re-render the route
+                    const waypoints = this.getWaypoints().slice().reverse();
+                    this.setWaypoints(waypoints);
+                }, this);
+
+                return container;
+            }
+        });
+
+        const plan = new ReversablePlan(
+            points.map(([lat, lng]) => L.latLng(lat, lng)),
+            {
+                geocoder: L.Control.Geocoder.nominatim(),
+                routeWhileDragging: true
+            }
+        );
+
+        // Add routing control with the custom plan
         routingControl = L.Routing.control({
-            waypoints: [
-                L.latLng(start[0], start[1]), // Starting point
-                L.latLng(end[0], end[1])     // Ending point
-            ],
-            routeWhileDragging: true,
-            geocoder: L.Control.Geocoder.nominatim() // Optional geocoding
+            plan: plan,
+            routeWhileDragging: true
         }).addTo(map);
     }
 
-    // Add click interaction for setting start and end points
-    let routePoints = [];
+    // Helper function to create a button
+    function createButton(label, container) {
+        const btn = L.DomUtil.create('button', '', container);
+        btn.setAttribute('type', 'button');
+        btn.innerHTML = label;
+        return btn;
+    }
+
+    // Handle map click
     map.on('click', function (e) {
         const { lat, lng } = e.latlng;
 
-        if (routePoints.length === 0) {
-            // First point (start)
-            routePoints.push([lat, lng]);
-            L.marker([lat, lng]).addTo(map).bindPopup("Start Point").openPopup();
-        } else if (routePoints.length === 1) {
-            // Second point (end)
-            routePoints.push([lat, lng]);
-            L.marker([lat, lng]).addTo(map).bindPopup("End Point").openPopup();
-
-            // Add routing control
-            addRoutingControl(routePoints[0], routePoints[1]);
-
-            // Reset the points
-            routePoints = [];
-        }
+        // Add a popup to select what to do with the point
+        L.popup()
+            .setLatLng(e.latlng)
+            .setContent(`
+            <button onclick="addWaypoint([${lat}, ${lng}], 'start')">Set as Start</button><br>
+            <button onclick="addWaypoint([${lat}, ${lng}], 'end')">Set as End</button><br>
+            <button onclick="addWaypoint([${lat}, ${lng}], 'intermediate')">Add Intermediate Point</button><br>
+            <button onclick="resetRoute()">Reset Route</button>
+        `)
+            .openOn(map);
     });
+
+    // Function to add a waypoint
+    function addWaypoint(point, type) {
+        if (type === 'start') {
+            if (routePoints.length > 0) {
+                routePoints[0] = point;
+            } else {
+                routePoints.unshift(point);
+            }
+        } else if (type === 'end') {
+            if (routePoints.length > 1) {
+                routePoints[routePoints.length - 1] = point;
+            } else {
+                routePoints.push(point);
+            }
+        } else if (type === 'intermediate') {
+            if (routePoints.length > 1) {
+                routePoints.splice(routePoints.length - 1, 0, point);
+            } else {
+                alert("Please set a start and end point before adding intermediate points.");
+                return;
+            }
+        }
+
+        // Add marker for the point and store it in routeMarkers
+        const marker = L.marker(point)
+            .addTo(map)
+            .bindPopup(`${type.charAt(0).toUpperCase() + type.slice(1)} Point`)
+            .openPopup();
+        routeMarkers.push(marker);
+
+        // Update the route if we have at least 2 points
+        if (routePoints.length >= 2) {
+            addRoutingControl(routePoints);
+        }
+    }
+
+    // Function to reset the route and its markers
+    function resetRoute() {
+        // Remove routing control
+        if (routingControl) {
+            map.removeControl(routingControl);
+            routingControl = null;
+        }
+
+        // Remove all route-related markers from the map
+        routeMarkers.forEach(marker => map.removeLayer(marker));
+        routeMarkers = []; // Clear the marker references
+
+        // Reset the route points
+        routePoints = [];
+        alert("Route has been reset");
+    }
 
 
     // Add leaflet.draw controls
