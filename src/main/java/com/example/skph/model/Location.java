@@ -32,11 +32,6 @@ public class Location {
     @JsonDeserialize(using = LocationTypeDeserializer.class)
     private LocationType locationType;
 
-//    @Column(nullable = false)
-//    private Double latitude;
-
-//   @Column(nullable = false)
-//    private Double longitude;
     @JdbcTypeCode(SqlTypes.GEOMETRY)
     @Column(columnDefinition = "geometry(Point, 4326)", nullable = true)
     private Point coordinates;
@@ -49,31 +44,13 @@ public class Location {
         this.name = name;
         this.locationType = locationType;
         this.coordinates = coordinates;
-        //this.latitude = latitude;
-        //this.longitude = longitude;
     }
 
     public Location(String name, LocationType locationType, Polygon disasterArea) {
         this.name = name;
         this.locationType = locationType;
         this.disasterArea = disasterArea;
-        //this.latitude = latitude;
-        //this.longitude = longitude;
+
     }
-
-
-//    @JdbcTypeCode(SqlTypes.GEOMETRY)
-//    @Column(columnDefinition = "geometry(Point, 4326)", nullable = false)
-//    private Point coordinates;
-//
-//    public Location(String name, LocationType locationType, Point coordinates) {
-//        this.name = name;
-//        this.locationType = locationType;
-//        this.coordinates = coordinates;
-//    }
-//
-//    public double calculateDistance(Location other) {
-//        return this.coordinates.distance(other.getCoordinates());
-//    }
 
 }

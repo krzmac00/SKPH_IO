@@ -8,6 +8,9 @@
           integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
           crossorigin="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -130,6 +133,16 @@
             <h3>Interactive Mode</h3>
             <p>Click on the map to add a point or use the polygon tool to draw an area.</p>
         </div>
+
+        <div>
+            <label for="startCoords">Start Point (Lat, Lng):</label>
+            <input type="text" id="startCoords" placeholder="51.7592, 19.4560" />
+
+            <label for="endCoords">End Point (Lat, Lng):</label>
+            <input type="text" id="endCoords" placeholder="51.7600, 19.4590" />
+
+            <button id="findRouteBtn">Find Route</button>
+        </div>
     </div>
 </div>
 
@@ -137,6 +150,9 @@
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
 <script>
     // Initialize the map
     const map = L.map('map');
@@ -163,6 +179,48 @@
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+
+    let routingControl = null;
+
+    // Function to add routing control
+    function addRoutingControl(start, end) {
+        // Remove existing route
+        if (routingControl) {
+            map.removeControl(routingControl);
+        }
+
+        // Create a new route
+        routingControl = L.Routing.control({
+            waypoints: [
+                L.latLng(start[0], start[1]), // Starting point
+                L.latLng(end[0], end[1])     // Ending point
+            ],
+            routeWhileDragging: true,
+            geocoder: L.Control.Geocoder.nominatim() // Optional geocoding
+        }).addTo(map);
+    }
+
+    // Add click interaction for setting start and end points
+    let routePoints = [];
+    map.on('click', function (e) {
+        const { lat, lng } = e.latlng;
+
+        if (routePoints.length === 0) {
+            // First point (start)
+            routePoints.push([lat, lng]);
+            L.marker([lat, lng]).addTo(map).bindPopup("Start Point").openPopup();
+        } else if (routePoints.length === 1) {
+            // Second point (end)
+            routePoints.push([lat, lng]);
+            L.marker([lat, lng]).addTo(map).bindPopup("End Point").openPopup();
+
+            // Add routing control
+            addRoutingControl(routePoints[0], routePoints[1]);
+
+            // Reset the points
+            routePoints = [];
+        }
+    });
 
     // Add leaflet.draw controls
     const drawControl = new L.Control.Draw({
@@ -301,6 +359,17 @@
     document.getElementById('interactiveModeBtn').addEventListener('click', () => {
         interactiveInstructions.classList.remove('hidden');
         manualForm.classList.add('hidden');
+    });
+
+    document.getElementById('findRouteBtn').addEventListener('click', function () {
+        const startCoords = document.getElementById('startCoords').value.split(',').map(Number);
+        const endCoords = document.getElementById('endCoords').value.split(',').map(Number);
+
+        if (startCoords.length === 2 && endCoords.length === 2) {
+            addRoutingControl(startCoords, endCoords);
+        } else {
+            alert('Invalid coordinates!');
+        }
     });
 </script>
 </body>
