@@ -131,7 +131,7 @@
         <!-- Interactive Instructions -->
         <div id="interactiveInstructions">
             <h3>Interactive Mode</h3>
-            <p>Click on the map to add a point or use the polygon tool to draw an area.</p>
+            <p>Click on the pin tool on the tool box the left side of the map to add a point or use the polygon tool to draw an area.</p>
         </div>
 
         <div>
@@ -141,7 +141,13 @@
             <label for="endCoords">End Point (Lat, Lng):</label>
             <input type="text" id="endCoords" placeholder="51.7600, 19.4590" />
 
+            <div id="intermediateContainer">
+                <!-- Dynamic list of intermediate points will be added here -->
+            </div>
+
+            <button id="addIntermediateBtn">Add Intermediate Point</button><br><br>
             <button id="findRouteBtn">Find Route</button>
+            <button id="resetRouteBtn">Reset Route</button>
         </div>
     </div>
 </div>
@@ -205,20 +211,16 @@
 
     // Function to add routing control
     function addRoutingControl(points) {
-        // Remove existing route
         if (routingControl) {
             map.removeControl(routingControl);
         }
 
-        // Create a custom ReversablePlan
         const ReversablePlan = L.Routing.Plan.extend({
             createGeocoders: function () {
                 const container = L.Routing.Plan.prototype.createGeocoders.call(this);
 
-                // Add reverse button to the plan container
                 const reverseButton = createButton('↑↓ Reverse Route', container);
                 L.DomEvent.on(reverseButton, 'click', function () {
-                    // Reverse the waypoints and re-render the route
                     const waypoints = this.getWaypoints().slice().reverse();
                     this.setWaypoints(waypoints);
                 }, this);
@@ -244,9 +246,11 @@
 
     // Helper function to create a button
     function createButton(label, container) {
-        const btn = L.DomUtil.create('button', '', container);
+        const btn = L.DomUtil.create('button', 'custom-button', container);
         btn.setAttribute('type', 'button');
         btn.innerHTML = label;
+        btn.style.backgroundColor = 'gray';
+        btn.style.color = 'white';
         return btn;
     }
 
@@ -477,11 +481,50 @@
         const startCoords = document.getElementById('startCoords').value.split(',').map(Number);
         const endCoords = document.getElementById('endCoords').value.split(',').map(Number);
 
-        if (startCoords.length === 2 && endCoords.length === 2) {
-            addRoutingControl(startCoords, endCoords);
-        } else {
+        const intermediateInputs = document.querySelectorAll('.intermediateInput');
+        const intermediates = Array.from(intermediateInputs).map(input =>
+            input.value.split(',').map(Number)
+        );
+
+        // Validate inputs
+        if (startCoords.length !== 2 || endCoords.length !== 2 || intermediates.some(coords => coords.length !== 2)) {
             alert('Invalid coordinates!');
+            return;
         }
+
+        // Build the route points
+        routePoints = [startCoords, ...intermediates, endCoords];
+
+        // Add routing control
+        addRoutingControl(routePoints);
+
+        // Add markers for the start, intermediates, and end
+        routePoints.forEach((coords, index) => {
+            const type = index === 0
+                ? 'start'
+                : index === routePoints.length - 1
+                    ? 'end'
+                    : 'intermediate';
+
+            const marker = L.marker(coords)
+                .addTo(map)
+                .bindPopup(`${type.charAt(0).toUpperCase() + type.slice(1)} Point`)
+                .openPopup();
+            routeMarkers.push(marker);
+        });
+    });
+
+    // Add event listener to reset route
+    document.getElementById('resetRouteBtn').addEventListener('click', resetRoute);
+
+    // Add event listener to dynamically add intermediate points
+    document.getElementById('addIntermediateBtn').addEventListener('click', function () {
+        const container = document.getElementById('intermediateContainer');
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'intermediateInput';
+        input.placeholder = 'Enter intermediate coords (Lat, Lng)';
+        container.appendChild(input);
     });
 </script>
 </body>
