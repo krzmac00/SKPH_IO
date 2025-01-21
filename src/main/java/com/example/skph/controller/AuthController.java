@@ -1,5 +1,6 @@
 package com.example.skph.controller;
 
+import ch.qos.logback.core.model.Model;
 import com.example.skph.constraints.Login;
 import com.example.skph.service.UserService;
 import com.example.skph.constraints.Register;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import java.security.Principal;
 
 @Controller
 @Profile("dev")
@@ -64,4 +66,16 @@ public class AuthController {
     public String showChangePasswd() {
         return "ChangePasswd";
     }
+
+    @ModelAttribute
+    public String username(Principal principal) {
+        // Zwracamy dane użytkownika bezpośrednio z `@ModelAttribute`
+        return (principal != null) ? principal.getName() : "Guest";
+    }
+
+    @GetMapping("/main")
+    public String mainPage() {
+        return "main"; // Widok main.html, w którym będziemy używać ${username}
+    }
 }
+

@@ -5,6 +5,7 @@ import com.example.skph.repository.UserRepository;
 import com.example.skph.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.skph.config.PasswordConfig;
@@ -49,6 +50,33 @@ public class UserService {
         }
         return isCorrect;
     }
+
+    public User resetPassword(String username, String password) throws ChangeSetPersister.NotFoundException {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new ChangeSetPersister.NotFoundException();
+        }
+
+        user.setPassword(passwordEncoder.encode(password));
+
+        return userRepository.save(user);
+    }
+    //public Account activateAccount(Long id) {
+        //Account account = accountRepository.findById(id).orElseThrow(() -> new ChangeSetPersister.NotFoundException("Account not found!"));
+
+        //account.setActive(true);
+
+        //return accountRepository.save(account);
+    //}
+
+    //public Account deactivateAccount(Long id) {
+        //Account account = accountRepository.findById(id).orElseThrow(() -> new NotFoundException("Account not found!"));
+
+        //account.setActive(false);
+
+        //return accountRepository.save(account);
+   // }
     //public List<String> searchRoles(String query) {
         //List<Role> roles = userRepository.findDistinctRoles(query);
         //return roles.stream()
