@@ -51,15 +51,20 @@ public class UserService {
         return isCorrect;
     }
 
-    public User resetPassword(String username, String password) throws ChangeSetPersister.NotFoundException {
+    public boolean validateOldPassword(String username, String oldPassword) {
+        User user = userRepository.findByUsername(username);
+        return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+
+    // Metoda do resetowania hasła
+    public User resetPassword(String username, String newPassword) throws ChangeSetPersister.NotFoundException {
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
             throw new ChangeSetPersister.NotFoundException();
         }
 
-        user.setPassword(passwordEncoder.encode(password));
-
+        user.setPassword(passwordEncoder.encode(newPassword));  // Kodowanie nowego hasła
         return userRepository.save(user);
     }
     //public Account activateAccount(Long id) {

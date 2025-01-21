@@ -1,5 +1,5 @@
 package com.example.skph.controller;
-
+import com.example.skph.model.PasswordResetRequest;
 import ch.qos.logback.core.model.Model;
 import com.example.skph.constraints.Login;
 import com.example.skph.service.UserService;
@@ -7,6 +7,7 @@ import com.example.skph.constraints.Register;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -64,18 +65,30 @@ public class AuthController {
     }
     @GetMapping("/change_password")
     public String showChangePasswd() {
-        return "ChangePasswd";
+        return "Change_Passwd";
     }
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody PasswordResetRequest request) {
+        try {
+            // Sprawdzanie czy stare hasło jest poprawne
+            if (!userService.validateOldPassword(request.getUsername(), request.getOldPassword())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect old password");
+            }
 
-    @ModelAttribute
-    public String username(Principal principal) {
-        // Zwracamy dane użytkownika bezpośrednio z `@ModelAttribute`
-        return (principal != null) ? principal.getName() : "Guest";
+            // Zmienianie hasła
+            userService.resetPassword(request.getUsername(), request.getNewPassword());
+            return ResponseEntity.ok("Password reset successful");
+        } catch (ChangeSetPersister.NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error resetting password");
+        }
     }
-
     @GetMapping("/main")
     public String mainPage() {
         return "main"; // Widok main.html, w którym będziemy używać ${username}
     }
+
 }
+
 
