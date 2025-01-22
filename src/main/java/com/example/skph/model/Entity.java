@@ -16,7 +16,6 @@ public class Entity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Identyfikator bytu.
 
-    @NonNull
     @NotNull
     private String name; // Nazwa bytu.
 
