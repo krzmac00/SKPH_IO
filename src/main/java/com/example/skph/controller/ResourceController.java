@@ -1,49 +1,51 @@
 package com.example.skph.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.time.LocalDate;
+import com.example.skph.model.Resource;
+import com.example.skph.model.Task;
+import com.example.skph.service.ResourceService;
+import com.example.skph.service.TaskService; // Zakładam, że masz TaskService
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.kernel.pdf.PdfWriter;
+import java.util.List;
 
-//Wymagne klasy innych zepołów i baza danych
-//Zrobić pełne generowanie PDF (i sprawdzić czy wogóle działa)
-//Na podstawie nazwy pliku najpierw sprawdzić czy istnieje on lokalnie, później w db, później wygenerować
+@RestController
+@RequestMapping("/api/resources")
 public class ResourceController {
 
-    /*public List<Resource> getResourceData(String resourceType, LocalDate dateFrom, LocalDate dateTo) {
-        return null;
+    private final ResourceService resourceService;
+    private final TaskService taskService; // Usługa do zarządzania zadaniami
+
+    @Autowired
+    public ResourceController(ResourceService resourceService, TaskService taskService) {
+        this.resourceService = resourceService;
+        this.taskService = taskService;
     }
 
-    public List<DamageReport> getDamageData(LocalDate dateFrom, LocalDate dateTo) {
-        return null;
+    @PostMapping
+    public ResponseEntity<Resource> createResource(@RequestBody Resource resource) {
+        Resource createdResource = resourceService.addResource(resource);
+        return ResponseEntity.ok(createdResource);
     }
 
-    public List<AidReport> getAidData(LocalDate dateFrom, LocalDate dateTo) {
-        return null;
+    @GetMapping
+    public ResponseEntity<List<Resource>> getAllResources() {
+        List<Resource> resources = resourceService.getAllResources();
+        return ResponseEntity.ok(resources);
     }
 
-    public Donor getDonorData(String donorId) {
-        return null;
-    }*/
-
-    public File generatePDFReport(String reportType, LocalDate dateFrom, LocalDate dateTo) {
-        //sprawdzić plik lokalny
-        Path outputPath = Path.of("HelloWorldReport.pdf");
-        try {
-            PdfWriter writer = new PdfWriter(outputPath.toString());
-            PdfDocument pdf = new PdfDocument(writer);
-            Document document = new Document(pdf);
-            document.add(new Paragraph("Hello World!"));
-            document.close();
-            return outputPath.toFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    @GetMapping("/{id}")
+    public ResponseEntity<Resource> getResourceById(@PathVariable Long id) {
+        return resourceService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
+
+    @PostMapping("/{resourceId}/assign/{taskId}")
+    public ResponseEntity<Resource> assignResourceToTask(@PathVariable Long resourceId, @PathVariable Long taskId) {
+        Resource updatedResource = resourceService.assignResourceToTask(resourceId, taskId);
+        return ResponseEntity.ok(updatedResource);
+    }
+
 }

@@ -1,25 +1,28 @@
 package com.example.skph.model;
 
+// Abstrakcyjna klasa reprezentująca zasób w systemie.
 import com.example.skph.model.enums.ResourceStatus;
 import com.example.skph.model.users.AidOrganization;
 import com.example.skph.model.victimRequest.Request;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
 @Data
 @NoArgsConstructor
+@SuperBuilder
+@Entity
 @Table(name = "resource")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Resource {
+public abstract class Resource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // Identyfikator zasobu.
 
     @Getter
     @Setter
@@ -31,34 +34,48 @@ public class Resource {
 
     @Getter
     @Enumerated(EnumType.STRING)
-    private ResourceStatus status;
+    private ResourceStatus status; // Status zasobu.
 
-    @ManyToOne
-    private AidOrganization assignedOrganization;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aid_organization_id")
+    private AidOrganization assignedOrganization; // Organizacja przypisana do zasobu.
 
-    private LocalDateTime createdAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_id")
+    private Task assignedTask; // Zadanie przypisane do zasobu.
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt; // Data utworzenia zasobu.
+
+    private LocalDateTime updatedAt; // Data ostatniej aktualizacji zasobu.
 
     @ManyToOne
     private Task assignedTask;
 
     @ManyToOne
     private Request request;
-    
+
 
 
     @PrePersist
     public void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now(); // Ustawia datę utworzenia przed zapisaniem.
     }
 
     @PreUpdate
     public void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now(); // Ustawia datę aktualizacji przed zapisaniem.
     }
 
+    // Przypisuje zasób do zadania, zmieniając jego status.
     public void assignTask(Task task) {
-        // Implementacja przypisania zadania
+        if (status == ResourceStatus.AVAILABLE) {
+            this.assignedTask = task;
+            status = ResourceStatus.IN_USE;
+        } else {
+            throw new IllegalStateException("Resource is not available for assignment.");
+        }
     }
+
+    // Abstrakcyjna metoda sprawdzająca dostępność zasobu, implementowana przez klasy dziedziczące.
+    public abstract boolean isAvailable();
 }

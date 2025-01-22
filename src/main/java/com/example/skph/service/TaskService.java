@@ -3,10 +3,12 @@ package com.example.skph.service;
 import com.example.skph.model.Task;
 import com.example.skph.model.enums.TaskStatus;
 import com.example.skph.repository.TaskRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -19,22 +21,29 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    // Zapisanie nowego Task
-    public Task saveTask(Task task) {
+    @Transactional
+    public Task save(Task task) {
         return taskRepository.save(task);
     }
 
-    // Pobranie wszystkich Task
-    public List<Task> getAllTasks() {
+    @Transactional
+    public void delete(Long taskId) {
+        taskRepository.deleteById(taskId);
+    }
+
+    public List<Task> findAll() {
         return taskRepository.findAll();
     }
 
-    // Pobranie Task po ID
-    public Optional<Task> getTaskById(Long id) {
+    public Optional<Task> findById(Long id) {
         return taskRepository.findById(id);
     }
 
-    // Usunięcie Task po ID
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Task not found with ID: " + id));
+    }
+
     public void deleteTaskById(Long id) {
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
@@ -52,16 +61,6 @@ public class TaskService {
     public List<Task> getAccomplishedTasks() {
         return taskRepository.findAccomplishedTasks();
     }
-
-//    // Wyszukanie Task po liście dni
-//    public List<Task> getTasksByDaysList(List<String> daysList) {
-//        return taskRepository.findByDaysList(daysList);
-//    }
-
-    // Wyszukanie Task po Resource ID i stanie ukończenia
-//    public List<Task> getTasksByResourceAndAccomplished(Long resourceId, boolean accomplished) {
-//        return taskRepository.findByResourceAndAccomplished(resourceId, accomplished);
-//    }
 
     // Aktualizacja stanu ukończenia Task
     public Task updateTaskAccomplished(Long taskId, boolean accomplished) {
