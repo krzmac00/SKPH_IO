@@ -23,6 +23,10 @@ import java.util.List;
 @Table(name = "organization")
 @DiscriminatorValue("organization")
 public class Organization extends User {
+
+    @OneToMany(mappedBy = "organization")
+    private List<Task> tasks;
+
     @Getter
     @OneToMany(mappedBy = "assignedOrganization")
     private List<Resource> resources = new ArrayList<>();

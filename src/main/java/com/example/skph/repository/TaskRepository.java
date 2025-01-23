@@ -25,7 +25,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query("SELECT t FROM Task t WHERE t.volunteer.id = :id")
     List<Task> findByVolunteerId(@Param("id") Long resourceId);
 
-    @Query("SELECT t FROM Task t WHERE t.organisation.id = :id")
+    @Query("SELECT t FROM Task t WHERE t.organization.id = :id")
     List<Task> findByOrganisationId(@Param("id") Long resourceId);
 
 //    // Wyszukaj Task po liście dni (dokładne dopasowanie listy dni)

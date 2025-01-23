@@ -32,9 +32,10 @@ public class Volunteer extends User {
     @Getter
     private boolean availability;
 
-    public Volunteer(String skills, Organization organization) {
+    public Volunteer(String skills, AidOrganization organization) {
         super();
         this.skills = skills;
+        this.assignedOrganization = organization;
     }
 
     // Przypisuje ochotnika do zadania.

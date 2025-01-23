@@ -2,6 +2,7 @@ package com.example.skph.model;
 
 // Reprezentuje zadanie w systemie.
 import com.example.skph.model.enums.TaskStatus;
+import com.example.skph.model.users.Organization;
 import com.example.skph.model.users.Volunteer;
 import com.example.skph.model.victimRequest.Request;
 import jakarta.persistence.*;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
@@ -35,6 +35,9 @@ public class Task {
 
     @ManyToOne
     Request request;
+
+    @ManyToOne
+    Organization organization;
 
     @ManyToOne
     private Volunteer volunteer;
@@ -60,10 +63,10 @@ public class Task {
         createdAt = LocalDateTime.now();
     }
 
-    public Task(String status, String review, Organisation organisation, Volunteer volunteer) {
+    public Task(TaskStatus status, String review, Organization organization, Volunteer volunteer) {
         this.status = status;
         this.review = review;
-        this.organisation = organisation;
+        this.organization = organization;
         this.volunteer = volunteer;
     }
 

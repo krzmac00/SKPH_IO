@@ -24,14 +24,14 @@ import java.math.BigDecimal;
 public class Donation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long donationID; // Identyfikator darowizny.
+    private Long id; // Identyfikator darowizny.
 
     private String type;
 
     private BigDecimal value; // Wartość darowizny.
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "donor_id")
     private Donor donor;
 
     @Enumerated(EnumType.STRING)
