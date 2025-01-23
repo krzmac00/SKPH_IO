@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Link do pliku CSS z stylami -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Biblioteka jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- Biblioteka Axios do komunikacji z API -->
+</head>
+<body>
+<div class="chat-container"> <!-- Główny kontener czatu -->
+  <header class="chat-header"> <!-- Nagłówek aplikacji -->
+    <h1>Chat & Notifications</h1> <!-- Tytuł aplikacji -->
+    <div class="user-info"> <!-- Sekcja z informacjami o użytkowniku -->
+      <p id="user-info"></p> <!-- Wyświetlanie informacji o użytkowniku -->
+    </div>
+  </header>
+
+  <main class="chat-main"> <!-- Główna część czatu -->
+    <section class="message-section"> <!-- Sekcja wiadomości -->
+      <div class="messages-container" id="messages-container">
+        <!-- Tutaj będą wyświetlane wiadomości -->
+      </div>
+
+      <div class="message-input"> <!-- Sekcja z formularzem do wysyłania wiadomości -->
+        <textarea id="message-content" placeholder="Wpisz swoją wiadomość"></textarea> <!-- Pole tekstowe do wpisania wiadomości -->
+        <button id="send-message" onclick="sendMessage()">Wyślij wiadomość</button> <!-- Przycisk do wysyłania wiadomości -->
+      </div>
+    </section>
+
+    <section class="notification-section"> <!-- Sekcja powiadomień -->
+      <div class="notifications-container" id="notifications-container">
+        <!-- Tutaj będą wyświetlane powiadomienia -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="chat-footer"> <!-- Stopka aplikacji -->
+    <p>&copy; 2025 Chat Application</p> <!-- Informacje o aplikacji -->
+  </footer>
+</div>
+
+<script>
+  // Przykładowe dane użytkownika, które mogą być dynamicznie ustawiane
+  const userId = 1; // ID użytkownika
+  const recipientId = 2; // ID odbiorcy wiadomości
+  const language = "pl"; // Preferencje językowe (polski)
+
+  // Inicjalizacja sekcji z informacjami o użytkowniku
+  document.getElementById('user-info').innerText = `User ID: ${userId}`;
+
+  // Funkcja do wysyłania wiadomości
+  function sendMessage() {
+    const messageContent = document.getElementById('message-content').value; // Pobranie treści wiadomości z pola tekstowego
+
+    if (messageContent.trim()) { // Sprawdzenie, czy wiadomość nie jest pusta
+      const messageType = "TEXT"; // Typ wiadomości (tekstowa)
+
+      // Wysyłanie żądania POST do serwera za pomocą Axios
+      axios.post('/communication/message', null, {
+        params: {
+          senderId: userId, // ID nadawcy
+          recipientId: recipientId, // ID odbiorcy
+          content: messageContent, // Treść wiadomości
+          messageType: messageType // Typ wiadomości
+        },
+        headers: {
+          'Accept-Language': language // Ustawienie nagłówka językowego
+        }
+      })
+              .then(response => {
+                displayMessage(response.data); // Wyświetlanie wysłanej wiadomości
+                document.getElementById('message-content').value = ''; // Czyszczenie pola tekstowego po wysłaniu
+              })
+              .catch(error => {
+                console.error('Błąd podczas wysyłania wiadomości:', error); // Obsługa błędów
+              });
+    }
+  }
+
+  // Funkcja do pobierania i wyświetlania wiadomości
+  function fetchMessages() {
+    axios.get(`/communication/messages/${recipientId}`, {
+      headers: {
+        'Accept-Language': language // Ustawienie nagłówka językowego
+      }
+    })
+            .then(response => {
+              const messages = response.data; // Otrzymanie wiadomości z odpowiedzi
+              const messagesContainer = document.getElementById('messages-container');
+              messagesContainer.innerHTML = ''; // Czyszczenie poprzednich wiadomości
+
+              // Wyświetlanie każdej wiadomości
+              messages.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message'); // Dodanie klasy CSS dla wiadomości
+                messageElement.textContent = message.content; // Ustawienie treści wiadomości
+                messagesContainer.appendChild(messageElement); // Dodanie wiadomości do kontenera
+              });
+            })
+            .catch(error => {
+              console.error('Błąd podczas pobierania wiadomości:', error); // Obsługa błędów
+            });
+  }
+
+  // Funkcja do pobierania i wyświetlania powiadomień
+  function fetchNotifications() {
+    axios.get(`/communication/notifications/${userId}`, {
+      headers: {
+        'Accept-Language': language // Ustawienie nagłówka językowego
+      }
+    })
+            .then(response => {
+              const notifications = response.data; // Otrzymanie powiadomień z odpowiedzi
+              const notificationsContainer = document.getElementById('notifications-container');
+              notificationsContainer.innerHTML = ''; // Czyszczenie poprzednich powiadomień
+
+              // Wyświetlanie każdego powiadomienia
+              notifications.forEach(notification => {
+                const notificationElement = document.createElement('div');
+                notificationElement.classList.add('notification'); // Dodanie klasy CSS dla powiadomienia
+                notificationElement.textContent = notification.content; // Ustawienie treści powiadomienia
+                notificationsContainer.appendChild(notificationElement); // Dodanie powiadomienia do kontenera
+              });
+            })
+            .catch(error => {
+              console.error('Błąd podczas pobierania powiadomień:', error); // Obsługa błędów
+            });
+  }
+
+  // Funkcja do dynamicznego wyświetlania nowej wiadomości
+  function displayMessage(message) {
+    const messagesContainer = document.getElementById('messages-container');
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message'); // Dodanie klasy CSS dla nowej wiadomości
+    messageElement.textContent = message.content; // Ustawienie treści wiadomości
+    messagesContainer.appendChild(messageElement); // Dodanie wiadomości do kontenera
+  }
+
+  // Inicjalne ładowanie wiadomości i powiadomień po załadowaniu strony
+  window.onload = function() {
+    fetchMessages(); // Pobranie wiadomości
+    fetchNotifications(); // Pobranie powiadomień
+  }
+</script>
+</body>
+</html>
