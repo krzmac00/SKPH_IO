@@ -5,6 +5,8 @@ import com.example.skph.repository.UserRepository;
 import com.example.skph.model.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -22,7 +24,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User register(String firstName, String lastName, String username, String password, UserRole role, String email, String organization) {
+    public User register(String firstName, String lastName, String username, String password, UserRole role, String email, Organization organization) {
         String passwordHash = passwordEncoder.encode(password);
         User newUser = new User(firstName, lastName, username, passwordHash, role, email, organization);
 

@@ -2,6 +2,8 @@ package com.example.skph.controller;
 import com.example.skph.model.PasswordResetRequest;
 import ch.qos.logback.core.model.Model;
 import com.example.skph.constraints.Login;
+import com.example.skph.model.users.Organization;
+import com.example.skph.repository.OrganizationRepository;
 import com.example.skph.service.UserService;
 import com.example.skph.constraints.Register;
 import jakarta.validation.Valid;
@@ -12,6 +14,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @Profile("dev")
@@ -20,6 +23,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrganizationRepository organizationRepository;
 
     @Autowired
     public AuthController(UserService userService) {
@@ -38,6 +44,8 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody @Valid Register request) {
         try {
+            List<Organization> organizations = organizationRepository.findAllWithName(request.getOrganization());
+
             userService.register(
                     request.getFirstName(),
                     request.getLastName(),
@@ -45,7 +53,7 @@ public class AuthController {
                     request.getPassword(),
                     request.getRole(),
                     request.getEmail(),
-                    request.getOrganization()
+                    organizations.getFirst()
             );
 
             return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!");

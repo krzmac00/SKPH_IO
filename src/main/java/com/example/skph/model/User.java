@@ -26,7 +26,8 @@ public class User {
 
     @Setter
     private String username; // Nazwa użytkownika
-    private String passwordHash;
+    @Getter
+    private String password;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -46,14 +47,14 @@ public class User {
     public User(String firstName,
                 String lastName,
                 String username,
-                String passwordHash,
+                String password,
                 UserRole role,
                 String email,
                 Organization organization) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
-        this.passwordHash = passwordHash;
+        this.password = password;
         this.role = role;
         this.email = email;
         this.organization = organization;
