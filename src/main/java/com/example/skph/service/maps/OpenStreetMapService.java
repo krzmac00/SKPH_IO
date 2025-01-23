@@ -14,10 +14,6 @@ public class OpenStreetMapService {
         this.restTemplate = restTemplate;
     }
 
-    public String getMapData(String coordinates) {
-        return "Map data for coordinates: " + coordinates;
-    }
-
     public Location geocodeAddress(String address) {
         String url = apiUrl + "/search?q=" + address + "&format=json";
         return null;

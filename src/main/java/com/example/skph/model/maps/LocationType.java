@@ -1,31 +1,28 @@
-package com.example.skph.model.maps;
+package com.example.skph.model;
 
-import lombok.Getter;
-import lombok.Setter;
+public enum LocationType {
+    VICTIM(1),
+    VOLUNTEER(2),
+    AID_ORGANIZATION(3),
+    AUTHORITY_REPRESENTATIVE(4),
+    DISASTER_AREA(5);
 
-@Setter
-@Getter
-public class LocationType {
-    private String typeName;
-    private String description;
-    private boolean isPolygon;
+    private final int value;
 
-    public LocationType(String typeName, String description, boolean isPolygon) {
-        this.typeName = typeName;
-        this.description = description;
-        this.isPolygon = false;
+    LocationType(int value) {
+        this.value = value;
     }
 
-    public void updateDetails(String newName, String newDescription) {
-        this.typeName = newName;
-        this.description = newDescription;
+    public int getValue() {
+        return value;
     }
 
-    @Override
-    public String toString() {
-        return "LocationType{" +
-                "typeName='" + typeName + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+    public static LocationType fromValue(int value) {
+        for (LocationType type : values()) {
+            if (type.getValue() == value) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("Invalid LocationType value: " + value);
     }
 }
