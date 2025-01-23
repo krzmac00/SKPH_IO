@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
@@ -24,6 +25,7 @@ public class Task {
     private Long id;
 
     private String name;
+    private String review;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status = TaskStatus.CREATED;
@@ -56,6 +58,13 @@ public class Task {
 
     public Task() {
         createdAt = LocalDateTime.now();
+    }
+
+    public Task(String status, String review, Organisation organisation, Volunteer volunteer) {
+        this.status = status;
+        this.review = review;
+        this.organisation = organisation;
+        this.volunteer = volunteer;
     }
 
     // Przypisuje zasób do zadania.
