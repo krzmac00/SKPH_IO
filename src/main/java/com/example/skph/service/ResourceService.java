@@ -47,13 +47,13 @@ public class ResourceService {
         return resourceRepository.findById(id);
     }
 
-    public List<Resource> findResourcesByTaskId(Long taskId) {
-        return resourceRepository.findByAssignedTaskId(taskId);
-    }
+//    public List<Resource> findResourcesByTaskId(Long taskId) {
+//        return resourceRepository.findByAssignedTaskId(taskId);
+//    }
 
-    public List<Resource> findResourcesByType(ResourceType type) {
-        return resourceRepository.findByResourceType(type);
-    }
+//    public List<Resource> findResourcesByType(ResourceType type) {
+//        return resourceRepository.findByResourceType(type);
+//    }
 
     public List<Resource> findByStatus(ResourceStatus status) {
         // Możesz też dodać zapytanie w ResourceRepository np. findByStatus(status).
@@ -63,10 +63,10 @@ public class ResourceService {
                 .toList();
     }
 
-    public List<Resource> getResourcesAssignedToOrganization(Long orgId) {
-        // W ResourceRepository mamy metodę findByAssignedOrganizationId(orgId)
-        return resourceRepository.findByAssignedOrganizationId(orgId);
-    }
+//    public List<Resource> getResourcesAssignedToOrganization(Long orgId) {
+//        // W ResourceRepository mamy metodę findByAssignedOrganizationId(orgId)
+//        return resourceRepository.findByAssignedOrganizationId(orgId);
+//    }
 
     /**
      * Przypisuje zasób o ID resourceId do zadania o ID taskId.
@@ -96,23 +96,24 @@ public class ResourceService {
         return resourceRepository.save(resource);
     }
 }
-package com.example.skph.service;
 
-import com.example.skph.model.Resource;
-import com.example.skph.model.Task;
-import com.example.skph.model.enums.ResourceStatus;
-import com.example.skph.model.enums.ResourceType;
-import com.example.skph.repository.ResourceRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-@Service
-public class ResourceService {
+//package com.example.skph.service;
+//
+//import com.example.skph.model.Resource;
+//import com.example.skph.model.Task;
+//import com.example.skph.model.enums.ResourceStatus;
+//import com.example.skph.model.enums.ResourceType;
+//import com.example.skph.repository.ResourceRepository;
+//import jakarta.transaction.Transactional;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import java.util.List;
+//import java.util.Optional;
+//import java.util.stream.Collectors;
+//
+//@Service
+//public class ResourceService {
 
 //    private final ResourceRepository resourceRepository;
 //
@@ -181,4 +182,4 @@ public class ResourceService {
 //                .filter(resource -> resource.getAssignedOrganization() == null)
 //                .collect(Collectors.toList());
 //    }
-}
+//}
