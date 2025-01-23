@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Resource List</title>
+</head>
+<body>
+<h1>Resource List</h1>
+<p>
+  <a th:href="@{/resources/available}">Available</a> |
+  <a th:href="@{/resources/assigned}">Assigned</a> |
+  <a th:href="@{/resources}">All</a>
+</p>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody th:each="res : ${resources}">
+  <tr>
+    <td th:text="${res.id}"></td>
+    <td th:text="${res.name}"></td>
+    <td th:text="${#lists.arrayJoin(res.class.simpleName, ', ')}"></td>
+    <td th:text="${res.status}"></td>
+    <td>
+      <a th:href="@{/resources/{id}(id=${res.id})}">View</a>
+      <!-- Przycisk 'Assign' może prowadzić do formularza -->
+      <form th:action="@{/resources/{id}/assignForm(id=${res.id})}" method="get">
+        <button type="submit">Assign</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

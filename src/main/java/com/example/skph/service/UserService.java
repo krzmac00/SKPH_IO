@@ -12,7 +12,6 @@ public class UserService {
     @Autowired
     private final UserRepository userRepository;
 
-
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -29,6 +28,19 @@ public class UserService {
         } catch (DataIntegrityViolationException e) {
             throw new IllegalArgumentException("Username already exists!");
         }
+    }
+
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    /**
+     * Przykładowa metoda, jeśli potrzebujesz
+     * walidacji roli użytkownika lub innych operacji.
+     */
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + id));
     }
 
 }
