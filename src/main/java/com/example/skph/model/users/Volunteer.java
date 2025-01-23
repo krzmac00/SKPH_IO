@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,8 +18,8 @@ import java.util.List;
 @Table(name = "volunteer")
 public class Volunteer extends User {
 
-    @OneToMany
-    private List<Task> tasks; // Zadania przypisane do ochotnika.
+    @OneToMany(mappedBy = "volunteer")
+    private List<Task> tasks = new ArrayList<>(); // Zadania przypisane do ochotnika.
 
     @Setter
     @Getter

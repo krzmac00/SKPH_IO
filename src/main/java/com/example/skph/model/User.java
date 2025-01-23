@@ -24,11 +24,12 @@ public class User {
     private String email;
     private String contactNumber;
 
+    @Setter
     private String username; // Nazwa użytkownika
     private String passwordHash;
 
-    @ManyToOne
-    @JoinColumn(name = "organization_id")
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private Organization organization;
 
     @Enumerated(EnumType.STRING)

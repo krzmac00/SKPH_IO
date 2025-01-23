@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +24,7 @@ public class TaskController {
     // Wyświetlenie listy zadań
     @GetMapping
     public String listTasks(Model model) {
-        List<Task> tasks = taskService.getAllTasks();
+        List<Task> tasks = taskService.findAll();
         model.addAttribute("tasks", tasks);
         return "taskList"; // plik task-list.html
     }
@@ -40,14 +39,14 @@ public class TaskController {
     // Obsługa zapisu nowego zadania
     @PostMapping("/add")
     public String saveTask(@ModelAttribute("task") Task task) {
-        taskService.saveTask(task);
+        taskService.save(task);
         return "redirect:/tasks"; // Przekierowanie na listę zadań
     }
 
     // Formularz edycji zadania
     @GetMapping("/edit/{id}")
     public String editTaskForm(@PathVariable Long id, Model model) {
-        Optional<Task> task = taskService.getTaskById(id);
+        Optional<Task> task = taskService.findById(id);
         if (task.isPresent()) {
             model.addAttribute("task", task.get());
             return "taskEdit"; // plik task-edit.html
@@ -59,12 +58,12 @@ public class TaskController {
     // Obsługa zapisu zmodyfikowanego zadania
     @PostMapping("/edit/{id}")
     public String updateTask(@PathVariable Long id, @ModelAttribute("task") Task updatedTask) {
-        Optional<Task> existingTask = taskService.getTaskById(id);
+        Optional<Task> existingTask = taskService.findById(id);
         if (existingTask.isPresent()) {
             Task task = existingTask.get();
             task.setStatus(updatedTask.getStatus());
             task.assignResource(updatedTask.getAssignedResources().getFirst());
-            taskService.saveTask(task);
+            taskService.save(task);
         }
         return "redirect:/tasks";
     }

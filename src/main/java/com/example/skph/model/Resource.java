@@ -3,6 +3,7 @@ package com.example.skph.model;
 // Abstrakcyjna klasa reprezentująca zasób w systemie.
 import com.example.skph.model.enums.ResourceStatus;
 import com.example.skph.model.users.AidOrganization;
+import com.example.skph.model.users.Organization;
 import com.example.skph.model.victimRequest.Request;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
@@ -38,7 +39,7 @@ public abstract class Resource {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aid_organization_id")
-    private AidOrganization assignedOrganization; // Organizacja przypisana do zasobu.
+    private Organization assignedOrganization; // Organizacja przypisana do zasobu.
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")
@@ -47,9 +48,6 @@ public abstract class Resource {
     private LocalDateTime createdAt; // Data utworzenia zasobu.
 
     private LocalDateTime updatedAt; // Data ostatniej aktualizacji zasobu.
-
-    @ManyToOne
-    private Task assignedTask;
 
     @ManyToOne
     private Request request;

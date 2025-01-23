@@ -23,4 +23,9 @@ public class Food extends Resource {
         this.temperature = temperature;
         this.allergyFree = allergyFree;
     }
+
+    @Override
+    public boolean isAvailable() {
+        return false;
+    }
 }

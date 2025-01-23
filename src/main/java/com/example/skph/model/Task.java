@@ -2,6 +2,7 @@ package com.example.skph.model;
 
 // Reprezentuje zadanie w systemie.
 import com.example.skph.model.enums.TaskStatus;
+import com.example.skph.model.users.Volunteer;
 import com.example.skph.model.victimRequest.Request;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
@@ -33,6 +34,9 @@ public class Task {
     @ManyToOne
     Request request;
 
+    @ManyToOne
+    private Volunteer volunteer;
+
     @OneToMany(mappedBy = "assignedTask", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Resource> assignedResources = new ArrayList<>(); // Lista przypisanych zasobów.
 
@@ -63,7 +67,6 @@ public class Task {
     public void releaseResource(Resource resource) {
         assignedResources.remove(resource);
     }
-
 
     public void setStatus(TaskStatus status) {
         this.updatedAt = LocalDateTime.now();

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
-    List<Resource> findByAssignedTaskId(Long taskId);
-
-    List<Resource> findByResourceType(ResourceType resourceType);}
+//    List<Resource> findByAssignedTaskId(Long taskId);
+//
+//    List<Resource> findByResourceType(ResourceType resourceType);
+}

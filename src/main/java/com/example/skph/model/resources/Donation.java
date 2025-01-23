@@ -1,6 +1,8 @@
 package com.example.skph.model.resources;
 
 // Reprezentuje darowiznę w systemie.
+import com.example.skph.model.Resource;
+import com.example.skph.model.User;
 import com.example.skph.model.users.Donor;
 import com.example.skph.model.enums.ResourceStatus;
 import com.example.skph.model.enums.ResourceType;
@@ -18,7 +20,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "donations")
+@Table(name = "donation")
 public class Donation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,13 +40,9 @@ public class Donation {
     @Enumerated(EnumType.STRING)
     private ResourceStatus status; // Status darowizny.
 
-    @ManyToOne
-    @JoinColumn(name = "resource_id")
-    private Resource resource; // Powiązany zasób.
-
-    public Donation(String type, BigDecimal amount, Donor donor) {
+    public Donation(String type, BigDecimal value, Donor donor) {
         this.type = type;
-        this.amount = amount;
+        this.value = value;
         this.donor = donor;
     }
 }

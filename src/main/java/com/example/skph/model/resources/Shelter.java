@@ -19,4 +19,9 @@ public class Shelter extends Resource {
     public Shelter(boolean withAnimals) {
         this.withAnimals = withAnimals;
     }
+
+    @Override
+    public boolean isAvailable() {
+        return false;
+    }
 }

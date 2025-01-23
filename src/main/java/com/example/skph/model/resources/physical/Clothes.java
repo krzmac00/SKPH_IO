@@ -23,4 +23,9 @@ public class Clothes extends Resource {
         this.size = size;
         this.sex = sex;
     }
+
+    @Override
+    public boolean isAvailable() {
+        return false;
+    }
 }

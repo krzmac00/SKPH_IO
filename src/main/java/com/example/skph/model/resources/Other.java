@@ -18,4 +18,9 @@ public class Other extends Resource {
     public Other(String description) {
         this.description = description;
     }
+
+    @Override
+    public boolean isAvailable() {
+        return false;
+    }
 }

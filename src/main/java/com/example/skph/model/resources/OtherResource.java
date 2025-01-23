@@ -12,7 +12,6 @@ import lombok.experimental.SuperBuilder;
 
 import com.example.skph.model.enums.ResourceStatus;
 
-@Entity
 @Data
 @NoArgsConstructor
 @SuperBuilder
