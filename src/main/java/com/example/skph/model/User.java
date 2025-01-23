@@ -50,6 +50,8 @@ public class User {
                 UserRole role,
                 String email,
                 Organization organization) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.passwordHash = passwordHash;
         this.role = role;

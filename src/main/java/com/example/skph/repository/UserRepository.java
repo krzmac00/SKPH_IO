@@ -2,13 +2,17 @@ package com.example.skph.repository;
 
 import com.example.skph.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
+    boolean existsByEmail(String email);
+
+
+    //@Query("SELECT DISTINCT u.role FROM User u WHERE u.role LIKE %:query%")
+    //List<Role> findDistinctRoles(@Param("query") String query);
+
 //    @Query("SELECT u FROM User u WHERE u.username = :username")
 //    Optional<User> findByUsername(String username);
 //

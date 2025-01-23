@@ -14,22 +14,22 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public User register(String firstName, String lastName, String username, String passwordHash, UserRole role, String email, String organizationName) {
-
-        Organization organization = new Organization();
-        organization.setName(organizationName);
-
+    public User register(String firstName, String lastName, String username, String password, UserRole role, String email, String organization) {
+        String passwordHash = passwordEncoder.encode(password);
         User newUser = new User(firstName, lastName, username, passwordHash, role, email, organization);
 
         try {
             return userRepository.save(newUser);
         } catch (DataIntegrityViolationException e) {
-            throw new IllegalArgumentException("Username already exists!");
+            throw new IllegalArgumentException("An error occurred during registration!");
         }
     }
 
@@ -45,5 +45,59 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + id));
     }
+
+    public Boolean login(String username, String password) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new IllegalArgumentException("Invalid username or password!");
+        }
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Invalid username or password!");
+        }
+        Boolean isCorrect = passwordEncoder.matches(password,user.getPassword());
+        if (isCorrect) {
+            userRepository.save(user);
+        }
+        return isCorrect;
+    }
+
+    public boolean validateOldPassword(String username, String oldPassword) {
+        User user = userRepository.findByUsername(username);
+        return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+
+    // Metoda do resetowania hasła
+    public User resetPassword(String username, String newPassword) throws ChangeSetPersister.NotFoundException {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new ChangeSetPersister.NotFoundException();
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));  // Kodowanie nowego hasła
+        return userRepository.save(user);
+    }
+    //public Account activateAccount(Long id) {
+    //Account account = accountRepository.findById(id).orElseThrow(() -> new ChangeSetPersister.NotFoundException("Account not found!"));
+
+    //account.setActive(true);
+
+    //return accountRepository.save(account);
+    //}
+
+    //public Account deactivateAccount(Long id) {
+    //Account account = accountRepository.findById(id).orElseThrow(() -> new NotFoundException("Account not found!"));
+
+    //account.setActive(false);
+
+    //return accountRepository.save(account);
+    // }
+    //public List<String> searchRoles(String query) {
+    //List<Role> roles = userRepository.findDistinctRoles(query);
+    //return roles.stream()
+    //.map(Role::name)  // Konwertuje enum na String
+    //.collect(Collectors.toList());
+    // }
 
 }
