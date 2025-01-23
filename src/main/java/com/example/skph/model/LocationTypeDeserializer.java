@@ -1,5 +1,6 @@
 package com.example.skph.model;
 
+import com.example.skph.model.maps.LocationType;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;

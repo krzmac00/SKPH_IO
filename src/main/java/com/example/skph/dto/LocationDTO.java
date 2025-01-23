@@ -1,7 +1,7 @@
 package com.example.skph.dto;
 
-import com.example.skph.model.Location;
-import com.example.skph.model.LocationType;
+import com.example.skph.model.maps.Location;
+import com.example.skph.model.maps.LocationType;
 import lombok.Getter;
 import lombok.Setter;
 

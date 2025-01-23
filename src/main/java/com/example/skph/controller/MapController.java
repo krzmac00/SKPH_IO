@@ -2,8 +2,8 @@ package com.example.skph.controller;
 
 import com.example.skph.dto.LocationDTO;
 import com.example.skph.dto.LocationRequestDTO;
-import com.example.skph.model.Location;
-import com.example.skph.model.LocationType;
+import com.example.skph.model.maps.Location;
+import com.example.skph.model.maps.LocationType;
 import com.example.skph.service.MapService;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;

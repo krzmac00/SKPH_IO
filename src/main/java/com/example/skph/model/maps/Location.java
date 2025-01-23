@@ -27,9 +27,8 @@ public class Location {
     @Column(nullable = false)
     private String name;
 
-    @Enumerated(EnumType.ORDINAL)
-//    @Column(name = "location_type")
-    @JsonDeserialize(using = LocationTypeDeserializer.class)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "location_type")
     private LocationType locationType;
 
     @JdbcTypeCode(SqlTypes.GEOMETRY)

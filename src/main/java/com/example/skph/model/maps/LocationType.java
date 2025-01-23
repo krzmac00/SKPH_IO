@@ -1,4 +1,4 @@
-package com.example.skph.model;
+package com.example.skph.model.maps;
 
 public enum LocationType {
     VICTIM(1),
