@@ -18,7 +18,7 @@ import org.locationtech.jts.geom.Polygon;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "locations")
+@Table(name = "location")
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

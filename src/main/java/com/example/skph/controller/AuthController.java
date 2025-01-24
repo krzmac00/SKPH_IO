@@ -44,7 +44,14 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody @Valid Register request) {
         try {
+            Organization organization;
             List<Organization> organizations = organizationRepository.findAllWithName(request.getOrganization());
+
+            if(organizations.isEmpty()) {
+                organization = null;
+            } else {
+                organization = organizations.getFirst();
+            }
 
             userService.register(
                     request.getFirstName(),
@@ -53,7 +60,7 @@ public class AuthController {
                     request.getPassword(),
                     request.getRole(),
                     request.getEmail(),
-                    organizations.getFirst()
+                    organization
             );
 
             return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!");
