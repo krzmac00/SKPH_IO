@@ -1,19 +1,16 @@
 package com.example.skph.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-@jakarta.persistence.Entity
-@Table(name="entity")
+@Table(name="testEntity")
 @Getter
 @Setter
-public class Entity {
+@Entity
+public class TestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +19,7 @@ public class Entity {
     @NotNull
     private String name;
 
-    public Entity() {
+    public TestEntity() {
         this.name = "Null";
     }
 }
