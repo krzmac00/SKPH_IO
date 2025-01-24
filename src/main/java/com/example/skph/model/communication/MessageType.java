@@ -4,5 +4,6 @@ public enum MessageType {
     TASK_ASSIGNMENT,
     RESOURCE_UPDATE,
     STATUS_UPDATE,
-    GENERAL
+    GENERAL,
+    TEXT   // Dodaj to, aby obsługiwać typ tekstowy
 }

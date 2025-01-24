@@ -3,146 +3,294 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat</title>
-  <link rel="stylesheet" href="styles.css"> <!-- Link do pliku CSS z stylami -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Biblioteka jQuery -->
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- Biblioteka Axios do komunikacji z API -->
+  <title>Chat & Notifications</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Link do pliku CSS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- Axios -->
+  <style>
+    /* Ogólne style */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    /* Główna struktura */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Nagłówek */
+    .chat-header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    .user-info {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    /* Główna sekcja */
+    .chat-main {
+      flex: 1;
+      display: flex;
+      padding: 1rem;
+      gap: 1rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    /* Wiadomości */
+    .message-section {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+    }
+
+    .messages-container {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: #f9f9f9;
+    }
+
+    .message {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border-radius: 4px;
+      background: #e9f7fe;
+      border: 1px solid #d1e9fe;
+    }
+
+    .message:nth-child(odd) {
+      background: #f4f9ff;
+    }
+
+    .message-input {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .message-input textarea {
+      flex: 1;
+      resize: none;
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+    }
+
+    .message-input button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.7rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .message-input button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Powiadomienia */
+    .notification-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+    }
+
+    .notifications-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: #f9f9f9;
+    }
+
+    .notification {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border-radius: 4px;
+      background: #fffbe6;
+      border: 1px solid #ffeeba;
+    }
+
+    .notification:nth-child(odd) {
+      background: #fffcf2;
+    }
+
+    /* Stopka */
+    .chat-footer {
+      text-align: center;
+      padding: 0.5rem;
+      background: #f4f4f9;
+      color: #666;
+      font-size: 0.9rem;
+      border-top: 1px solid #ddd;
+    }
+
+    /* Responsywność */
+    @media (max-width: 768px) {
+      .chat-main {
+        flex-direction: column;
+      }
+
+      .message-input textarea {
+        font-size: 0.9rem;
+      }
+
+      .message-input button {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="chat-container"> <!-- Główny kontener czatu -->
-  <header class="chat-header"> <!-- Nagłówek aplikacji -->
-    <h1>Chat & Notifications</h1> <!-- Tytuł aplikacji -->
-    <div class="user-info"> <!-- Sekcja z informacjami o użytkowniku -->
-      <p id="user-info"></p> <!-- Wyświetlanie informacji o użytkowniku -->
+<div class="chat-container">
+  <!-- Nagłówek -->
+  <header class="chat-header">
+    <h1>Chat & Notifications</h1>
+    <div class="user-info">
+      <p id="user-info"></p>
     </div>
   </header>
 
-  <main class="chat-main"> <!-- Główna część czatu -->
-    <section class="message-section"> <!-- Sekcja wiadomości -->
+  <!-- Główna zawartość -->
+  <main class="chat-main">
+    <!-- Wiadomości -->
+    <section class="message-section">
       <div class="messages-container" id="messages-container">
-        <!-- Tutaj będą wyświetlane wiadomości -->
+        <!-- Wiadomości będą tutaj wyświetlane -->
       </div>
 
-      <div class="message-input"> <!-- Sekcja z formularzem do wysyłania wiadomości -->
-        <textarea id="message-content" placeholder="Wpisz swoją wiadomość"></textarea> <!-- Pole tekstowe do wpisania wiadomości -->
-        <button id="send-message" onclick="sendMessage()">Wyślij wiadomość</button> <!-- Przycisk do wysyłania wiadomości -->
+      <div class="message-input">
+        <textarea id="message-content" placeholder="Wpisz swoją wiadomość"></textarea>
+        <button id="send-message" onclick="sendMessage()">Wyślij</button>
       </div>
     </section>
 
-    <section class="notification-section"> <!-- Sekcja powiadomień -->
+    <!-- Powiadomienia -->
+    <section class="notification-section">
       <div class="notifications-container" id="notifications-container">
-        <!-- Tutaj będą wyświetlane powiadomienia -->
+        <!-- Powiadomienia będą tutaj wyświetlane -->
       </div>
     </section>
   </main>
 
-  <footer class="chat-footer"> <!-- Stopka aplikacji -->
-    <p>&copy; 2025 Chat Application</p> <!-- Informacje o aplikacji -->
+  <!-- Stopka -->
+  <footer class="chat-footer">
+    <p>&copy; 2025 Chat Application</p>
   </footer>
 </div>
 
 <script>
-  // Przykładowe dane użytkownika, które mogą być dynamicznie ustawiane
-  const userId = 1; // ID użytkownika
-  const recipientId = 2; // ID odbiorcy wiadomości
-  const language = "pl"; // Preferencje językowe (polski)
+  // Identyczne skrypty JavaScript jak wcześniej (bez zmian)
+  const userId = 1; // Current user ID
+  const recipientId = 2; // Recipient user ID
+  const language = "pl"; // Language preference
 
-  // Inicjalizacja sekcji z informacjami o użytkowniku
   document.getElementById('user-info').innerText = `User ID: ${userId}`;
 
-  // Funkcja do wysyłania wiadomości
+  // Function to send a message
   function sendMessage() {
-    const messageContent = document.getElementById('message-content').value; // Pobranie treści wiadomości z pola tekstowego
-
-    if (messageContent.trim()) { // Sprawdzenie, czy wiadomość nie jest pusta
-      const messageType = "TEXT"; // Typ wiadomości (tekstowa)
-
-      // Wysyłanie żądania POST do serwera za pomocą Axios
+    const messageContent = document.getElementById('message-content').value;
+    if (messageContent.trim()) {
+      const messageType = "TEXT";
       axios.post('/communication/message', null, {
-        params: {
-          senderId: userId, // ID nadawcy
-          recipientId: recipientId, // ID odbiorcy
-          content: messageContent, // Treść wiadomości
-          messageType: messageType // Typ wiadomości
-        },
-        headers: {
-          'Accept-Language': language // Ustawienie nagłówka językowego
-        }
+        params: { senderId: userId, recipientId: recipientId, content: messageContent, messageType: messageType },
+        headers: { 'Accept-Language': language }
       })
               .then(response => {
-                displayMessage(response.data); // Wyświetlanie wysłanej wiadomości
-                document.getElementById('message-content').value = ''; // Czyszczenie pola tekstowego po wysłaniu
+                displayMessage(response.data);
+                document.getElementById('message-content').value = '';
               })
-              .catch(error => {
-                console.error('Błąd podczas wysyłania wiadomości:', error); // Obsługa błędów
-              });
+              .catch(error => console.error('Error sending message:', error));
     }
   }
 
-  // Funkcja do pobierania i wyświetlania wiadomości
+  // Function to fetch messages for the recipient
   function fetchMessages() {
     axios.get(`/communication/messages/${recipientId}`, {
-      headers: {
-        'Accept-Language': language // Ustawienie nagłówka językowego
-      }
+      headers: { 'Accept-Language': language }
     })
             .then(response => {
-              const messages = response.data; // Otrzymanie wiadomości z odpowiedzi
               const messagesContainer = document.getElementById('messages-container');
-              messagesContainer.innerHTML = ''; // Czyszczenie poprzednich wiadomości
-
-              // Wyświetlanie każdej wiadomości
-              messages.forEach(message => {
+              messagesContainer.innerHTML = '';
+              response.data.forEach(message => {
                 const messageElement = document.createElement('div');
-                messageElement.classList.add('message'); // Dodanie klasy CSS dla wiadomości
-                messageElement.textContent = message.content; // Ustawienie treści wiadomości
-                messagesContainer.appendChild(messageElement); // Dodanie wiadomości do kontenera
+                messageElement.classList.add('message');
+                messageElement.textContent = message.content;
+                messagesContainer.appendChild(messageElement);
               });
             })
-            .catch(error => {
-              console.error('Błąd podczas pobierania wiadomości:', error); // Obsługa błędów
-            });
+            .catch(error => console.error('Error fetching messages:', error));
   }
 
-  // Funkcja do pobierania i wyświetlania powiadomień
+  // Function to fetch notifications for the current user
   function fetchNotifications() {
     axios.get(`/communication/notifications/${userId}`, {
-      headers: {
-        'Accept-Language': language // Ustawienie nagłówka językowego
-      }
+      headers: { 'Accept-Language': language }
     })
             .then(response => {
-              const notifications = response.data; // Otrzymanie powiadomień z odpowiedzi
               const notificationsContainer = document.getElementById('notifications-container');
-              notificationsContainer.innerHTML = ''; // Czyszczenie poprzednich powiadomień
-
-              // Wyświetlanie każdego powiadomienia
-              notifications.forEach(notification => {
+              notificationsContainer.innerHTML = '';
+              response.data.forEach(notification => {
                 const notificationElement = document.createElement('div');
-                notificationElement.classList.add('notification'); // Dodanie klasy CSS dla powiadomienia
-                notificationElement.textContent = notification.content; // Ustawienie treści powiadomienia
-                notificationsContainer.appendChild(notificationElement); // Dodanie powiadomienia do kontenera
+                notificationElement.classList.add('notification');
+                notificationElement.textContent = notification.content;
+                notificationsContainer.appendChild(notificationElement);
               });
             })
-            .catch(error => {
-              console.error('Błąd podczas pobierania powiadomień:', error); // Obsługa błędów
-            });
+            .catch(error => console.error('Error fetching notifications:', error));
   }
 
-  // Funkcja do dynamicznego wyświetlania nowej wiadomości
+  // Display a new message in the chat
   function displayMessage(message) {
     const messagesContainer = document.getElementById('messages-container');
     const messageElement = document.createElement('div');
-    messageElement.classList.add('message'); // Dodanie klasy CSS dla nowej wiadomości
-    messageElement.textContent = message.content; // Ustawienie treści wiadomości
-    messagesContainer.appendChild(messageElement); // Dodanie wiadomości do kontenera
+    messageElement.classList.add('message');
+    messageElement.textContent = message.content;
+    messagesContainer.appendChild(messageElement);
   }
 
-  // Inicjalne ładowanie wiadomości i powiadomień po załadowaniu strony
-  window.onload = function() {
-    fetchMessages(); // Pobranie wiadomości
-    fetchNotifications(); // Pobranie powiadomień
-  }
+  // Initial fetch of messages and notifications
+  fetchMessages();
+  fetchNotifications();
+
+  // Refresh messages and notifications every 30 seconds
+  setInterval(() => {
+    fetchMessages();
+    fetchNotifications();
+  }, 30000);
 </script>
 </body>
 </html>

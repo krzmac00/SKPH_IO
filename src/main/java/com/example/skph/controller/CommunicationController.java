@@ -5,12 +5,13 @@ import com.example.skph.model.communication.Notification;
 import com.example.skph.service.communication.CommunicationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Locale;
 
-@RestController
+@Controller // Zmieniono na @Controller, ponieważ obsługujemy również widoki HTML
 @RequestMapping("/communication")
 public class CommunicationController {
 
@@ -18,6 +19,7 @@ public class CommunicationController {
     private CommunicationManager communicationManager;
 
     @PostMapping("/message")
+    @ResponseBody
     public ResponseEntity<Message> sendMessage(
             @RequestParam Long senderId,
             @RequestParam Long recipientId,
@@ -31,6 +33,7 @@ public class CommunicationController {
     }
 
     @PostMapping("/notification")
+    @ResponseBody
     public ResponseEntity<Notification> sendNotification(
             @RequestParam Long senderId,
             @RequestParam Long recipientId,
@@ -44,6 +47,7 @@ public class CommunicationController {
     }
 
     @GetMapping("/messages/{recipientId}")
+    @ResponseBody
     public ResponseEntity<List<Message>> getMessages(
             @PathVariable Long recipientId,
             @RequestHeader(value = "Accept-Language", defaultValue = "pl") String language) {
@@ -54,6 +58,7 @@ public class CommunicationController {
     }
 
     @GetMapping("/notifications/{recipientId}")
+    @ResponseBody
     public ResponseEntity<List<Notification>> getNotifications(
             @PathVariable Long recipientId,
             @RequestHeader(value = "Accept-Language", defaultValue = "pl") String language) {
@@ -62,5 +67,10 @@ public class CommunicationController {
         List<Notification> notifications = communicationManager.getNotificationsForRecipient(recipientId, locale);
         return ResponseEntity.ok(notifications);
     }
-}
 
+    // Nowe mapowanie do pliku chat.html
+    @GetMapping("/chat")
+    public String getChatPage() {
+        return "chat"; // Zwraca widok HTML o nazwie "chat.html"
+    }
+}
