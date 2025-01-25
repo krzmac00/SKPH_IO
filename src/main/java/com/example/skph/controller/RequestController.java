@@ -1,5 +1,8 @@
 package com.example.skph.controller;
 
+import com.example.skph.DTO.DayDTO;
+import com.example.skph.DTO.RequestDTO;
+import com.example.skph.DTO.TaskDTO;
 import com.example.skph.enums.Status;
 import com.example.skph.model.*;
 import com.example.skph.service.RequestResourceService;
@@ -44,6 +47,25 @@ public class RequestController {
     @GetMapping("/{id}")
     public Request getRequestById(@PathVariable Long id) {
         return requestService.getRequestById(id);
+    }
+
+    @GetMapping("/search")
+    public List<RequestDTO> getAllRequests(@RequestParam("requesterId") Long requesterId) {
+        return requestService.getRequestsByRequesterId(requesterId).stream()
+                .map(request -> new RequestDTO(
+                        request.getId(),
+                        request.getStartDate(),
+                        request.getEndDate(),
+                        request.getAddress().getAddress(),
+                        taskService.getTasksByRequestId(request.getId()).stream()
+                                .map(task -> new TaskDTO(
+                                        task.getId(),
+                                        task.getResource().getName(),
+                                        statusHistoryService.getDaysByTaskId(task.getId()).stream()
+                                                .map(day -> new DayDTO(day.getStatus(), day.getTime()))
+                                                .toList()
+                                )).toList()
+                )).toList();
     }
 
 //    @GetMapping("/byRequester")

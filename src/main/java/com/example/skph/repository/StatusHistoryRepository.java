@@ -12,4 +12,7 @@ import java.util.List;
 public interface StatusHistoryRepository extends JpaRepository<Day, Long> {
     @Query("SELECT dl FROM Day dl WHERE dl.id = :id")
     List<Day> findByDayId(@Param("id") Long id);
+
+    @Query("SELECT dl FROM Day dl WHERE dl.task.id = :id")
+    List<Day> findByTaskId(@Param("id") Long id);
 }

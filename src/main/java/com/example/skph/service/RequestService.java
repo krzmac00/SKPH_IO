@@ -64,9 +64,9 @@ public class RequestService {
         return requestRepository.findById(id).orElse(null);
     }
 
-//    public List<Request> getRequestsByRequester(Requester requester) {
-//        return requestRepository.findByRequester(requester); // Zakładając, że masz metodę w repozytorium
-//    }
+    public List<Request> getRequestsByRequesterId(Long id) {
+        return requestRepository.findByRequesterId(id); // Zakładając, że masz metodę w repozytorium
+    }
 
     public List<Request> getRequestsByStartDate(LocalDate startDate) {
         return requestRepository.findByStartDate(startDate); // Podobnie jak wyżej

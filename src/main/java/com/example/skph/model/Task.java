@@ -13,6 +13,7 @@ import java.util.List;
 @Table(name="task")
 public class Task {
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -31,6 +32,7 @@ public class Task {
     //private DaysList daysList;
     //status: created, pending, inProgress, completed, closed, canceled
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "request_id") //resource department use it to access address of task;
     private Request request;

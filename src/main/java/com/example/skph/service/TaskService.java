@@ -4,6 +4,7 @@ import com.example.skph.model.Task;
 import com.example.skph.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class TaskService {
     }
 
     // Zapisanie nowego Task
+    @Transactional
     public Task saveTask(Task task) {
         return taskRepository.save(task);
     }
@@ -34,6 +36,7 @@ public class TaskService {
     }
 
     // Usunięcie Task po ID
+    @Transactional
     public void deleteTaskById(Long id) {
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
@@ -45,6 +48,11 @@ public class TaskService {
     // Wyszukanie Task po Resource ID
     public List<Task> getTasksByResourceId(Long resourceId) {
         return taskRepository.findByResourceId(resourceId);
+    }
+
+    // Wyszukanie Task po Request ID
+    public List<Task> getTasksByRequestId(Long requestId) {
+        return taskRepository.findByRequestId(requestId);
     }
 
     // Wyszukanie ukończonych Task

@@ -15,6 +15,10 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query("SELECT t FROM Task t WHERE t.resource.id = :resourceId")
     List<Task> findByResourceId(@Param("resourceId") Long resourceId);
 
+    //Wyszukaj wszystkie Task, danego Request
+    @Query("SELECT t FROM Task t WHERE t.request.id = :requestId")
+    List<Task> findByRequestId(@Param("requestId") Long requestId);
+
     // Wyszukaj wszystkie Task, które są ukończone
     //@Query("SELECT t FROM Task t WHERE t.accomplished = true")
     //List<Task> findAccomplishedTasks();

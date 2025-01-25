@@ -16,6 +16,10 @@ public class Day {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "task_id")
+    private Task task;
+
     @NotNull
     @Enumerated(EnumType.STRING) // Store Status as a string
     private Status status;
