@@ -23,12 +23,11 @@ public class Task {
     @JoinColumn(name = "resource")
     private Resource resource;
 
-    @NotNull
     @Getter
     @Setter
     @OneToMany
     @JoinColumn(name = "task_id")
-    private List<Day> daysList;
+    private List<Day> statusHistory;
     //private DaysList daysList;
     //status: created, pending, inProgress, completed, closed, canceled
 
@@ -36,28 +35,29 @@ public class Task {
     @JoinColumn(name = "request_id") //resource department use it to access address of task;
     private Request request;
 
-    @Getter
+    /*@Getter
     @Setter
     int grade; //type will be assigned by volunteer module, needs to be inserted as a column of task table
 
     @Getter
     @Setter
-    Volunteer volunteer; //type will be assigned by volunteer module, needs to be inserted as a column of task table
+    Volunteer volunteer; //type will be assigned by volunteer module, needs to be inserted as a column of task table*/
     //type Volunteer is not created in this module
     public Task() {
     }
 
-    public Task(Resource resource/*, List<Day> daysList*/) {
+    public Task(Resource resource, Request request) {
         this.resource = resource;
-        List<Day> statuses = new ArrayList<>();
-        Day day = new Day(Status.fromValue(1), 0);
-        statuses.add(day);
-        this.daysList = statuses;
+        this.request = request;
+        //List<Day> statuses = new ArrayList<>();
+        //Day day = new Day(Status.fromValue(1), 0);
+        //statuses.add(day);
+        //this.daysList = statuses;
     }
 
     public void setStatus(Status status) { //or a number i dont know
-        int newDay = daysList.getLast().getDayIndex() + 1;
+        int newDay = statusHistory.getLast().getDayIndex() + 1;
         Day day = new Day(status, newDay);
-        this.daysList.add(day);
+        this.statusHistory.add(day);
     }
 }

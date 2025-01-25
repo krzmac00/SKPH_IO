@@ -24,6 +24,7 @@ public class Day {
     @NotNull
     private int dayIndex; // Represents the day or sequence of the status
 
+    @Getter
     @Setter
     private LocalDateTime time;
 
@@ -32,6 +33,7 @@ public class Day {
     public Day(Status status, int dayIndex) {
         this.status = status;
         this.dayIndex = dayIndex; //time is set to null until new status is set
+        this.time = LocalDateTime.now();
     }
 
     public void setStatus(Status status) {

@@ -29,7 +29,8 @@ public class Request {
     @Setter
     private Address address;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Task> taskList;
 
     @Column
@@ -37,7 +38,7 @@ public class Request {
     private boolean accomplished;
 
     @Setter
-    @OneToMany(mappedBy = "request")
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<RequestResource> resourceList;
 
 
@@ -53,7 +54,7 @@ public class Request {
         ArrayList<Task> tasks = new ArrayList<>();
         for (RequestResource rr : resourceList) {
             if (rr != null) {
-                tasks.add(new Task(rr.getResource()/*, statuses*/));
+                tasks.add(new Task(rr.getResource(), this/*, statuses*/));
             }
         }
         this.taskList = tasks;
@@ -77,7 +78,7 @@ public class Request {
         boolean accomplished = true;
 
         for (Task task : this.getTaskList()) {
-            Optional<Day> lastDay = task.getDaysList().stream()
+            Optional<Day> lastDay = task.getStatusHistory().stream()
                     .max(Comparator.comparingInt(Day::getDayIndex));
 
             if (lastDay.isPresent()) {

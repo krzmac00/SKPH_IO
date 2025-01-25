@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DaysListRepository extends JpaRepository<Day, Long> {
+public interface StatusHistoryRepository extends JpaRepository<Day, Long> {
     @Query("SELECT dl FROM Day dl WHERE dl.id = :id")
     List<Day> findByDayId(@Param("id") Long id);
 }
