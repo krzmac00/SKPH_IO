@@ -34,33 +34,33 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        Task savedTask = taskService.save(task);
+        Task savedTask = taskService.saveTask(task);
         return ResponseEntity.ok(savedTask);
     }
 
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasks() {
-        return ResponseEntity.ok(taskService.findAll());
+        return ResponseEntity.ok(taskService.getAllTasks());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        return taskService.findById(id)
+        return taskService.getTaskById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-        taskService.delete(id);
+        taskService.deleteTaskById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
-        Task updatedTask = taskService.getTaskById(id);
+        Task updatedTask = taskService.getAllTasks(id);
         // Możesz dodać tu aktualizację innych pól, np. nazwy, location, itp.
-        taskService.save(updatedTask);
+        taskService.saveTask(updatedTask);
         return ResponseEntity.ok(updatedTask);
     }
 
@@ -73,7 +73,7 @@ public class TaskController {
             @PathVariable Long taskId,
             @RequestBody AssignResourceRequest dto
     ) {
-        Task task = taskService.getTaskById(taskId);
+        Task task = taskService.getAllTasks(taskId);
 
         Long resourceId = dto.getResourceId();
         Resource resource = resourceService.findById(resourceId)
@@ -82,7 +82,7 @@ public class TaskController {
         // Przypisujemy
         task.assignResource(resource);
         resourceService.update(resource); // Zapis do bazy
-        taskService.save(task);
+        taskService.saveTask(task);
 
         return ResponseEntity.ok(task);
     }
@@ -93,7 +93,7 @@ public class TaskController {
     @PostMapping("/{taskId}/assignTransport")
     public ResponseEntity<Task> assignTransport(@PathVariable Long taskId,
                                                 @RequestBody TransportAssignmentRequest dto) {
-        Task task = taskService.getTaskById(taskId);
+        Task task = taskService.getAllTasks(taskId);
         TransportResource transport = transportService.findById(dto.getTransportId())
                 .orElseThrow(() -> new NoSuchElementException("Transport not found with ID: " + dto.getTransportId()));
 
@@ -105,7 +105,7 @@ public class TaskController {
         transport.assignTask(task);
 
         transportService.save(transport);
-        taskService.save(task);
+        taskService.saveTask(task);
 
         return ResponseEntity.ok(task);
     }

@@ -21,24 +21,24 @@ public class TaskService {
     }
 
     @Transactional
-    public Task save(Task task) {
+    public Task saveTask(Task task) {
         return taskRepository.save(task);
     }
 
     @Transactional
-    public void delete(Long taskId) {
+    public void deleteTaskById(Long taskId) {
         taskRepository.deleteById(taskId);
     }
 
-    public List<Task> findAll() {
+    public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
-    public Optional<Task> findById(Long id) {
+    public Optional<Task> getTaskById(Long id) {
         return taskRepository.findById(id);
     }
 
-    public Task getTaskById(Long id) {
+    public Task getAllTasks(Long id) {
         return taskRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Task not found with ID: " + id));
     }
