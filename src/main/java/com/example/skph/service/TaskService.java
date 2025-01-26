@@ -26,11 +26,6 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    @Transactional
-    public void deleteTaskById(Long taskId) {
-        taskRepository.deleteById(taskId);
-    }
-
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }

@@ -37,6 +37,8 @@ public abstract class Resource {
     @Enumerated(EnumType.STRING)
     private ResourceStatus status; // Status zasobu.
 
+    private boolean toGive;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aid_organization_id")
     private Organization assignedOrganization; // Organizacja przypisana do zasobu.
@@ -45,24 +47,24 @@ public abstract class Resource {
     @JoinColumn(name = "task_id")
     private Task assignedTask; // Zadanie przypisane do zasobu.
 
-    private LocalDateTime createdAt; // Data utworzenia zasobu.
-
-    private LocalDateTime updatedAt; // Data ostatniej aktualizacji zasobu.
+//    private LocalDateTime createdAt; // Data utworzenia zasobu.
+//
+//    private LocalDateTime updatedAt; // Data ostatniej aktualizacji zasobu.
 
     @ManyToOne
     private Request request;
 
 
 
-    @PrePersist
-    public void onCreate() {
-        createdAt = LocalDateTime.now(); // Ustawia datę utworzenia przed zapisaniem.
-    }
-
-    @PreUpdate
-    public void onUpdate() {
-        updatedAt = LocalDateTime.now(); // Ustawia datę aktualizacji przed zapisaniem.
-    }
+//    @PrePersist
+//    public void onCreate() {
+//        createdAt = LocalDateTime.now(); // Ustawia datę utworzenia przed zapisaniem.
+//    }
+//
+//    @PreUpdate
+//    public void onUpdate() {
+//        updatedAt = LocalDateTime.now(); // Ustawia datę aktualizacji przed zapisaniem.
+//    }
 
     // Przypisuje zasób do zadania, zmieniając jego status.
     public void assignTask(Task task) {

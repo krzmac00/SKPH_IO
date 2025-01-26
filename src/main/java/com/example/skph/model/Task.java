@@ -27,6 +27,8 @@ public class Task {
     private String name;
     private String review;
 
+    //        this.updatedAt = LocalDateTime.now();
+    @Setter
     @Enumerated(EnumType.STRING)
     private TaskStatus status = TaskStatus.CREATED;
 
@@ -44,23 +46,23 @@ public class Task {
 
     @OneToMany(mappedBy = "assignedTask", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Resource> assignedResources = new ArrayList<>(); // Lista przypisanych zasobów.
+//
+//    private LocalDateTime createdAt; // Data utworzenia zadania.
+//
+//    private LocalDateTime updatedAt; // Data ostatniej aktualizacji zadania.
 
-    private LocalDateTime createdAt; // Data utworzenia zadania.
-
-    private LocalDateTime updatedAt; // Data ostatniej aktualizacji zadania.
-
-    @PrePersist
-    public void onCreate() {
-        createdAt = LocalDateTime.now(); // Ustawia datę utworzenia przed zapisaniem.
-    }
-
-    @PreUpdate
-    public void onUpdate() {
-        updatedAt = LocalDateTime.now(); // Ustawia datę aktualizacji przed zapisaniem.
-    }
+//    @PrePersist
+//    public void onCreate() {
+//        createdAt = LocalDateTime.now(); // Ustawia datę utworzenia przed zapisaniem.
+//    }
+//
+//    @PreUpdate
+//    public void onUpdate() {
+//        updatedAt = LocalDateTime.now(); // Ustawia datę aktualizacji przed zapisaniem.
+//    }
 
     public Task() {
-        createdAt = LocalDateTime.now();
+//        createdAt = LocalDateTime.now();
     }
 
     public Task(TaskStatus status, String review, Organization organization, Volunteer volunteer) {
@@ -80,8 +82,4 @@ public class Task {
         assignedResources.remove(resource);
     }
 
-    public void setStatus(TaskStatus status) {
-        this.updatedAt = LocalDateTime.now();
-        this.status = status;
-    }
 }
