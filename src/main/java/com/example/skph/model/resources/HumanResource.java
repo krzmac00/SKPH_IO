@@ -12,8 +12,7 @@ import com.example.skph.model.enums.ResourceStatus;
 @Entity
 @Data
 @NoArgsConstructor
-@SuperBuilder
-@Table(name = "human_resources")
+@Table(name = "human_resource")
 public class HumanResource extends Resource {
 
     // Rola przypisana do zasobu ludzkiego.

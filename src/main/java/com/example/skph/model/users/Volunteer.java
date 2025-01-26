@@ -9,46 +9,48 @@ import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Data
 @NoArgsConstructor
 @SuperBuilder
-@Table(name = "volunteers")
+@Table(name = "volunteer")
 public class Volunteer extends User {
 
-    // Zadanie przypisane do ochotnika.
-    @OneToOne
-    private Task task;
+    @OneToMany(mappedBy = "volunteer")
+    private List<Task> tasks = new ArrayList<>(); // Zadania przypisane do ochotnika.
+
+    @Setter
+    @Getter
+    @ManyToOne
+    private AidOrganization assignedOrganization; // Organizacja, do której ochotnik został przypisany.
+
+    private String skills;
 
     // Określa dostępność ochotnika.
+    @Getter
     private boolean availability;
 
-    // Organizacja, do której ochotnik został przypisany.
-    @ManyToOne
-    private AidOrganization assignedOrganization;
-
-    // Sprawdza, czy ochotnik jest dostępny.
-    public boolean isAvailable() {
-        return availability && task == null;
+    public Volunteer(String skills, AidOrganization organization) {
+        super();
+        this.skills = skills;
+        this.assignedOrganization = organization;
     }
 
     // Przypisuje ochotnika do zadania.
     public void assignTask(Task task) {
-        if (isAvailable()) {
-            this.task = task;
-            this.availability = false;
+        if (this.isAvailable()) {
+            tasks.add(task);
         } else {
             throw new IllegalStateException("Volunteer is not available.");
         }
     }
 
-    // Ustawia organizację, do której przypisano ochotnika.
-    public void setAssignedOrganization(AidOrganization organization) {
-        this.assignedOrganization = organization;
+    // Sprawdza, czy ochotnik jest dostępny.
+    public boolean isAvailable() {
+        // dodać logikę sprawdzania dostępności
+        return false;
     }
 
-    // Pobiera organizację przypisaną do ochotnika.
-    public AidOrganization getAssignedOrganization() {
-        return assignedOrganization;
-    }
 }

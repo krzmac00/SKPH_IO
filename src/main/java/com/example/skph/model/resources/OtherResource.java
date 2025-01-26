@@ -12,15 +12,15 @@ import lombok.experimental.SuperBuilder;
 
 import com.example.skph.model.enums.ResourceStatus;
 
-@Entity
 @Data
 @NoArgsConstructor
 @SuperBuilder
 @Table(name = "other_resources")
+@Entity
+@DiscriminatorValue("OTHER")
 public class OtherResource extends Resource {
 
-    // Opis zasobu.
-    private String description;
+    private String description; // Opis zasobu.
 
     // Sprawdza, czy zasób jest dostępny.
     public boolean isAvailable() {

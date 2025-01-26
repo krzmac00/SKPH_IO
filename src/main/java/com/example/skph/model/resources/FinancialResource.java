@@ -19,21 +19,21 @@ import java.math.BigDecimal;
 public class FinancialResource extends Resource {
 
     // Kwota dostępnych środków finansowych.
-    private BigDecimal amount;
+    private BigDecimal value;
 
     // Waluta środków finansowych.
     private String currency;
 
     // Sprawdza, czy zasoby finansowe są dostępne.
     public boolean isAvailable() {
-        return getStatus() == ResourceStatus.AVAILABLE && amount.compareTo(BigDecimal.ZERO) > 0;
+        return getStatus() == ResourceStatus.AVAILABLE && value.compareTo(BigDecimal.ZERO) > 0;
     }
 
     // Alokuje określoną kwotę z dostępnych środków.
     public void allocate(BigDecimal value) {
-        if (isAvailable() && amount.compareTo(value) >= 0) {
-            amount = amount.subtract(value);
-            if (amount.compareTo(BigDecimal.ZERO) == 0) {
+        if (isAvailable() && this.value.compareTo(value) >= 0) {
+            this.value = this.value.subtract(value);
+            if (this.value.compareTo(BigDecimal.ZERO) == 0) {
                 setStatus(ResourceStatus.UNAVAILABLE);
             }
         } else {

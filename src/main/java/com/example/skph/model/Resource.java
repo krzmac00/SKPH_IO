@@ -3,18 +3,21 @@ package com.example.skph.model;
 // Abstrakcyjna klasa reprezentująca zasób w systemie.
 import com.example.skph.model.enums.ResourceStatus;
 import com.example.skph.model.users.AidOrganization;
+import com.example.skph.model.users.Organization;
+import com.example.skph.model.victimRequest.Request;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @SuperBuilder
 @Entity
-@Table(name = "resources")
+@Table(name = "resource")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Resource {
 
@@ -22,14 +25,21 @@ public abstract class Resource {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Identyfikator zasobu.
 
-    private String name; // Nazwa zasobu.
+    @Getter
+    @Setter
+    private String name;
 
+    @Getter
+    @Setter
+    public int amount;
+
+    @Getter
     @Enumerated(EnumType.STRING)
     private ResourceStatus status; // Status zasobu.
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aid_organization_id")
-    private AidOrganization assignedOrganization; // Organizacja przypisana do zasobu.
+    private Organization assignedOrganization; // Organizacja przypisana do zasobu.
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")
@@ -38,6 +48,11 @@ public abstract class Resource {
     private LocalDateTime createdAt; // Data utworzenia zasobu.
 
     private LocalDateTime updatedAt; // Data ostatniej aktualizacji zasobu.
+
+    @ManyToOne
+    private Request request;
+
+
 
     @PrePersist
     public void onCreate() {

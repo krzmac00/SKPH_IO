@@ -5,17 +5,27 @@ package com.example.skph.model.users;
 import com.example.skph.model.Resource;
 import com.example.skph.model.User;
 import com.example.skph.model.enums.ResourceStatus;
+import com.example.skph.model.resources.Donation;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import jakarta.persistence.Entity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Data
 @NoArgsConstructor
-@SuperBuilder
-@Table(name = "donors")
+@Table(name = "donor")
 public class Donor extends User {
+    private String bankAccountNumber;
+
+    @OneToMany(mappedBy = "donor")
+    List<Donation> donations = new ArrayList<>();
+
+    public Donor(String bankAccountNumber) {
+        super();
+        this.bankAccountNumber = bankAccountNumber;
+    }
 
     // Deklaruje darowiznę w postaci zasobu.
     public void declareDonation(Resource resource) {

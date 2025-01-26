@@ -14,7 +14,7 @@ import com.example.skph.model.enums.ResourceStatus;
 @Data
 @NoArgsConstructor
 @SuperBuilder
-@Table(name = "transport_resources")
+@Table(name = "transport_resource")
 public class TransportResource extends Resource {
 
     // Pojemność zasobu transportowego.

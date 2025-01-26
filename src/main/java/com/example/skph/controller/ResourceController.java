@@ -32,31 +32,31 @@ public class ResourceController {
     /**
      * Zwraca listę wszystkich zasobów w systemie (lub filtrowaną wg roli użytkownika).
      */
-    @GetMapping
-    public ResponseEntity<List<Resource>> getAllResources(
-            @RequestParam(required = false) Long userId
-    ) {
-        // jeśli podamy userId, sprawdzamy rolę
-        if (userId != null) {
-            User user = userService.findById(userId)
-                    .orElseThrow(() -> new NoSuchElementException("User not found"));
-
-            if (user.getRole() == UserRole.AUTHORITY) {
-                // Authority widzi wszystkie zasoby
-                return ResponseEntity.ok(resourceService.getAllResources());
-            } else if (user.getRole() == UserRole.AID_ORGANIZATION) {
-                // Organizacja pomocowa widzi tylko zasoby przypisane do siebie (domyślnie)
-                AidOrganization orgUser = (AidOrganization) user;
-                List<Resource> assignedToOrg = resourceService.getResourcesAssignedToOrganization(orgUser.getId());
-                return ResponseEntity.ok(assignedToOrg);
-            }
-            // Ewentualnie inne role, np. DONOR, VOLUNTEER, VICTIM - można tu opisać
-            // Domyślnie brak dostępu
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        // Bez userId zwróć np. wszystkie zasoby
-        return ResponseEntity.ok(resourceService.getAllResources());
-    }
+//    @GetMapping
+//    public ResponseEntity<List<Resource>> getAllResources(
+//            @RequestParam(required = false) Long userId
+//    ) {
+//        // jeśli podamy userId, sprawdzamy rolę
+//        if (userId != null) {
+//            User user = userService.findById(userId)
+//                    .orElseThrow(() -> new NoSuchElementException("User not found"));
+//
+//            if (user.getRole() == UserRole.AUTHORITY) {
+//                // Authority widzi wszystkie zasoby
+//                return ResponseEntity.ok(resourceService.getAllResources());
+//            } else if (user.getRole() == UserRole.AID_ORGANIZATION) {
+//                // Organizacja pomocowa widzi tylko zasoby przypisane do siebie (domyślnie)
+//                AidOrganization orgUser = (AidOrganization) user;
+//                List<Resource> assignedToOrg = resourceService.getResourcesAssignedToOrganization(orgUser.getId());
+//                return ResponseEntity.ok(assignedToOrg);
+//            }
+//            // Ewentualnie inne role, np. DONOR, VOLUNTEER, VICTIM - można tu opisać
+//            // Domyślnie brak dostępu
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//        }
+//        // Bez userId zwróć np. wszystkie zasoby
+//        return ResponseEntity.ok(resourceService.getAllResources());
+//    }
 
     /**
      * Zwraca tylko zasoby o konkretnym statusie (np. AVAILABLE).
@@ -66,21 +66,21 @@ public class ResourceController {
         return ResponseEntity.ok(resourceService.findByStatus(status));
     }
 
-    /**
-     * Zwraca tylko zasoby danego typu (PHYSICAL, HUMAN, etc.).
-     */
-    @GetMapping("/type/{resourceType}")
-    public ResponseEntity<List<Resource>> getResourcesByType(@PathVariable("resourceType") ResourceType resourceType) {
-        return ResponseEntity.ok(resourceService.findResourcesByType(resourceType));
-    }
+//    /**
+//     * Zwraca tylko zasoby danego typu (PHYSICAL, HUMAN, etc.).
+//     */
+//    @GetMapping("/type/{resourceType}")
+//    public ResponseEntity<List<Resource>> getResourcesByType(@PathVariable("resourceType") ResourceType resourceType) {
+//        return ResponseEntity.ok(resourceService.findResourcesByType(resourceType));
+//    }
 
-    /**
-     * Zwraca zasoby przypisane do organizacji o danym ID.
-     */
-    @GetMapping("/organization/{orgId}")
-    public ResponseEntity<List<Resource>> getResourcesByOrganization(@PathVariable("orgId") Long orgId) {
-        return ResponseEntity.ok(resourceService.getResourcesAssignedToOrganization(orgId));
-    }
+//    /**
+//     * Zwraca zasoby przypisane do organizacji o danym ID.
+//     */
+//    @GetMapping("/organization/{orgId}")
+//    public ResponseEntity<List<Resource>> getResourcesByOrganization(@PathVariable("orgId") Long orgId) {
+//        return ResponseEntity.ok(resourceService.getResourcesAssignedToOrganization(orgId));
+//    }
 
     /**
      * Zwraca zasoby dostępne (AVAILABLE).

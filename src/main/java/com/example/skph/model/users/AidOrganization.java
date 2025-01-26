@@ -3,29 +3,24 @@ package com.example.skph.model.users;
 // Reprezentuje organizacje pomocowe w systemie.
 // Dziedziczy właściwości i metody z klasy bazowej User.
 import com.example.skph.model.Resource;
-import com.example.skph.model.Organization;
 import com.example.skph.model.Task;
 import com.example.skph.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
 @NoArgsConstructor
 @SuperBuilder
-@Table(name = "aid_organizations")
+@Table(name = "aid_organization")
 public class AidOrganization extends User {
 
-    // Organizacja, którą reprezentuje użytkownik.
-    @OneToOne
-    private Organization organization;
-
-    // Lista zasobów przypisanych do organizacji.
     @OneToMany(mappedBy = "assignedOrganization")
-    private List<Resource> assignedResources;
+    private List<Volunteer> volunteers = new ArrayList<>();
+
 
     // Przypisuje zasoby do konkretnego zadania.
     public void assignResourcesToTask(Task task, List<Resource> resources) {
@@ -46,4 +41,5 @@ public class AidOrganization extends User {
             throw new IllegalStateException("Volunteer is not available.");
         }
     }
+
 }

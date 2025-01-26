@@ -19,12 +19,11 @@ import java.math.BigDecimal;
 @Table(name = "physical_resources")
 public class PhysicalResource extends Resource {
 
-    // Typ zasobu fizycznego.
-    @Enumerated(EnumType.STRING)
-    private PhysicalResourceType type;
 
-    // Ilość dostępnych zasobów fizycznych.
-    private int quantity;
+    @Enumerated(EnumType.STRING)
+    private PhysicalResourceType type; // Typ zasobu fizycznego.
+
+    private int quantity; // Ilość dostępnych zasobów fizycznych.
 
     // Sprawdza, czy zasób fizyczny jest dostępny.
     public boolean isAvailable() {

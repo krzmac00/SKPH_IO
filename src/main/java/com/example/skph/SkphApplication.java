@@ -13,3 +13,18 @@ public class SkphApplication extends SpringBootServletInitializer {
 		SpringApplication.run(SkphApplication.class, args);
 	}
 }
+
+//import java.awt.Desktop;
+//import java.net.URI;
+//
+//public class SkphApplication {
+//	public static void main(String[] args) {
+//		SpringApplication.run(SkphApplication.class, args);
+//		try {
+//			// Otwórz stronę w domyślnej przeglądarce
+//			Desktop.getDesktop().browse(new URI("http://localhost:8080/"));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+//}
