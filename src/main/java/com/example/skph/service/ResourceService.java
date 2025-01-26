@@ -56,7 +56,6 @@ public class ResourceService {
 //    }
 
     public List<Resource> findByStatus(ResourceStatus status) {
-        // Możesz też dodać zapytanie w ResourceRepository np. findByStatus(status).
         List<Resource> all = resourceRepository.findAll();
         return all.stream()
                 .filter(r -> r.getStatus() == status)
@@ -80,9 +79,7 @@ public class ResourceService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NoSuchElementException("Task not found with ID: " + taskId));
 
-        // Z poziomu Task: dodaj zasób do listy i wywołaj resource.assignTask(...)
         task.assignResource(resource);
-        // Zapisz resource (klucz obcy w tabeli resources)
         resourceRepository.save(resource);
         return resource;
     }

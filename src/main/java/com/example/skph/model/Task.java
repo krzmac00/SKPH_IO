@@ -44,8 +44,23 @@ public class Task {
     @ManyToOne
     private Volunteer volunteer;
 
-    @OneToMany(mappedBy = "assignedTask", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Resource> assignedResources = new ArrayList<>(); // Lista przypisanych zasobów.
+    // Ewentualnie logika sprawdzania, czy resource jest dostępny
+    /**
+     * Relacja 1:1 z Resource:
+     * - Jedno zadanie ma dokładnie jeden zasób
+     * - Resource nie trzyma referencji do Task
+     * -- SETTER --
+     *  Metoda pomocnicza do przypisania zasobu do taska.
+     *  Usuwamy listy i multiple resources – bo architekt zastrzegł 1:1.
+
+     */
+    @Setter
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "resource_id")
+    private Resource resource;
+
+    //    @OneToMany(mappedBy = "assignedTask", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Resource> assignedResources = new ArrayList<>(); // Lista przypisanych zasobów.
 //
 //    private LocalDateTime createdAt; // Data utworzenia zadania.
 //
@@ -72,14 +87,21 @@ public class Task {
         this.volunteer = volunteer;
     }
 
-    // Przypisuje zasób do zadania.
     public void assignResource(Resource resource) {
-        assignedResources.add(resource);
-        resource.assignTask(this);
+        if (!resource.isAvailable()) {
+            throw new IllegalStateException("Resource is not available for assignment.");
+        }
+        this.resource = resource;
     }
 
-    public void releaseResource(Resource resource) {
-        assignedResources.remove(resource);
-    }
+//    // Przypisuje zasób do zadania.
+//    public void assignResource(Resource resource) {
+////        assignedResources.add(resource);
+//        resource.assignTask(this);
+//    }
+
+//    public void releaseResource(Resource resource) {
+//        assignedResources.remove(resource);
+//    }
 
 }

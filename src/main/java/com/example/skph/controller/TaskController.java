@@ -102,9 +102,7 @@ public class TaskController {
         }
 
         task.assignResource(transport);
-        transport.assignTask(task);
 
-        transportService.save(transport);
         taskService.saveTask(task);
 
         return ResponseEntity.ok(task);
