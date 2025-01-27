@@ -38,7 +38,6 @@
 package com.example.skph.service;
 
 import com.example.skph.model.Request;
-import com.example.skph.model.Requester;
 import com.example.skph.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +64,7 @@ public class RequestService {
     }
 
     public List<Request> getRequestsByRequesterId(Long id) {
+        System.out.println("I'm in service");
         return requestRepository.findByRequesterId(id); // Zakładając, że masz metodę w repozytorium
     }
 

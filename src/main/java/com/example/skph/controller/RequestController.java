@@ -44,14 +44,14 @@ public class RequestController {
     }
 
     // Endpointy REST pozostają bez zmian
-    @GetMapping("/{id}")
+    /*@GetMapping("/{id}")
     public Request getRequestById(@PathVariable Long id) {
         return requestService.getRequestById(id);
-    }
+    }*/
 
     @GetMapping("/search")
-    public List<RequestDTO> getAllRequests(@RequestParam("requesterId") Long requesterId) {
-        return requestService.getRequestsByRequesterId(requesterId).stream()
+    public String getAllRequests(@RequestParam(value = "requesterId", defaultValue = "22") Long requesterId) {
+        List<RequestDTO> result = requestService.getRequestsByRequesterId(requesterId).stream()
                 .map(request -> new RequestDTO(
                         request.getId(),
                         request.getStartDate(),
@@ -66,6 +66,8 @@ public class RequestController {
                                                 .toList()
                                 )).toList()
                 )).toList();
+        result.stream().forEach(System.out::println);
+        return "requestSearch";
     }
 
 //    @GetMapping("/byRequester")

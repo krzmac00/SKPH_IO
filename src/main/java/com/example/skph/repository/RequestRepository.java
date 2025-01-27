@@ -17,7 +17,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     Optional<Request> findById(@Param("id") Long id);
 
     @Query("SELECT r FROM Request r WHERE r.requester.id = :requesterId")
-    List<Request> findByRequesterId(@Param("requester") Long requesterId);
+    List<Request> findByRequesterId(@Param("requesterId") Long requesterId);
 
     @Query("SELECT r FROM Request r WHERE r.startDate = :startDate")
     List<Request> findByStartDate(@Param("startDate") LocalDate startDate);
