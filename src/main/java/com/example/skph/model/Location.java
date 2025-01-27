@@ -27,18 +27,17 @@ public class Location {
     @Column(nullable = false)
     private String name;
 
-    @Enumerated(EnumType.ORDINAL)
-//    @Column(name = "location_type")
+    @Convert(converter = LocationTypeConverter.class)
     @JsonDeserialize(using = LocationTypeDeserializer.class)
     private LocationType locationType;
 
     @JdbcTypeCode(SqlTypes.GEOMETRY)
-    @Column(columnDefinition = "geometry(Point, 4326)", nullable = true)
-    private Point coordinates;
-
-    @JdbcTypeCode(SqlTypes.GEOMETRY)
     @Column(columnDefinition = "geometry(Polygon, 4326)", nullable = true)
     private Polygon disasterArea;
+
+    @JdbcTypeCode(SqlTypes.GEOMETRY)
+    @Column(columnDefinition = "geometry(Point, 4326)", nullable = true)
+    private Point coordinates;
 
     public Location(String name, LocationType locationType, Point coordinates) {
         this.name = name;

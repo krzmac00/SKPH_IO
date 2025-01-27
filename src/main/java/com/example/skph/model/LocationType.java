@@ -17,6 +17,10 @@ public enum LocationType {
         return value;
     }
 
+    public int getDatabaseValue() {
+        return value;
+    }
+
     public static LocationType fromValue(int value) {
         for (LocationType type : values()) {
             if (type.getValue() == value) {
@@ -25,4 +29,14 @@ public enum LocationType {
         }
         throw new IllegalArgumentException("Invalid LocationType value: " + value);
     }
+
+    public static LocationType fromDatabaseValue(int dbValue) {
+        for (LocationType type : values()) {
+            if (type.getValue() == dbValue) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("Invalid LocationType database value: " + dbValue);
+    }
 }
+

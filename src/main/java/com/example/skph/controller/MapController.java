@@ -2,6 +2,7 @@ package com.example.skph.controller;
 
 import com.example.skph.dto.LocationDTO;
 import com.example.skph.dto.LocationRequestDTO;
+//import com.example.skph.model.AreaType;
 import com.example.skph.model.Location;
 import com.example.skph.model.LocationType;
 import com.example.skph.service.MapService;
@@ -77,7 +78,7 @@ public class MapController {
 
             Location location = mapService.addPolygonLocation(
                     request.getName(),
-                    LocationType.fromValue(request.getLocationType()),
+                    LocationType.fromValue(request.getLocationType()+1),
                     polygonCoordinates
             );
             return ResponseEntity.status(HttpStatus.CREATED).body(new LocationDTO(location));

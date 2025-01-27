@@ -111,11 +111,11 @@
 
                 <label for="pointType">Location Type:</label>
                 <select id="pointType" name="locationType" required>
-                    <option value="1">Select Type</option>
-                    <option value="2">Victim</option>
-                    <option value="3">Volunteer</option>
-                    <option value="4">Aid Organization</option>
-                    <option value="5">Authority Representative</option>
+                    <option value="0">Select Type</option>
+                    <option value="1">Victim</option>
+                    <option value="2">Volunteer</option>
+                    <option value="3">Aid Organization</option>
+                    <option value="4">Authority Representative</option>
                 </select>
 
                 <label for="latitude">Latitude:</label>
@@ -355,6 +355,7 @@
                         .slice(1)
                         .map(Number); // Convert to numbers
 
+
                     const color = colorMapping[location.locationType] || colorMapping.default;
 
                     // Add marker to map
@@ -529,3 +530,535 @@
 </script>
 </body>
 </html>
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>SKPH MAP</title>-->
+<!--    <meta charset="utf-8" />-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"-->
+<!--          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="-->
+<!--          crossorigin="" />-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />-->
+<!--    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />-->
+<!--    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />-->
+
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            height: 100vh;-->
+<!--        }-->
+
+<!--        #header {-->
+<!--            background-color: #303030;-->
+<!--            color: white;-->
+<!--            text-align: center;-->
+<!--            padding: 10px 0;-->
+<!--        }-->
+
+<!--        #container {-->
+<!--            display: flex;-->
+<!--            flex: 1;-->
+<!--        }-->
+
+<!--        #map {-->
+<!--            flex: 2;-->
+<!--            height: 100%;-->
+<!--        }-->
+
+<!--        #formContainer {-->
+<!--            flex: 1;-->
+<!--            padding: 20px;-->
+<!--            background-color: #f9f9f9;-->
+<!--            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);-->
+<!--            overflow-y: auto;-->
+<!--        }-->
+
+<!--        h3 {-->
+<!--            margin-top: 0;-->
+<!--            color: #333;-->
+<!--        }-->
+
+<!--        label {-->
+<!--            display: block;-->
+<!--            margin: 10px 0 5px;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+
+<!--        input, select, textarea {-->
+<!--            width: 100%;-->
+<!--            padding: 8px;-->
+<!--            margin-bottom: 10px;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 4px;-->
+<!--        }-->
+
+<!--        input[type="submit"], button {-->
+<!--            background-color: #404040;-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            cursor: pointer;-->
+<!--            font-size: 16px;-->
+<!--            padding: 8px 16px;-->
+<!--            border-radius: 4px;-->
+<!--        }-->
+
+<!--        input[type="submit"]:hover, button:hover {-->
+<!--            background-color: #303030;-->
+<!--        }-->
+
+<!--        .hidden {-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        .toggle-buttons {-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="header">-->
+<!--    <h1>SKPH APPLICATION MAP</h1>-->
+<!--</div>-->
+<!--<div id="container">-->
+<!--    <div id="map"></div>-->
+<!--    <div id="formContainer">-->
+<!--        <div class="toggle-buttons">-->
+<!--            <button id="manualModeBtn">Manual Entry</button>-->
+<!--            <button id="interactiveModeBtn">Interactive Mode</button>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Manual Form Section &ndash;&gt;-->
+<!--        <div id="manualForm" class="hidden">-->
+<!--            <h3>Add Point Location (Manual)</h3>-->
+<!--            <form id="pointForm">-->
+<!--                <label for="pointName">Name:</label>-->
+<!--                <input type="text" id="pointName" name="name" required>-->
+
+<!--                <label for="pointType">Location Type:</label>-->
+<!--                <select id="pointType" name="pointType" required>-->
+<!--                    <option value="0">Select Type</option>-->
+<!--                    <option value="1">Victim</option>-->
+<!--                    <option value="2">Volunteer</option>-->
+<!--                    <option value="3">Aid Organization</option>-->
+<!--                    <option value="4">Authority Representative</option>-->
+<!--                </select>-->
+
+<!--                <label for="latitude">Latitude:</label>-->
+<!--                <input type="text" id="latitude" name="latitude" required>-->
+
+<!--                <label for="longitude">Longitude:</label>-->
+<!--                <input type="text" id="longitude" name="longitude" required>-->
+
+<!--                <input type="submit" value="Add Point">-->
+<!--            </form>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Interactive Instructions &ndash;&gt;-->
+<!--        <div id="interactiveInstructions">-->
+<!--            <h3>Interactive Mode</h3>-->
+<!--            <p>Click on the pin tool on the tool box the left side of the map to add a point or use the polygon tool to draw an area.</p>-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <label for="startCoords">Start Point (Lat, Lng):</label>-->
+<!--            <input type="text" id="startCoords" placeholder="51.7592, 19.4560" />-->
+
+<!--            <label for="endCoords">End Point (Lat, Lng):</label>-->
+<!--            <input type="text" id="endCoords" placeholder="51.7600, 19.4590" />-->
+
+<!--            <div id="intermediateContainer">-->
+<!--                &lt;!&ndash; Dynamic list of intermediate points will be added here &ndash;&gt;-->
+<!--            </div>-->
+
+<!--            <button id="addIntermediateBtn">Add Intermediate Point</button><br><br>-->
+<!--            <button id="findRouteBtn">Find Route</button>-->
+<!--            <button id="resetRouteBtn">Reset Route</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"-->
+<!--        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="-->
+<!--        crossorigin=""></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>-->
+<!--<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>-->
+<!--<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>-->
+
+<!--<script>-->
+<!--    // Initialize the map-->
+<!--    const map = L.map('map');-->
+
+<!--    // Try to get user's location-->
+<!--    navigator.geolocation.getCurrentPosition(-->
+<!--        (position) => {-->
+<!--            const { latitude, longitude } = position.coords;-->
+
+<!--            map.setView([latitude, longitude], 16);-->
+
+<!--            const userMarker = L.marker([latitude, longitude]).addTo(map);-->
+
+<!--            userMarker.bindPopup("<strong>You're here!</strong>").openPopup();-->
+<!--        },-->
+<!--        () => {-->
+<!--            map.setView([51.7592, 19.4560], 15);-->
+<!--        }-->
+<!--    );-->
+
+<!--    // Tile layer from OpenStreetMap-->
+<!--    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {-->
+<!--        maxZoom: 19,-->
+<!--        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'-->
+<!--    }).addTo(map);-->
+
+<!--    const colorMapping = {-->
+<!--        VICTIM: 'red',-->
+<!--        VOLUNTEER: 'green',-->
+<!--        AID_ORGANIZATION: 'blue',-->
+<!--        AUTHORITY_REPRESENTATIVE: 'yellow',-->
+<!--        DISASTER: 'black',-->
+<!--        WAREHOUSE: 'orange',-->
+<!--        default: 'grey'-->
+<!--    };-->
+
+<!--    function createColoredIcon(color) {-->
+<!--        return L.icon({-->
+<!--            iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${color}.png`,-->
+<!--            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',-->
+<!--            iconSize: [25, 41],-->
+<!--            iconAnchor: [12, 41],-->
+<!--            popupAnchor: [1, -34],-->
+<!--            shadowSize: [41, 41],-->
+<!--        });-->
+<!--    }-->
+
+<!--    let routingControl = null;-->
+<!--    let routePoints = []; // To store start, end, and intermediate points-->
+<!--    let routeMarkers = []; // To store markers related to the route (start, end, and intermediates)-->
+
+<!--    // Function to add routing control-->
+<!--    function addRoutingControl(points) {-->
+<!--        if (routingControl) {-->
+<!--            map.removeControl(routingControl);-->
+<!--        }-->
+
+<!--        const ReversablePlan = L.Routing.Plan.extend({-->
+<!--            createGeocoders: function () {-->
+<!--                const container = L.Routing.Plan.prototype.createGeocoders.call(this);-->
+
+<!--                const reverseButton = createButton('↑↓ Reverse Route', container);-->
+<!--                L.DomEvent.on(reverseButton, 'click', function () {-->
+<!--                    const waypoints = this.getWaypoints().slice().reverse();-->
+<!--                    this.setWaypoints(waypoints);-->
+<!--                }, this);-->
+
+<!--                return container;-->
+<!--            }-->
+<!--        });-->
+
+<!--        const plan = new ReversablePlan(-->
+<!--            points.map(([lat, lng]) => L.latLng(lat, lng)),-->
+<!--            {-->
+<!--                geocoder: L.Control.Geocoder.nominatim(),-->
+<!--                routeWhileDragging: true-->
+<!--            }-->
+<!--        );-->
+
+<!--        // Add routing control with the custom plan-->
+<!--        routingControl = L.Routing.control({-->
+<!--            plan: plan,-->
+<!--            routeWhileDragging: true-->
+<!--        }).addTo(map);-->
+<!--    }-->
+
+<!--    // Helper function to create a button-->
+<!--    function createButton(label, container) {-->
+<!--        const btn = L.DomUtil.create('button', 'custom-button', container);-->
+<!--        btn.setAttribute('type', 'button');-->
+<!--        btn.innerHTML = label;-->
+<!--        btn.style.backgroundColor = 'gray';-->
+<!--        btn.style.color = 'white';-->
+<!--        return btn;-->
+<!--    }-->
+
+<!--    // Handle map click-->
+<!--    map.on('click', function (e) {-->
+<!--        const { lat, lng } = e.latlng;-->
+
+<!--        // Add a popup to select what to do with the point-->
+<!--        L.popup()-->
+<!--            .setLatLng(e.latlng)-->
+<!--            .setContent(`-->
+<!--            <button onclick="addWaypoint([${lat}, ${lng}], 'start')">Set as Start</button><br>-->
+<!--            <button onclick="addWaypoint([${lat}, ${lng}], 'end')">Set as End</button><br>-->
+<!--            <button onclick="addWaypoint([${lat}, ${lng}], 'intermediate')">Add Intermediate Point</button><br>-->
+<!--            <button onclick="resetRoute()">Reset Route</button>-->
+<!--        `)-->
+<!--            .openOn(map);-->
+<!--    });-->
+
+<!--    // Function to add a waypoint-->
+<!--    function addWaypoint(point, type) {-->
+<!--        if (type === 'start') {-->
+<!--            if (routePoints.length > 0) {-->
+<!--                routePoints[0] = point;-->
+<!--            } else {-->
+<!--                routePoints.unshift(point);-->
+<!--            }-->
+<!--        } else if (type === 'end') {-->
+<!--            if (routePoints.length > 1) {-->
+<!--                routePoints[routePoints.length - 1] = point;-->
+<!--            } else {-->
+<!--                routePoints.push(point);-->
+<!--            }-->
+<!--        } else if (type === 'intermediate') {-->
+<!--            if (routePoints.length > 1) {-->
+<!--                routePoints.splice(routePoints.length - 1, 0, point);-->
+<!--            } else {-->
+<!--                alert("Please set a start and end point before adding intermediate points.");-->
+<!--                return;-->
+<!--            }-->
+<!--        }-->
+
+<!--        // Add marker for the point and store it in routeMarkers-->
+<!--        const marker = L.marker(point)-->
+<!--            .addTo(map)-->
+<!--            .bindPopup(`${type.charAt(0).toUpperCase() + type.slice(1)} Point`)-->
+<!--            .openPopup();-->
+<!--        routeMarkers.push(marker);-->
+
+<!--        // Update the route if we have at least 2 points-->
+<!--        if (routePoints.length >= 2) {-->
+<!--            addRoutingControl(routePoints);-->
+<!--        }-->
+<!--    }-->
+
+<!--    // Function to reset the route and its markers-->
+<!--    function resetRoute() {-->
+<!--        // Remove routing control-->
+<!--        if (routingControl) {-->
+<!--            map.removeControl(routingControl);-->
+<!--            routingControl = null;-->
+<!--        }-->
+
+<!--        // Remove all route-related markers from the map-->
+<!--        routeMarkers.forEach(marker => map.removeLayer(marker));-->
+<!--        routeMarkers = []; // Clear the marker references-->
+
+<!--        // Reset the route points-->
+<!--        routePoints = [];-->
+<!--        alert("Route has been reset");-->
+<!--    }-->
+
+
+<!--    // Add leaflet.draw controls-->
+<!--    const drawControl = new L.Control.Draw({-->
+<!--        draw: {-->
+<!--            polyline: false,-->
+<!--            rectangle: false,-->
+<!--            circle: false,-->
+<!--            marker: true,-->
+<!--            polygon: true-->
+<!--        }-->
+<!--    });-->
+<!--    map.addControl(drawControl);-->
+
+<!--    // Fetch existing locations and display on the map-->
+<!--    fetch('/map/locations')-->
+<!--        .then(response => {-->
+<!--            if (!response.ok) {-->
+<!--                throw new Error(`Failed to fetch locations: ${response.statusText}`);-->
+<!--            }-->
+<!--            return response.json();-->
+<!--        })-->
+<!--        .then(locations => {-->
+<!--            console.log('Fetched locations:', locations);-->
+
+<!--            locations.forEach(location => {-->
+<!--                if (location.coordinates) {-->
+<!--                    const latLng = location.coordinates-->
+<!--                        .match(/POINT\s*\(([^ ]+)\s+([^ ]+)\)/) // Regex for "POINT (x y)"-->
+<!--                        .slice(1)-->
+<!--                        .map(Number); // Convert to numbers-->
+
+<!--                    const color = colorMapping[location.pointType] || colorMapping.default;-->
+
+<!--                    // Add marker to map-->
+<!--                    L.marker([latLng[1], latLng[0]], {-->
+<!--                        icon: createColoredIcon(color)-->
+<!--                    })-->
+<!--                        .addTo(map)-->
+<!--                        .bindPopup(`<strong>${location.name}</strong><br>Type: ${location.pointType}`);-->
+<!--                }-->
+
+<!--                // Handle Polygon Locations-->
+<!--                if (location.area) {-->
+<!--                    const latLngs = location.area-->
+<!--                        .match(/POLYGON\s*\(\(\s*(.+)\s*\)\)/)[1]-->
+<!--                        .split(', ') // Split points-->
+<!--                        .map(coord => coord.split(' ').map(Number).reverse());-->
+
+<!--                    const color = colorMapping[location.areaType] || colorMapping.default;-->
+
+<!--                    // Add polygon to map-->
+<!--                    L.polygon(latLngs, { color })-->
+<!--                        .addTo(map)-->
+<!--                        .bindPopup(`<strong>${location.name}</strong><br>Type: ${location.areaType}`);-->
+<!--                }-->
+<!--            });-->
+<!--        })-->
+<!--        .catch(error => console.error('Error fetching locations:', error));-->
+
+<!--    // Handle Point Form Submission-->
+<!--    document.getElementById('pointForm').addEventListener('submit', function (event) {-->
+<!--        event.preventDefault();-->
+
+<!--        const name = document.getElementById('pointName').value;-->
+<!--        const latitude = parseFloat(document.getElementById('latitude').value);-->
+<!--        const longitude = parseFloat(document.getElementById('longitude').value);-->
+<!--        const pointType = parseInt(document.getElementById('pointType').value);-->
+
+<!--        fetch('/map/locations/point', {-->
+<!--            method: 'POST',-->
+<!--            headers: { 'Content-Type': 'application/json' },-->
+<!--            body: JSON.stringify({-->
+<!--                name,-->
+<!--                pointType,-->
+<!--                latitude,-->
+<!--                longitude-->
+<!--            })-->
+<!--        })-->
+<!--            .then(response => {-->
+<!--                if (response.ok) {-->
+<!--                    alert('Point location added successfully!');-->
+<!--                    location.reload();-->
+<!--                } else {-->
+<!--                    alert('Error adding point location.');-->
+<!--                }-->
+<!--            })-->
+<!--            .catch(error => console.error('Error adding point location:', error));-->
+<!--    });-->
+
+
+<!--    // Handle drawing events for interactive mode-->
+<!--    map.on(L.Draw.Event.CREATED, function (event) {-->
+<!--        const layer = event.layer;-->
+
+<!--        if (layer instanceof L.Marker) {-->
+<!--            const { lat, lng } = layer.getLatLng();-->
+<!--            const name = prompt("Enter a name for this point:");-->
+<!--            if (name) {-->
+<!--                const pointType = parseInt(prompt("Enter location type (1: Victim, 2: Volunteer, 3: Aid Organization, 4: Authority Representative):"), 10);-->
+<!--                if ([1, 2, 3, 4].includes(pointType)) {-->
+<!--                    const color = colorMapping[pointType] || colorMapping.default;-->
+
+<!--                    fetch('/map/locations/point', {-->
+<!--                        method: 'POST',-->
+<!--                        headers: { 'Content-Type': 'application/json' },-->
+<!--                        body: JSON.stringify({ name, pointType, latitude: lat, longitude: lng })-->
+<!--                    })-->
+<!--                        .then(response => response.ok ? alert('Point added successfully!') : alert('Error adding point.'))-->
+<!--                        .catch(error => console.error('Error:', error));-->
+
+<!--                    layer.setIcon(createColoredIcon(color));-->
+<!--                    layer.bindPopup(name).addTo(map).openPopup();-->
+<!--                } else {-->
+<!--                    alert('Invalid location type!');-->
+<!--                }-->
+<!--            }-->
+<!--        } else if (layer instanceof L.Polygon) {-->
+<!--            const latLngs = layer.getLatLngs()[0].map(latLng => [latLng.lat, latLng.lng]);-->
+<!--            const name = prompt("Enter a name for this polygon:");-->
+<!--            if (name) {-->
+<!--                const areaType = prompt("Select location type:\n1: Disaster\n2: Warehouse");-->
+<!--                if (['1', '2'].includes(areaType)) {-->
+<!--                    const color = colorMapping[parseInt(areaType, 10)] || colorMapping.default;-->
+<!--                    console.log(JSON.stringify({ name, areaType: parseInt(areaType, 10), coordinates: latLngs }));-->
+
+<!--                    fetch('/map/locations/polygon', {-->
+<!--                        method: 'POST',-->
+<!--                        headers: { 'Content-Type': 'application/json' },-->
+<!--                        body: JSON.stringify({ name, areaType: parseInt(areaType, 10), coordinates: latLngs })-->
+<!--                    })-->
+<!--                        .then(response => response.ok ? alert('Polygon added successfully!') : alert('Error adding polygon.'))-->
+<!--                        .catch(error => console.error('Error:', error));-->
+
+<!--                    layer.setStyle({ color }).bindPopup(name).addTo(map).openPopup();-->
+<!--                } else {-->
+<!--                    alert('Invalid location type!');-->
+<!--                }-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+
+<!--    // Toggle between manual and interactive modes-->
+<!--    const manualForm = document.getElementById('manualForm');-->
+<!--    const interactiveInstructions = document.getElementById('interactiveInstructions');-->
+<!--    document.getElementById('manualModeBtn').addEventListener('click', () => {-->
+<!--        manualForm.classList.remove('hidden');-->
+<!--        interactiveInstructions.classList.add('hidden');-->
+<!--    });-->
+
+<!--    document.getElementById('interactiveModeBtn').addEventListener('click', () => {-->
+<!--        interactiveInstructions.classList.remove('hidden');-->
+<!--        manualForm.classList.add('hidden');-->
+<!--    });-->
+
+<!--    document.getElementById('findRouteBtn').addEventListener('click', function () {-->
+<!--        const startCoords = document.getElementById('startCoords').value.split(',').map(Number);-->
+<!--        const endCoords = document.getElementById('endCoords').value.split(',').map(Number);-->
+
+<!--        const intermediateInputs = document.querySelectorAll('.intermediateInput');-->
+<!--        const intermediates = Array.from(intermediateInputs).map(input =>-->
+<!--            input.value.split(',').map(Number)-->
+<!--        );-->
+
+<!--        // Validate inputs-->
+<!--        if (startCoords.length !== 2 || endCoords.length !== 2 || intermediates.some(coords => coords.length !== 2)) {-->
+<!--            alert('Invalid coordinates!');-->
+<!--            return;-->
+<!--        }-->
+
+<!--        // Build the route points-->
+<!--        routePoints = [startCoords, ...intermediates, endCoords];-->
+
+<!--        // Add routing control-->
+<!--        addRoutingControl(routePoints);-->
+
+<!--        // Add markers for the start, intermediates, and end-->
+<!--        routePoints.forEach((coords, index) => {-->
+<!--            const type = index === 0-->
+<!--                ? 'start'-->
+<!--                : index === routePoints.length - 1-->
+<!--                    ? 'end'-->
+<!--                    : 'intermediate';-->
+
+<!--            const marker = L.marker(coords)-->
+<!--                .addTo(map)-->
+<!--                .bindPopup(`${type.charAt(0).toUpperCase() + type.slice(1)} Point`)-->
+<!--                .openPopup();-->
+<!--            routeMarkers.push(marker);-->
+<!--        });-->
+<!--    });-->
+
+<!--    // Add event listener to reset route-->
+<!--    document.getElementById('resetRouteBtn').addEventListener('click', resetRoute);-->
+
+<!--    // Add event listener to dynamically add intermediate points-->
+<!--    document.getElementById('addIntermediateBtn').addEventListener('click', function () {-->
+<!--        const container = document.getElementById('intermediateContainer');-->
+<!--        const input = document.createElement('input');-->
+<!--        input.type = 'text';-->
+<!--        input.className = 'intermediateInput';-->
+<!--        input.placeholder = 'Enter intermediate coords (Lat, Lng)';-->
+<!--        container.appendChild(input);-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

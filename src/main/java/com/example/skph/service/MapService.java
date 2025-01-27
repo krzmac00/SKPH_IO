@@ -73,4 +73,3 @@ public class MapService {
 //        return locationRepository.findByName(name);
 //    }
 }
-
