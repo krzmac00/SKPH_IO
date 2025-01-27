@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat & Notifications</title>
-  <link rel="stylesheet" href="styles.css"> <!-- Link do pliku CSS -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery -->
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- Axios -->
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <style>
     /* Ogólne style */
     body {
@@ -17,14 +17,14 @@
       color: #333;
     }
 
-    /* Główna struktura */
+    /* Główna struktura czatu */
     .chat-container {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
-    /* Nagłówek */
+    /* Nagłówek czatu */
     .chat-header {
       background-color: #007bff;
       color: #fff;
@@ -147,7 +147,7 @@
       background: #fffcf2;
     }
 
-    /* Stopka */
+    /* Stopka czatu */
     .chat-footer {
       text-align: center;
       padding: 0.5rem;
@@ -155,6 +155,48 @@
       color: #666;
       font-size: 0.9rem;
       border-top: 1px solid #ddd;
+    }
+
+    /* Formularz wprowadzania sender ID */
+    .sender-id-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #fff;
+    }
+
+    .sender-id-form {
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    .sender-id-form input {
+      width: 100%;
+      padding: 0.7rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+
+    .sender-id-form button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .sender-id-form button:hover {
+      background-color: #0056b3;
     }
 
     /* Responsywność */
@@ -171,34 +213,51 @@
         font-size: 0.9rem;
         padding: 0.5rem;
       }
+
+      .sender-id-form {
+        width: 100%;
+        padding: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-<div class="chat-container">
-  <!-- Nagłówek -->
+
+<!-- Okno wprowadzania Sender ID -->
+<div id="sender-id-container" class="sender-id-container">
+  <div class="sender-id-form">
+    <h2>Wprowadź swoje ID użytkownika</h2>
+    <input type="text" id="sender-id-input" placeholder="Wpisz swoje ID" />
+    <button id="start-chat-button" onclick="startChat()">Przejdź do czatu</button>
+    <p id="error-message-sender" style="color: red; display: none;"></p>
+  </div>
+</div>
+
+<!-- Chat i powiadomienia, początkowo ukryte -->
+<div id="chat-container" class="chat-container" style="display: none;">
   <header class="chat-header">
     <h1>Chat & Notifications</h1>
     <div class="user-info">
       <p id="user-info"></p>
+      <div>
+        <label for="recipient-input">Odbiorca (ID):</label>
+        <input type="text" id="recipient-input" placeholder="Wpisz ID odbiorcy">
+      </div>
     </div>
   </header>
 
-  <!-- Główna zawartość -->
   <main class="chat-main">
-    <!-- Wiadomości -->
     <section class="message-section">
       <div class="messages-container" id="messages-container">
         <!-- Wiadomości będą tutaj wyświetlane -->
       </div>
-
       <div class="message-input">
         <textarea id="message-content" placeholder="Wpisz swoją wiadomość"></textarea>
         <button id="send-message" onclick="sendMessage()">Wyślij</button>
       </div>
+      <p id="error-message-chat" style="color: red; display: none;"></p>
     </section>
 
-    <!-- Powiadomienia -->
     <section class="notification-section">
       <div class="notifications-container" id="notifications-container">
         <!-- Powiadomienia będą tutaj wyświetlane -->
@@ -206,91 +265,100 @@
     </section>
   </main>
 
-  <!-- Stopka -->
   <footer class="chat-footer">
     <p>&copy; 2025 Chat Application</p>
   </footer>
 </div>
 
 <script>
-  // Identyczne skrypty JavaScript jak wcześniej (bez zmian)
-  const userId = 1; // Current user ID
-  const recipientId = 2; // Recipient user ID
-  const language = "pl"; // Language preference
+  let userId = null; // Zmienna przechowująca ID użytkownika
+  const language = "pl";
 
-  document.getElementById('user-info').innerText = `User ID: ${userId}`;
+  // Funkcja uruchamiająca czat po wpisaniu senderId
+  function startChat() {
+    const senderId = document.getElementById('sender-id-input').value.trim();
+    const errorMessageElement = document.getElementById('error-message-sender');
 
-  // Function to send a message
-  function sendMessage() {
-    const messageContent = document.getElementById('message-content').value;
-    if (messageContent.trim()) {
-      const messageType = "TEXT";
-      axios.post('/communication/message', null, {
-        params: { senderId: userId, recipientId: recipientId, content: messageContent, messageType: messageType },
-        headers: { 'Accept-Language': language }
-      })
-              .then(response => {
-                displayMessage(response.data);
-                document.getElementById('message-content').value = '';
-              })
-              .catch(error => console.error('Error sending message:', error));
+    if (!senderId) {
+      errorMessageElement.textContent = "Proszę wpisać swoje ID użytkownika.";
+      errorMessageElement.style.display = 'block';
+      return;
+    }
+
+    errorMessageElement.style.display = 'none'; // Ukrycie komunikatu błędu, jeśli ID jest poprawne
+
+    // Przechodzimy do głównego widoku czatu
+    userId = senderId;
+    document.getElementById('sender-id-container').style.display = 'none'; // Ukrycie formularza
+    document.getElementById('chat-container').style.display = 'block'; // Wyświetlenie czatu
+
+    // Inicjalizacja czatu z danymi użytkownika
+    initializeChat();
+  }
+
+  // Funkcja do inicjalizacji czatu
+  async function initializeChat() {
+    try {
+      const userResponse = await axios.get('/users/current'); // Załaduj dane użytkownika
+      document.getElementById('user-info').innerText = `Zalogowany jako: ${userResponse.data.name}`;
+    } catch (error) {
+      console.error('Błąd podczas inicjalizacji czatu:', error);
     }
   }
 
-  // Function to fetch messages for the recipient
-  function fetchMessages() {
-    axios.get(`/communication/messages/${recipientId}`, {
+  // Funkcja wysyłania wiadomości
+  function sendMessage() {
+    const recipientId = document.getElementById('recipient-input').value.trim();
+    const messageContent = document.getElementById('message-content').value.trim();
+    const errorMessageElement = document.getElementById('error-message-chat');
+
+    // Walidacja pól
+    if (!recipientId) {
+      errorMessageElement.textContent = "Proszę wpisać ID odbiorcy.";
+      errorMessageElement.style.display = 'block';
+      return;
+    }
+
+    if (!messageContent) {
+      errorMessageElement.textContent = "Proszę wpisać treść wiadomości.";
+      errorMessageElement.style.display = 'block';
+      return;
+    }
+
+    errorMessageElement.style.display = 'none'; // Ukryj komunikat błędu, jeśli wszystko jest poprawne
+
+    const messageType = "TEXT";
+    axios.post('/communication/message', null, {
+      params: { senderId: userId, recipientId, content: messageContent, messageType },
       headers: { 'Accept-Language': language }
     })
             .then(response => {
-              const messagesContainer = document.getElementById('messages-container');
-              messagesContainer.innerHTML = '';
-              response.data.forEach(message => {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message');
-                messageElement.textContent = message.content;
-                messagesContainer.appendChild(messageElement);
-              });
+              displayMessage(response.data);
+              document.getElementById('message-content').value = ''; // Wyczyść pole wiadomości
             })
-            .catch(error => console.error('Error fetching messages:', error));
+            .catch(error => {
+              console.error('Błąd podczas wysyłania wiadomości:', error);
+              errorMessageElement.textContent = "Wystąpił błąd podczas wysyłania wiadomości.";
+              errorMessageElement.style.display = 'block';
+            });
   }
 
-  // Function to fetch notifications for the current user
-  function fetchNotifications() {
-    axios.get(`/communication/notifications/${userId}`, {
-      headers: { 'Accept-Language': language }
-    })
-            .then(response => {
-              const notificationsContainer = document.getElementById('notifications-container');
-              notificationsContainer.innerHTML = '';
-              response.data.forEach(notification => {
-                const notificationElement = document.createElement('div');
-                notificationElement.classList.add('notification');
-                notificationElement.textContent = notification.content;
-                notificationsContainer.appendChild(notificationElement);
-              });
-            })
-            .catch(error => console.error('Error fetching notifications:', error));
-  }
-
-  // Display a new message in the chat
+  // Funkcja do wyświetlania wiadomości
   function displayMessage(message) {
     const messagesContainer = document.getElementById('messages-container');
     const messageElement = document.createElement('div');
     messageElement.classList.add('message');
-    messageElement.textContent = message.content;
+    messageElement.textContent = `[${message.timestamp}] ${message.content}`;
     messagesContainer.appendChild(messageElement);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 
-  // Initial fetch of messages and notifications
-  fetchMessages();
-  fetchNotifications();
-
-  // Refresh messages and notifications every 30 seconds
-  setInterval(() => {
-    fetchMessages();
-    fetchNotifications();
-  }, 30000);
+  // Zainicjalizuj chat po załadowaniu strony
+  window.onload = function() {
+    document.getElementById('sender-id-container').style.display = 'flex'; // Wyświetlenie okna z ID użytkownika
+    document.getElementById('chat-container').style.display = 'none'; // Ukrycie czatu
+  };
 </script>
+
 </body>
 </html>
