@@ -38,13 +38,6 @@ public class MessageService implements IMessageService {
     @Override
     public List<Message> getMessagesForRecipient(Long recipientId, Locale locale) {
         List<Message> messages = messageRepository.findByRecipientId(recipientId);
-
-        // Tłumaczenie treści wiadomości na podstawie lokalizacji
-        for (Message message : messages) {
-            String translatedContent = messageSource.getMessage(message.getContent(), null, locale);
-            message.setContent(translatedContent);
-        }
-
         return messages;
     }
 }

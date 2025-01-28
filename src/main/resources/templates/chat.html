@@ -8,23 +8,43 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <style>
-    /* Ogólne style */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f9;
+      background-color: #ffffff;
       color: #333;
     }
 
-    /* Główna struktura czatu */
+    #language-switcher {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+    }
+
+    #change-language-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    #change-language-button:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
     .chat-container {
+      background-color: #ffffff;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
-    /* Nagłówek czatu */
     .chat-header {
       background-color: #007bff;
       color: #fff;
@@ -33,17 +53,6 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    .chat-header h1 {
-      margin: 0;
-      font-size: 1.8rem;
-    }
-
-    .user-info {
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
-    }
-
-    /* Główna sekcja */
     .chat-main {
       flex: 1;
       display: flex;
@@ -53,7 +62,6 @@
       margin: auto;
     }
 
-    /* Wiadomości */
     .message-section {
       flex: 2;
       display: flex;
@@ -72,6 +80,7 @@
       border: 1px solid #ddd;
       border-radius: 6px;
       background-color: #f9f9f9;
+      max-height: 500px;
     }
 
     .message {
@@ -82,8 +91,14 @@
       border: 1px solid #d1e9fe;
     }
 
-    .message:nth-child(odd) {
-      background: #f4f9ff;
+    .message.sent {
+      background-color: #e5fcff;
+      border: 1px solid #b6ffff;
+    }
+
+    .message.received {
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
     }
 
     .message-input {
@@ -115,7 +130,6 @@
       background-color: #0056b3;
     }
 
-    /* Powiadomienia */
     .notification-section {
       flex: 1;
       display: flex;
@@ -135,19 +149,18 @@
       background-color: #f9f9f9;
     }
 
-    .notification {
-      padding: 0.5rem;
+    .message-content {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #333;
       margin: 0.5rem 0;
-      border-radius: 4px;
-      background: #fffbe6;
-      border: 1px solid #ffeeba;
     }
 
-    .notification:nth-child(odd) {
-      background: #fffcf2;
+    .message-timestamp, .message-sender {
+      font-size: 0.85rem;
+      color: #888;
     }
 
-    /* Stopka czatu */
     .chat-footer {
       text-align: center;
       padding: 0.5rem;
@@ -157,7 +170,6 @@
       border-top: 1px solid #ddd;
     }
 
-    /* Formularz wprowadzania sender ID */
     .sender-id-container {
       display: flex;
       justify-content: center;
@@ -199,7 +211,6 @@
       background-color: #0056b3;
     }
 
-    /* Responsywność */
     @media (max-width: 768px) {
       .chat-main {
         flex-direction: column;
@@ -223,12 +234,10 @@
 </head>
 <body>
 
-<!-- Przycisk do zmiany języka -->
 <div id="language-switcher">
   <button id="change-language-button" onclick="changeLanguage()">Przełącz na angielski</button>
 </div>
 
-<!-- Okno wprowadzania Sender ID -->
 <div id="sender-id-container" class="sender-id-container">
   <div class="sender-id-form">
     <h2 data-i18n="enter-id">Wprowadź swoje ID użytkownika</h2>
@@ -238,7 +247,6 @@
   </div>
 </div>
 
-<!-- Chat i powiadomienia, początkowo ukryte -->
 <div id="chat-container" class="chat-container" style="display: none;">
   <header class="chat-header">
     <h1 data-i18n="chat-notifications">Chat & Powiadomienia</h1>
@@ -253,32 +261,38 @@
 
   <main class="chat-main">
     <section class="message-section">
-      <div class="messages-container" id="messages-container">
-        <!-- Wiadomości będą tutaj wyświetlane -->
-      </div>
+      <div class="messages-container" id="messages-container"></div>
       <div class="message-input">
         <textarea id="message-content" placeholder="Wpisz swoją wiadomość"></textarea>
-        <button id="send-message" onclick="sendMessage()" data-i18n="send-message">Wyślij</button>
+        <button id="send-message" onclick="sendMessage()">Wyślij</button>
       </div>
       <p id="error-message-chat" style="color: red; display: none;" data-i18n="error-message-send"></p>
     </section>
 
     <section class="notification-section">
-      <div class="notifications-container" id="notifications-container">
-        <!-- Powiadomienia będą tutaj wyświetlane -->
-      </div>
+      <div class="notifications-container" id="notifications-container"></div>
     </section>
   </main>
 
   <footer class="chat-footer">
-    <p>&copy; 2025 Chat Application</p>
+    <p>&copy; 2025 SKPH</p>
   </footer>
 </div>
-
 <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const messagesContainer = document.getElementById('messages-container');
+
+    // Domyślnie przewijamy kontener na dół, po załadowaniu strony
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  });
+
+  // Reszta twojego kodu JavaScript
   let userId = null; // Zmienna przechowująca ID użytkownika
   let language = "pl"; // Początkowy język
   let translations = {}; // Obiekt, w którym będą przechowywane tłumaczenia
+  let sentMessages = []; // Tablica do przechowywania wysłanych wiadomości
+  let lastMessageTimestamp = null; // Zmienna przechowująca timestamp ostatniej wiadomości
+  let messagesContainer = {};
 
   // Funkcja zmieniająca język strony
   function changeLanguage() {
@@ -331,15 +345,36 @@
     initializeChat();
   }
 
-  // Funkcja do inicjalizacji czatu
+  // Funkcja inicjująca czat
   async function initializeChat() {
-    try {
-      const userResponse = await axios.get('/users/current'); // Załaduj dane użytkownika
-      document.getElementById('user-info').innerText = `Zalogowany jako: ${userResponse.data.name}`;
-    } catch (error) {
-      console.error('Błąd podczas inicjalizacji czatu:', error);
+    // Wyświetlamy ID użytkownika
+    document.getElementById('user-info').innerText = `ID: ${userId}`;
+
+    // Ładujemy wiadomości wysłane z localStorage
+    const sentMessages = JSON.parse(localStorage.getItem('sentMessages')) || [];
+    sentMessages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+    // Wyświetlamy posortowane wiadomości
+    sentMessages.forEach(message => {
+      displayMessage(message);
+    });
+
+    // Ustawiamy 'lastMessageTimestamp' na timestamp ostatniej wysłanej wiadomości
+    if (sentMessages.length > 0) {
+      lastMessageTimestamp = sentMessages[sentMessages.length - 1].timestamp;
     }
+
+    console.log('Inicjalizacja czatu zakończona. Ostatni timestamp:', lastMessageTimestamp);
   }
+  // Funkcja do konwertowania daty tablicowej na format ISO
+  function convertToISOString(dateArray) {
+    if (Array.isArray(dateArray)) {
+      const date = new Date(...dateArray);
+      return date.toISOString();
+    }
+    return dateArray; // Jeśli data jest już w formacie ISO, zwróć ją bez zmian
+  }
+
 
   // Funkcja wysyłania wiadomości
   function sendMessage() {
@@ -363,12 +398,31 @@
     errorMessageElement.style.display = 'none'; // Ukryj komunikat błędu, jeśli wszystko jest poprawne
 
     const messageType = "TEXT";
+    const message = {
+      senderId: userId,
+      recipientId: recipientId,
+      content: messageContent,
+      timestamp: new Date().toISOString() // Używamy timestampu
+    };
+
     axios.post('/communication/message', null, {
       params: { senderId: userId, recipientId, content: messageContent, messageType },
       headers: { 'Accept-Language': language }
     })
             .then(response => {
-              displayMessage(response.data);
+              // Pobieramy wiadomości z localStorage
+              const sentMessages = JSON.parse(localStorage.getItem('sentMessages')) || [];
+
+              // Dodajemy nową wiadomość do listy
+              sentMessages.push(message);
+
+              // Sortujemy wiadomości po timestamp (od najstarszej do najnowszej)
+              sentMessages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+              // Zapisujemy zaktualizowaną listę wiadomości w localStorage
+              localStorage.setItem('sentMessages', JSON.stringify(sentMessages));
+
+              displayMessage(message); // Wyświetlamy wiadomość
               document.getElementById('message-content').value = ''; // Wyczyść pole wiadomości
             })
             .catch(error => {
@@ -378,23 +432,98 @@
             });
   }
 
+
+  // Funkcja do pobierania i wyświetlania wiadomości
+  async function fetchMessages() {
+    try {
+      console.log('Pobieranie nowych wiadomości...');
+
+      // Parametr 'after' jest wymagany, aby pobierać wiadomości od ostatniego zapisanego timestamp
+      const timestampParam = lastMessageTimestamp ? `&after=${lastMessageTimestamp}` : '';
+
+      // Wysyłamy zapytanie do API
+      const response = await axios.get(`/communication/messages/${userId}?lang=${language}${timestampParam}`);
+      const messages = response.data;
+
+      // Jeśli są nowe wiadomości, wyświetlamy je
+      if (messages.length > 0) {
+        updateMessages(messages);
+      }
+    } catch (error) {
+      console.error("Błąd podczas pobierania wiadomości:", error);
+    }
+  }
+
+  // Funkcja do aktualizacji wiadomości
+  function updateMessages(messages) {
+    const messagesContainer = document.getElementById('messages-container');
+
+    // Pobieramy już wyświetlone wiadomości z DOM
+    const existingMessages = Array.from(messagesContainer.children).map(child => child.textContent);
+
+    messages.forEach(message => {
+      const messageTimestamp = new Date(message.timestamp).getTime();
+
+      // Jeżeli ta wiadomość nie była jeszcze wyświetlona, dodaj ją do widoku
+      if (!existingMessages.includes(message.content) && (messageTimestamp > (new Date(lastMessageTimestamp)).getTime() || !lastMessageTimestamp)) {
+        displayMessage(message);
+
+        // Zaktualizuj timestamp ostatniej wiadomości
+        lastMessageTimestamp = message.timestamp;
+      }
+    });
+
+    // Sprawdzamy, czy kontener jest przewinięty na dół, a jeśli tak, to przewijamy do dołu
+    if (messagesContainer.scrollHeight - messagesContainer.scrollTop === messagesContainer.clientHeight) {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+  }
+
+
+  // Polling co 5 sekund
+  setInterval(fetchMessages, 5000);
+
   // Funkcja do wyświetlania wiadomości
   function displayMessage(message) {
     const messagesContainer = document.getElementById('messages-container');
     const messageElement = document.createElement('div');
+
+    // Dodanie odpowiednich klas do wiadomości
     messageElement.classList.add('message');
-    messageElement.textContent = `[${message.timestamp}] ${message.content}`;
+
+    if (message.senderId === userId) {
+      messageElement.classList.add('sent');  // Wiadomość wysłana przez użytkownika
+    } else {
+      messageElement.classList.add('received');  // Wiadomość odebrana
+    }
+
+    // Tworzenie osobnych elementów dla treści, nadawcy i godziny
+    const messageContent = document.createElement('div');
+    messageContent.classList.add('message-content');
+    messageContent.textContent = message.content;
+
+    const messageTimestamp = document.createElement('div');
+    messageTimestamp.classList.add('message-timestamp');
+    const timestamp = new Date(message.timestamp);
+    const formattedTime = timestamp.toLocaleString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    messageTimestamp.textContent = `[${formattedTime}]`;
+
+    const messageSender = document.createElement('div');
+    messageSender.classList.add('message-sender');
+    messageSender.textContent = `ID: ${message.senderId}`;
+
+    // Dołączanie elementów do wiadomości
+    messageElement.appendChild(messageTimestamp);
+    messageElement.appendChild(messageSender);
+    messageElement.appendChild(messageContent);
+
     messagesContainer.appendChild(messageElement);
+
+    // Przewijanie kontenera do dołu po dodaniu nowej wiadomości
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
-
-  // Zainicjalizuj chat po załadowaniu strony
-  window.onload = function() {
-    document.getElementById('sender-id-container').style.display = 'flex'; // Wyświetlenie okna z ID użytkownika
-    document.getElementById('chat-container').style.display = 'none'; // Ukrycie czatu
-    loadTranslations(language); // Ładowanie tłumaczeń po załadowaniu strony
-  };
 </script>
+
 
 </body>
 </html>
