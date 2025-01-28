@@ -88,6 +88,9 @@
             justify-content: space-between;
             margin-bottom: 20px;
         }
+        #filterTypeSection, #filterNameSection {
+            transition: all 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body>
@@ -168,6 +171,11 @@
         </div>
 
         <div style="margin-bottom: 1rem;">
+            <br><br><button id="filterByTypeBtn">Filter by Type</button>
+            <button id="filterByNameBtn">Filter by Name</button>
+        </div>
+
+        <div id="filterTypeSection" style="display: none; margin-top: 1rem;">
             <label style="font-weight: bold;">Filter by Type:</label>
             <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -191,6 +199,16 @@
                     <input type="checkbox" class="filterType" id="filterAUTHORITY_REPRESENTATIVE" value="AUTHORITY_REPRESENTATIVE" checked>
                 </div>
             </div>
+        </div>
+
+        <div id="filterNameSection" style="display: none; margin-top: 1rem;">
+            <label for="nameFilter" style="font-weight: bold;">Filter by Name:</label>
+            <input
+                    type="text"
+                    id="nameFilter"
+                    placeholder="Enter a name to filter markers"
+                    style="margin-top: 0.5rem; width: 100%;"
+            />
         </div>
 
     </div>
@@ -448,6 +466,16 @@
     });
     map.addControl(drawControl);
 
+    document.getElementById('filterByTypeBtn').addEventListener('click', () => {
+        document.getElementById('filterTypeSection').style.display = 'block';
+        document.getElementById('filterNameSection').style.display = 'none';
+    });
+
+    document.getElementById('filterByNameBtn').addEventListener('click', () => {
+        document.getElementById('filterTypeSection').style.display = 'none';
+        document.getElementById('filterNameSection').style.display = 'block';
+    });
+
     const mapMarkers = []; // Store all markers
 
     function filterMarkers() {
@@ -485,7 +513,17 @@
         });
     });
 
+    document.getElementById('nameFilter').addEventListener('input', () => {
+        const nameFilter = document.getElementById('nameFilter').value.toLowerCase().trim();
 
+        mapMarkers.forEach(({ marker, name }) => {
+            if (name.toLowerCase().includes(nameFilter)) {
+                map.addLayer(marker); // Show marker
+            } else {
+                map.removeLayer(marker); // Hide marker
+            }
+        });
+    });
 
 
     // Fetch existing locations and display on the map
