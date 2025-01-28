@@ -8,8 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Controller // Zmieniono na @Controller, ponieważ obsługujemy również widoki HTML
 @RequestMapping("/communication")
@@ -66,6 +65,18 @@ public class CommunicationController {
         Locale locale = Locale.forLanguageTag(language);
         List<Notification> notifications = communicationManager.getNotificationsForRecipient(recipientId, locale);
         return ResponseEntity.ok(notifications);
+    }
+
+    @GetMapping("/translations")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> getTranslations(@RequestParam("lang") String lang) {
+        Locale locale = Locale.forLanguageTag(lang);
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
+
+        Map<String, String> translations = new HashMap<>();
+        bundle.keySet().forEach(key -> translations.put(key, bundle.getString(key)));
+
+        return ResponseEntity.ok(translations);
     }
 
     // Nowe mapowanie do pliku chat.html

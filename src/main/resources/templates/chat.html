@@ -223,24 +223,29 @@
 </head>
 <body>
 
+<!-- Przycisk do zmiany języka -->
+<div id="language-switcher">
+  <button id="change-language-button" onclick="changeLanguage()">Przełącz na angielski</button>
+</div>
+
 <!-- Okno wprowadzania Sender ID -->
 <div id="sender-id-container" class="sender-id-container">
   <div class="sender-id-form">
-    <h2>Wprowadź swoje ID użytkownika</h2>
+    <h2 data-i18n="enter-id">Wprowadź swoje ID użytkownika</h2>
     <input type="text" id="sender-id-input" placeholder="Wpisz swoje ID" />
-    <button id="start-chat-button" onclick="startChat()">Przejdź do czatu</button>
-    <p id="error-message-sender" style="color: red; display: none;"></p>
+    <button id="start-chat-button" onclick="startChat()" data-i18n="start-chat-button">Przejdź do czatu</button>
+    <p id="error-message-sender" style="color: red; display: none;" data-i18n="error-empty-id"></p>
   </div>
 </div>
 
 <!-- Chat i powiadomienia, początkowo ukryte -->
 <div id="chat-container" class="chat-container" style="display: none;">
   <header class="chat-header">
-    <h1>Chat & Notifications</h1>
+    <h1 data-i18n="chat-notifications">Chat & Powiadomienia</h1>
     <div class="user-info">
       <p id="user-info"></p>
       <div>
-        <label for="recipient-input">Odbiorca (ID):</label>
+        <label for="recipient-input" data-i18n="recipient">Odbiorca (ID):</label>
         <input type="text" id="recipient-input" placeholder="Wpisz ID odbiorcy">
       </div>
     </div>
@@ -253,9 +258,9 @@
       </div>
       <div class="message-input">
         <textarea id="message-content" placeholder="Wpisz swoją wiadomość"></textarea>
-        <button id="send-message" onclick="sendMessage()">Wyślij</button>
+        <button id="send-message" onclick="sendMessage()" data-i18n="send-message">Wyślij</button>
       </div>
-      <p id="error-message-chat" style="color: red; display: none;"></p>
+      <p id="error-message-chat" style="color: red; display: none;" data-i18n="error-message-send"></p>
     </section>
 
     <section class="notification-section">
@@ -272,7 +277,37 @@
 
 <script>
   let userId = null; // Zmienna przechowująca ID użytkownika
-  const language = "pl";
+  let language = "pl"; // Początkowy język
+  let translations = {}; // Obiekt, w którym będą przechowywane tłumaczenia
+
+  // Funkcja zmieniająca język strony
+  function changeLanguage() {
+    language = (language === "pl") ? "en" : "pl"; // Przełączamy język
+    loadTranslations(language); // Ładujemy odpowiednie tłumaczenia
+  }
+
+  // Funkcja ładująca tłumaczenia z serwera
+  async function loadTranslations(lang) {
+    try {
+      const response = await axios.get(`/communication/translations?lang=${lang}`);
+      translations = response.data; // Odpowiedź serwera to obiekt z tłumaczeniami
+      localizePage();
+    } catch (error) {
+      console.error('Błąd podczas ładowania tłumaczeń:', error);
+    }
+  }
+
+  // Funkcja lokalizująca stronę
+  function localizePage() {
+    const elements = document.querySelectorAll('[data-i18n]');
+    elements.forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      el.textContent = translations[key] || key; // Jeśli tłumaczenie nie istnieje, zostaje domyślny tekst
+    });
+
+    const button = document.getElementById('change-language-button');
+    button.textContent = language === "pl" ? "Przełącz na angielski" : "Switch to Polish";
+  }
 
   // Funkcja uruchamiająca czat po wpisaniu senderId
   function startChat() {
@@ -280,7 +315,7 @@
     const errorMessageElement = document.getElementById('error-message-sender');
 
     if (!senderId) {
-      errorMessageElement.textContent = "Proszę wpisać swoje ID użytkownika.";
+      errorMessageElement.textContent = translations["error-empty-id"];
       errorMessageElement.style.display = 'block';
       return;
     }
@@ -314,13 +349,13 @@
 
     // Walidacja pól
     if (!recipientId) {
-      errorMessageElement.textContent = "Proszę wpisać ID odbiorcy.";
+      errorMessageElement.textContent = translations["error-empty-recipient"];
       errorMessageElement.style.display = 'block';
       return;
     }
 
     if (!messageContent) {
-      errorMessageElement.textContent = "Proszę wpisać treść wiadomości.";
+      errorMessageElement.textContent = translations["error-empty-message"];
       errorMessageElement.style.display = 'block';
       return;
     }
@@ -338,7 +373,7 @@
             })
             .catch(error => {
               console.error('Błąd podczas wysyłania wiadomości:', error);
-              errorMessageElement.textContent = "Wystąpił błąd podczas wysyłania wiadomości.";
+              errorMessageElement.textContent = translations["error-message-send"];
               errorMessageElement.style.display = 'block';
             });
   }
@@ -357,6 +392,7 @@
   window.onload = function() {
     document.getElementById('sender-id-container').style.display = 'flex'; // Wyświetlenie okna z ID użytkownika
     document.getElementById('chat-container').style.display = 'none'; // Ukrycie czatu
+    loadTranslations(language); // Ładowanie tłumaczeń po załadowaniu strony
   };
 </script>
 
