@@ -150,16 +150,32 @@
             <button id="resetRouteBtn">Reset Route</button>
         </div>
 
-        <div>
-            <label for="filterType">Filter by Type:</label>
-            <select id="filterType">
-                <option value="ALL">Show All</option>
-                <option value="VICTIM">Victims</option>
-                <option value="VOLUNTEER">Volunteers</option>
-                <option value="AID_ORGANIZATION">Aid Organizations</option>
-                <option value="AUTHORITY_REPRESENTATIVE">Authority Representatives</option>
-            </select>
+        <div style="margin-bottom: 1rem;">
+            <label style="font-weight: bold;">Filter by Type:</label>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label for="filterALL">Show All</label>
+                    <input type="checkbox" id="filterALL" value="ALL" checked>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label for="filterVICTIM">Victims</label>
+                    <input type="checkbox" class="filterType" id="filterVICTIM" value="VICTIM" checked>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label for="filterVOLUNTEER">Volunteers</label>
+                    <input type="checkbox" class="filterType" id="filterVOLUNTEER" value="VOLUNTEER" checked>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label for="filterAID_ORGANIZATION">Aid Organizations</label>
+                    <input type="checkbox" class="filterType" id="filterAID_ORGANIZATION" value="AID_ORGANIZATION" checked>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label for="filterAUTHORITY_REPRESENTATIVE">Authority Representatives</label>
+                    <input type="checkbox" class="filterType" id="filterAUTHORITY_REPRESENTATIVE" value="AUTHORITY_REPRESENTATIVE" checked>
+                </div>
+            </div>
         </div>
+
     </div>
 </div>
 
@@ -349,9 +365,17 @@
 
     const mapMarkers = []; // Store all markers
 
-    function filterMarkers(type) {
+    function filterMarkers() {
+        const selectedTypes = Array.from(document.querySelectorAll('.filterType:checked'))
+            .map(checkbox => checkbox.value);
+
+        if (selectedTypes.includes('ALL')) {
+            mapMarkers.forEach(({ marker }) => map.addLayer(marker));
+            return;
+        }
+
         mapMarkers.forEach(({ marker, locationType }) => {
-            if (type === 'ALL' || locationType === type) {
+            if (selectedTypes.includes(locationType)) {
                 map.addLayer(marker); // Show marker
             } else {
                 map.removeLayer(marker); // Hide marker
@@ -359,10 +383,25 @@
         });
     }
 
-    document.getElementById('filterType').addEventListener('change', function () {
-        const selectedType = this.value;
-        filterMarkers(selectedType);
+    document.querySelectorAll('.filterType, #filterALL').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            if (checkbox.value === 'ALL') {
+                if (checkbox.checked) {
+                    document.querySelectorAll('.filterType').forEach(cb => cb.checked = true);
+                } else {
+                    document.querySelectorAll('.filterType').forEach(cb => cb.checked = false);
+                }
+            } else {
+                const allChecked = Array.from(document.querySelectorAll('.filterType')).every(cb => cb.checked);
+                document.getElementById('filterALL').checked = allChecked;
+            }
+
+            filterMarkers();
+        });
     });
+
+
+
 
     // Fetch existing locations and display on the map
     fetch('/map/locations')
