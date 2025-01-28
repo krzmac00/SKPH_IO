@@ -140,17 +140,29 @@
         </div>
 
         <div>
+            <!-- Start Point -->
+            <label for="startAddress">Start Address:</label>
+            <input type="text" id="startAddress" placeholder="Enter start address" />
+            <button type="button" id="geocodeStart">Geocode</button>
+
             <label for="startCoords">Start Point (Lat, Lng):</label>
             <input type="text" id="startCoords" placeholder="51.7592, 19.4560" />
+
+            <!-- End Point -->
+            <label for="endAddress">End Address:</label>
+            <input type="text" id="endAddress" placeholder="Enter end address" />
+            <button type="button" id="geocodeEnd">Geocode</button>
 
             <label for="endCoords">End Point (Lat, Lng):</label>
             <input type="text" id="endCoords" placeholder="51.7600, 19.4590" />
 
+            <!-- Intermediate Points -->
             <div id="intermediateContainer">
                 <!-- Dynamic list of intermediate points will be added here -->
             </div>
-
             <button id="addIntermediateBtn">Add Intermediate Point</button><br><br>
+
+            <!-- Route Actions -->
             <button id="findRouteBtn">Find Route</button>
             <button id="resetRouteBtn">Reset Route</button>
         </div>
@@ -265,6 +277,24 @@
                 alert('Error occurred while geocoding the address.');
             });
     });
+
+    function geocodeAddress(address, callback) {
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    const lat = parseFloat(data[0].lat);
+                    const lon = parseFloat(data[0].lon);
+                    callback([lat, lon]);
+                } else {
+                    alert('Address not found!');
+                }
+            })
+            .catch(error => {
+                console.error('Geocoding error:', error);
+                alert('Geocoding failed.');
+            });
+    }
 
 
     const colorMapping = {
@@ -604,6 +634,20 @@
         manualForm.classList.add('hidden');
     });
 
+    document.getElementById('geocodeStart').addEventListener('click', function () {
+        const address = document.getElementById('startAddress').value;
+        geocodeAddress(address, (coords) => {
+            document.getElementById('startCoords').value = coords.join(', ');
+        });
+    });
+
+    document.getElementById('geocodeEnd').addEventListener('click', function () {
+        const address = document.getElementById('endAddress').value;
+        geocodeAddress(address, (coords) => {
+            document.getElementById('endCoords').value = coords.join(', ');
+        });
+    });
+
     document.getElementById('findRouteBtn').addEventListener('click', function () {
         const startCoords = document.getElementById('startCoords').value.split(',').map(Number);
         const endCoords = document.getElementById('endCoords').value.split(',').map(Number);
@@ -648,12 +692,53 @@
     // Add event listener to dynamically add intermediate points
     document.getElementById('addIntermediateBtn').addEventListener('click', function () {
         const container = document.getElementById('intermediateContainer');
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'intermediateInput';
-        input.placeholder = 'Enter intermediate coords (Lat, Lng)';
-        container.appendChild(input);
+
+        const pointDiv = document.createElement('div');
+        pointDiv.className = 'intermediatePoint';
+
+        // Pole dla adresu
+        const addressInput = document.createElement('input');
+        addressInput.type = 'text';
+        addressInput.className = 'intermediateAddress';
+        addressInput.placeholder = 'Enter intermediate address';
+
+        // Przycisk geokodowania
+        const geocodeButton = document.createElement('button');
+        geocodeButton.type = 'button';
+        geocodeButton.textContent = 'Geocode';
+        geocodeButton.addEventListener('click', function () {
+            const address = addressInput.value;
+            geocodeAddress(address, (coords) => {
+                coordsInput.value = coords.join(', ');
+            });
+        });
+
+        // Pole dla współrzędnych
+        const coordsInput = document.createElement('input');
+        coordsInput.type = 'text';
+        coordsInput.className = 'intermediateCoords';
+        coordsInput.placeholder = 'Lat, Lng';
+
+        // Dodaj przycisk do dynamicznie dodanej sekcji
+        const addButton = document.createElement('button');
+        addButton.type = 'button';
+        addButton.textContent = 'Add Point';
+        addButton.addEventListener('click', function () {
+            const coords = coordsInput.value.split(',').map(Number);
+            if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+                addWaypoint(coords, 'intermediate');
+            } else {
+                alert('Invalid coordinates!');
+            }
+        });
+
+        pointDiv.appendChild(addressInput);
+        pointDiv.appendChild(geocodeButton);
+        pointDiv.appendChild(coordsInput);
+        pointDiv.appendChild(addButton);
+        container.appendChild(pointDiv);
     });
+
 
 </script>
 </body>
