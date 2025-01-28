@@ -13,11 +13,12 @@ import java.util.List;
 @Repository
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
-//    @Query("SELECT l FROM Location l WHERE ST_DWithin(l.coordinates, :point, :radius) = true")
-//    List<Location> findLocationsWithinRadius(@Param("point") Point point, @Param("radius") double radius);
-//
-//    @Query("SELECT l FROM Location l WHERE ST_Within(l.coordinates, :geometry) = true")
-//    List<Location> findLocationsWithinGeometry(@Param("geometry") Geometry geometry);
-//
-//    List<Location> findByName(String name);
+    @Query(value = """
+        SELECT * FROM locations 
+        WHERE ST_DWithin(coordinates, ST_SetSRID(ST_Point(:longitude, :latitude), 4326), :radius / 111319.9)
+    """, nativeQuery = true)
+    List<Location> findNearbyLocations(double latitude, double longitude, double radius);
+
+
+    List<Location> findByNameIgnoreCase(String name);
 }

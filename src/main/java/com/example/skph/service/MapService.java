@@ -60,16 +60,13 @@ public class MapService {
         return locationRepository.findById(id).get();
     }
 
-//    public List<Location> findLocationsWithinRadius(double latitude, double longitude, double radius) {
-//        Point point = GeometryHelper.createPoint(latitude, longitude);
-//        return locationRepository.findLocationsWithinRadius(point, radius);
-//    }
-//
-//    public List<Location> findLocationsWithinPolygon(Geometry geometry) {
-//        return locationRepository.findLocationsWithinGeometry(geometry);
-//    }
-//
-//    public List<Location> getLocationsByName(String name) {
-//        return locationRepository.findByName(name);
-//    }
+    public List<Location> getNearbyLocations(Point center, double radius) {
+        double latitude = center.getY();
+        double longitude = center.getX();
+        return locationRepository.findNearbyLocations(latitude, longitude, radius);
+    }
+
+    public List<Location> findLocationByName(String name) {
+        return locationRepository.findByNameIgnoreCase(name);
+    }
 }

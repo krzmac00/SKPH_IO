@@ -8,6 +8,7 @@ import com.example.skph.model.LocationType;
 import com.example.skph.service.MapService;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+
+import static com.example.skph.model.GeometryHelper.geometryFactory;
 
 @Controller
 @Profile("dev")
@@ -98,22 +101,20 @@ public class MapController {
         }
     }
 
+    @GetMapping("/locations/nearby")
+    public ResponseEntity<List<Location>> getNearbyLocations(
+            @RequestParam double latitude,
+            @RequestParam double longitude,
+            @RequestParam double radius) {
 
-//    @GetMapping("/radius")
-//    public List<Location> findLocationsWithinRadius(
-//            @RequestParam double latitude,
-//            @RequestParam double longitude,
-//            @RequestParam double radius) {
-//        return mapService.findLocationsWithinRadius(latitude, longitude, radius);
-//    }
-//
-//    @PostMapping("/geometry")
-//    public List<Location> findLocationsWithinGeometry(@RequestBody Geometry geometry) {
-//        return mapService.findLocationsWithinPolygon(geometry);
-//    }
-//
-//    @GetMapping("/name")
-//    public List<Location> getLocationsByName(@RequestParam String name) {
-//        return mapService.getLocationsByName(name);
-//    }
+        Point center = geometryFactory.createPoint(new org.locationtech.jts.geom.Coordinate(longitude, latitude));
+        List<Location> locations = mapService.getNearbyLocations(center, radius);
+        return ResponseEntity.ok(locations);
+    }
+
+    @GetMapping("/locations/search")
+    public ResponseEntity<List<Location>> findLocationByName(@RequestParam String name) {
+        List<Location> locations = mapService.findLocationByName(name);
+        return ResponseEntity.ok(locations);
+    }
 }
