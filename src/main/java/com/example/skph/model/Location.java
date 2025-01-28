@@ -7,9 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
-import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
@@ -51,5 +49,17 @@ public class Location {
         this.disasterArea = disasterArea;
 
     }
+
+    public double calculateDistance(Point other) {
+        if (this.coordinates == null || other == null) {
+            throw new IllegalArgumentException("Both points must be defined to calculate distance.");
+        }
+
+        double distanceDegrees = this.coordinates.distance(other);
+
+        double metersPerDegree = 111_319.9;
+        return distanceDegrees * metersPerDegree;
+    }
+
 
 }
