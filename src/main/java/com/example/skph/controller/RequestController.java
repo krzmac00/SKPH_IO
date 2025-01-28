@@ -49,9 +49,86 @@ public class RequestController {
         return requestService.getRequestById(id);
     }*/
 
+//    @GetMapping("/search")
+//    public String getAllRequests(@RequestParam(value = "requesterId", defaultValue = "16") Long requesterId, Model model) {
+//        List<RequestDTO> result = requestService.getRequestsByRequesterId(requesterId).stream()
+//                .map(request -> new RequestDTO(
+//                        request.getId(),
+//                        request.getStartDate(),
+//                        request.getEndDate(),
+//                        request.getAddress().getAddress(),
+//                        taskService.getTasksByRequestId(request.getId()).stream()
+//                                .map(task -> new TaskDTO(
+//                                        task.getId(),
+//                                        task.getResource().getName(),
+//                                        statusHistoryService.getDaysByTaskId(task.getId()).stream()
+//                                                .map(day -> new DayDTO(day.getStatus(), day.getTime()))
+//                                                .toList()
+//                                )).toList()
+//                )).toList();
+//
+//        model.addAttribute("result", result); // Dodanie do modelu
+//        return "requestSearch2";
+//    }
+
+
+//    @GetMapping("/search")
+//    public String getAllRequests(@RequestParam(value = "requesterId", defaultValue = "16") Long requesterId, Model model) {
+//        // Pobierz listę RequestDTO
+//        List<RequestDTO> result = requestService.getRequestsByRequesterId(requesterId).stream()
+//                .map(request -> new RequestDTO(
+//                        request.getId(),
+//                        request.getStartDate(),
+//                        request.getEndDate(),
+//                        request.getAddress().getAddress(),
+//                        taskService.getTasksByRequestId(request.getId()).stream()
+//                                .map(task -> new TaskDTO(
+//                                        task.getId(),
+//                                        task.getResource().getName(),
+//                                        statusHistoryService.getDaysByTaskId(task.getId()).stream()
+//                                                .map(day -> new DayDTO(day.getStatus(), day.getTime()))
+//                                                .toList()
+//                                )).toList()
+//                )).toList();
+//
+//        // Dodanie listy result do modelu
+//        model.addAttribute("result", result);
+//
+//        // Wyświetlenie danych na konsoli (opcjonalne)
+//        result.forEach(System.out::println);
+//
+//        // Zwrócenie nazwy widoku
+//        return "requestSearch2";
+//    }
+
+
+//    @GetMapping("/search")
+//    public String getAllRequests(@RequestParam(value = "requesterId", defaultValue = "16") Long requesterId) {
+//        List<RequestDTO> result = requestService.getRequestsByRequesterId(requesterId).stream()
+//                .map(request -> new RequestDTO(
+//                        request.getId(),
+//                        request.getStartDate(),
+//                        request.getEndDate(),
+//                        request.getAddress().getAddress(),
+//                        taskService.getTasksByRequestId(request.getId()).stream()
+//                                .map(task -> new TaskDTO(
+//                                        task.getId(),
+//                                        task.getResource().getName(),
+//                                        statusHistoryService.getDaysByTaskId(task.getId()).stream()
+//                                                .map(day -> new DayDTO(day.getStatus(), day.getTime()))
+//                                                .toList()
+//                                )).toList()
+//                )).toList();
+//        result.stream().forEach(System.out::println);
+//        return "requestSearch2";
+//    }
+
+
+
     @GetMapping("/search")
-    public String getAllRequests(@RequestParam(value = "requesterId", defaultValue = "22") Long requesterId) {
-        List<RequestDTO> result = requestService.getRequestsByRequesterId(requesterId).stream()
+    @ResponseBody  // Wymusza zwrócenie JSON zamiast widoku HTML
+    public List<RequestDTO> getAllRequests(@RequestParam(value = "requesterId", defaultValue = "16") Long requesterId) {
+        return requestService.getRequestsByRequesterId(requesterId).stream()
                 .map(request -> new RequestDTO(
                         request.getId(),
                         request.getStartDate(),
@@ -66,9 +143,14 @@ public class RequestController {
                                                 .toList()
                                 )).toList()
                 )).toList();
-        result.stream().forEach(System.out::println);
-        return "requestSearch";
     }
+
+    @GetMapping("/search-page")
+    public String showSearchPage() {
+        return "requestSearch2"; // Nazwa pliku HTML w katalogu templates (bez rozszerzenia .html)
+    }
+
+
 
 //    @GetMapping("/byRequester")
 //    public List<Request> getRequestsByRequester(@RequestBody Requester requester) {
@@ -91,6 +173,10 @@ public class RequestController {
         Clothes clothes = new Clothes();
         Shelter shelter = new Shelter();
         Other other = new Other();
+        food.toGive = false;
+        clothes.toGive = false;
+        shelter.toGive = false;
+        other.toGive = false;
         model.addAttribute("food", food);
         model.addAttribute("clothes", clothes);
         model.addAttribute("shelter", shelter);

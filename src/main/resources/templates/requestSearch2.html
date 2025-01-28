@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Search Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+<h1>Request Search Results</h1>
+<table id="requestTable">
+    <thead>
+    <tr>
+        <th>Request ID</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Address</th>
+        <th>Task ID</th>
+        <th>Resource</th>
+        <th>Status</th>
+        <th>Date of Last Status Change</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Dynamic rows will be inserted here -->
+    </tbody>
+</table>
+
+<script>
+    // Fetch JSON data from the endpoint
+    async function fetchRequests() {
+        try {
+            const response = await fetch('http://localhost:8080/requests/search'); // Adjust the URL if needed
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            populateTable(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    // Populate the table with the fetched data
+    function populateTable(data) {
+        const tableBody = document.querySelector('#requestTable tbody');
+
+        data.forEach(request => {
+            const requestRow = document.createElement('tr');
+            requestRow.innerHTML = `
+                <td>${request.id}</td>
+                <td>${formatDate(request.startDate)}</td>
+                <td>${formatDate(request.endDate)}</td>
+                <td>${request.address}</td>
+            `;
+            tableBody.appendChild(requestRow);
+
+            request.tasks.forEach(task => {
+                const taskRow = document.createElement('tr');
+                taskRow.innerHTML = `
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>${task.id}</td>
+                    <td>${task.resource}</td>
+                `;
+                tableBody.appendChild(taskRow);
+
+                task.days.forEach(day => {
+                    const dayRow = document.createElement('tr');
+                    dayRow.innerHTML = `
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>${day.status}</td>
+                        <td>${formatDate(day.time)}</td>
+                    `;
+                    tableBody.appendChild(dayRow);
+                });
+            });
+        });
+    }
+
+    // Format date for better readability
+    function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        const date = new Date(dateString);
+        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    }
+
+    // Fetch and populate data when the page loads
+    document.addEventListener('DOMContentLoaded', fetchRequests);
+</script>
+</body>
+</html>

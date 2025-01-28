@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="requestsSearch" content="width=device-width, initial-scale=1.0">
-    <meta requesterId = "22">
+    <meta requesterId = "16">
     <title>Table of Stuff</title>
     <style>
         body {
@@ -52,23 +52,68 @@
 </table>
 
 <script>
-    const searchPath = '/requests/search';
-    console.log(searchPath);
+    // const searchPath = '/requests/search';
+    // console.log(searchPath);
 
-    const requesterId = 22;
-    console.log(requesterId);
+    // const requesterId = 16;
+    // console.log(requesterId);
+
+    // document.addEventListener("DOMContentLoaded", () => {
+    //     fetch(`requests/search?requesterId=${requesterId}`)
+    //     //fetch(`/search/22`)
+    //         .then(response => response.json())
+    //         .then(data => populateTable(data))
+    //         .catch(error => console.error('Error fetching data:', error));
+    // });
+    //
+    // function populateTable(requestsData) {
+    //     const tableBody = document.querySelector('#data-table tbody');
+    //     tableBody.innerHTML = '';  // Clear existing table rows
+    //
+    //     requestsData.forEach(request => {
+    //         request.tasks.forEach(task => {
+    //             task.days.forEach(day => {
+    //                 const row = document.createElement('tr');
+    //                 row.innerHTML = `
+    //                 <td>${request.id}</td>
+    //                 <td>${new Date(request.startDate).toLocaleString()}</td>
+    //                 <td>${new Date(request.endDate).toLocaleString()} || 'Request is being completed'</td>
+    //                 <td>${request.status}</td>
+    //                 <td>${request.address}</td>
+    //                 <td>${task.id}</td>
+    //                 <td>${task.resource}</td>
+    //                 <td>${day.status}</td>
+    //                 <td>${new Date(day.time).toLocaleString()}</td>
+    //             `;
+    //                 tableBody.appendChild(row);
+    //             });
+    //         });
+    //     });
+    // }
+
+
+
 
     document.addEventListener("DOMContentLoaded", () => {
-        fetch(`requests/search?requesterId=${requesterId}`)
-        //fetch(`/search/22`)
-            .then(response => response.json())
-            .then(data => populateTable(data))
+        // Pobranie requesterId z meta tagu
+        const metaTag = document.querySelector('meta[requesterId]');
+        const requesterId = metaTag ? metaTag.getAttribute('requesterId') : 16;
+
+        // Wykonanie żądania fetch do API
+        fetch(`/requests/search?requesterId=${requesterId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => populateTable(data))  // Wypełnienie tabeli danymi
             .catch(error => console.error('Error fetching data:', error));
     });
 
     function populateTable(requestsData) {
         const tableBody = document.querySelector('#data-table tbody');
-        tableBody.innerHTML = '';  // Clear existing table rows
+        tableBody.innerHTML = ''; // Wyczyść istniejące wiersze
 
         requestsData.forEach(request => {
             request.tasks.forEach(task => {
@@ -76,20 +121,22 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                     <td>${request.id}</td>
-                    <td>${new Date(request.startDate).toLocaleString()}</td>
-                    <td>${new Date(request.endDate).toLocaleString()} || 'Request is being completed'</td>
+                    <td>${new Date(request.startDate).toLocaleDateString()}</td>
+                    <td>${request.endDate ? new Date(request.endDate).toLocaleDateString() : 'Request is being completed'}</td>
                     <td>${request.status}</td>
                     <td>${request.address}</td>
                     <td>${task.id}</td>
                     <td>${task.resource}</td>
                     <td>${day.status}</td>
-                    <td>${new Date(day.time).toLocaleString()}</td>
+                    <td>${new Date(day.time).toLocaleDateString()}</td>
                 `;
                     tableBody.appendChild(row);
                 });
             });
         });
     }
+
+
 
     // Function to render the table rows dynamically
     /*function renderTable(data) {
