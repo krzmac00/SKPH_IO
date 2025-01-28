@@ -118,11 +118,16 @@
                     <option value="4">Authority Representative</option>
                 </select>
 
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" placeholder="Enter address" required>
+                <button type="button" id="geocodeButton">Geocode</button>
+
                 <label for="latitude">Latitude:</label>
                 <input type="text" id="latitude" name="latitude" required>
 
                 <label for="longitude">Longitude:</label>
                 <input type="text" id="longitude" name="longitude" required>
+
 
                 <input type="submit" value="Add Point">
             </form>
@@ -224,6 +229,43 @@
 
         map.setView(center, 15);
     }).addTo(map);
+
+    document.getElementById('geocodeButton').addEventListener('click', function () {
+        const address = document.getElementById('address').value;
+
+        if (!address) {
+            alert('Please enter an address to geocode.');
+            return;
+        }
+
+        const geocodeUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+
+        fetch(geocodeUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch geocode data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.length === 0) {
+                    alert('No results found for the given address.');
+                    return;
+                }
+
+                const { lat, lon } = data[0];
+
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lon;
+
+                alert(`Geocoded address: ${lat}, ${lon}`);
+            })
+            .catch(error => {
+                console.error('Error geocoding address:', error);
+                alert('Error occurred while geocoding the address.');
+            });
+    });
+
 
     const colorMapping = {
         VICTIM: 'red',
