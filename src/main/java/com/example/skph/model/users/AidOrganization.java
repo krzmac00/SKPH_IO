@@ -22,16 +22,16 @@ public class AidOrganization extends User {
     private List<Volunteer> volunteers = new ArrayList<>();
 
 
-    // Przypisuje zasoby do konkretnego zadania.
-    public void assignResourcesToTask(Task task, List<Resource> resources) {
-        for (Resource resource : resources) {
-            if (resource.isAvailable()) {
-                resource.assignTask(task);
-            } else {
-                throw new IllegalStateException("Resource " + resource.getName() + " is not available.");
-            }
-        }
-    }
+//    // Przypisuje zasoby do konkretnego zadania.
+//    public void assignResourcesToTask(Task task, List<Resource> resources) {
+//        for (Resource resource : resources) {
+//            if (resource.isAvailable()) {
+//                resource.assignTask(task);
+//            } else {
+//                throw new IllegalStateException("Resource " + resource.getName() + " is not available.");
+//            }
+//        }
+//    }
 
     // Rekrutuje ochotnika do organizacji.
     public void recruitVolunteer(Volunteer volunteer) {
