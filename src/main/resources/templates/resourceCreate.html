@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Nowy Zasób (wspólny formularz)</title>
+</head>
+<body>
+<h1>Dodaj Nowy Zasób</h1>
+
+<form th:action="@{/resources/new}" th:object="${resourceForm}" method="post">
+
+  <p>
+    <label for="name">Nazwa:</label>
+    <input type="text" id="name" th:field="*{name}" placeholder="np. Jedzenie" />
+  </p>
+  <p>
+    <label for="amount">Ilość (amount):</label>
+    <input type="number" id="amount" th:field="*{amount}" placeholder="10" />
+  </p>
+  <p>
+    <label>
+      <input type="checkbox" th:field="*{toGive}" />
+      Do oddania?
+    </label>
+  </p>
+  <p>
+    <label for="status">Status:</label>
+    <select id="status" th:field="*{status}">
+      <option th:value="AVAILABLE">AVAILABLE</option>
+      <option th:value="ALLOCATED">ALLOCATED</option>
+      <option th:value="IN_USE">IN_USE</option>
+      <option th:value="UNAVAILABLE">UNAVAILABLE</option>
+    </select>
+  </p>
+  <p>
+    <label for="resourceType">Typ zasobu:</label>
+    <select id="resourceType" th:field="*{resourceType}">
+      <option th:value="PHYSICAL">PHYSICAL</option>
+      <option th:value="FINANCIAL">FINANCIAL</option>
+      <option th:value="HUMAN">HUMAN</option>
+      <option th:value="TRANSPORT">TRANSPORT</option>
+      <option th:value="OTHER">OTHER</option>
+    </select>
+  </p>
+
+  <!-- Warunkowe sekcje: PHYSICAL -->
+  <div th:if="${resourceForm.resourceType} == 'PHYSICAL'">
+    <hr />
+    <h3>Uzupełnij dane dla zasobu fizycznego</h3>
+    <label for="physicalType">Typ fizyczny:</label>
+    <select id="physicalType" th:field="*{physicalType}">
+      <option th:value="FOOD">FOOD</option>
+      <option th:value="WATER">WATER</option>
+      <option th:value="MEDICINE">MEDICINE</option>
+      <option th:value="EQUIPMENT">EQUIPMENT</option>
+      <option th:value="CLOTHING">CLOTHING</option>
+    </select>
+  </div>
+
+  <!-- FINANCIAL -->
+  <div th:if="${resourceForm.resourceType} == 'FINANCIAL'">
+    <hr />
+    <h3>Uzupełnij dane dla zasobu finansowego</h3>
+    <p>
+      <label>Kwota: </label>
+      <input type="number" step="0.01" th:field="*{financialValue}" placeholder="np. 2000.00" />
+    </p>
+    <p>
+      <label>Waluta: </label>
+      <input type="text" th:field="*{currency}" placeholder="np. PLN" />
+    </p>
+  </div>
+
+  <!-- HUMAN -->
+  <div th:if="${resourceForm.resourceType} == 'HUMAN'">
+    <hr />
+    <h3>Uzupełnij dane dla zasobu ludzkiego</h3>
+    <p>
+      <label>Rola / stanowisko: </label>
+      <input type="text" th:field="*{humanRole}" placeholder="np. Ratownik" />
+    </p>
+    <p>
+      <label>
+        <input type="checkbox" th:field="*{availability}" />
+        Czy dostępny?
+      </label>
+    </p>
+  </div>
+
+  <!-- TRANSPORT -->
+  <div th:if="${resourceForm.resourceType} == 'TRANSPORT'">
+    <hr />
+    <h3>Uzupełnij dane dla zasobu transportowego</h3>
+    <p>
+      <label>Pojemność: </label>
+      <input type="number" th:field="*{capacity}" placeholder="np. 1000" />
+    </p>
+    <p>
+      <label>Rodzaj transportu: </label>
+      <select th:field="*{transportType}">
+        <option th:value="TRUCK">TRUCK</option>
+        <option th:value="CAR">CAR</option>
+        <option th:value="DRONE">DRONE</option>
+      </select>
+    </p>
+  </div>
+
+  <!-- OTHER -->
+  <div th:if="${resourceForm.resourceType} == 'OTHER'">
+    <hr />
+    <h3>Uzupełnij dane dla pozostałych zasobów</h3>
+    <p>
+      <label>Opis: </label>
+      <input type="text" th:field="*{description}" placeholder="np. Koce termiczne" />
+    </p>
+  </div>
+
+  <hr />
+  <button type="submit">Zapisz</button>
+</form>
+</body>
+</html>

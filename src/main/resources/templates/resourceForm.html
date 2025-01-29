@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Formularz zasobu</title>
+</head>
+<body>
+<h1>Formularz zasobu</h1>
+
+<form th:action="@{/resources/new}" th:object="${resource}" method="post">
+  <p>
+    <label>Nazwa zasobu:</label>
+    <input type="text" th:field="*{name}" />
+  </p>
+  <p>
+    <label>Ilość (amount):</label>
+    <input type="number" th:field="*{amount}" />
+  </p>
+  <p>
+    <label>Do oddania? (toGive):</label>
+    <input type="checkbox" th:field="*{toGive}" />
+  </p>
+  <p>
+    <label>Status:</label>
+    <select th:field="*{status}">
+      <option th:value="AVAILABLE">AVAILABLE</option>
+      <option th:value="ALLOCATED">ALLOCATED</option>
+      <option th:value="IN_USE">IN_USE</option>
+      <option th:value="UNAVAILABLE">UNAVAILABLE</option>
+    </select>
+  </p>
+  <p>
+    <label>Typ zasobu (ResourceType):</label>
+    <select th:field="*{resourceType}">
+      <option th:value="PHYSICAL">PHYSICAL</option>
+      <option th:value="FINANCIAL">FINANCIAL</option>
+      <option th:value="HUMAN">HUMAN</option>
+      <option th:value="TRANSPORT">TRANSPORT</option>
+      <option th:value="OTHER">OTHER</option>
+    </select>
+  </p>
+  <button type="submit">Zapisz</button>
+</form>
+
+</body>
+</html>

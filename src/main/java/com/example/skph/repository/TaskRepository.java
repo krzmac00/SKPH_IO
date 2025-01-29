@@ -1,5 +1,6 @@
 package com.example.skph.repository;
 
+import com.example.skph.model.Resource;
 import com.example.skph.model.Task;
 import com.example.skph.model.enums.TaskStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
@@ -27,6 +29,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query("SELECT t FROM Task t WHERE t.organization.id = :id")
     List<Task> findByOrganisationId(@Param("id") Long resourceId);
+
+    @Query("SELECT t.resource FROM Task t WHERE t.id = :taskId")
+    Optional<Resource> findResourceByTaskId(@Param("taskId") Long taskId);
 
     @Override
     <S extends Task> S save(S entity);

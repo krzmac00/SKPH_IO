@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Szczegóły zasobu</title>
+</head>
+<body>
+<h1>Szczegóły zasobu</h1>
+
+<div th:object="${resource}">
+  <p><strong>ID:</strong> <span th:text="*{id}">1</span></p>
+  <p><strong>Nazwa:</strong> <span th:text="*{name}">Nazwa</span></p>
+  <p><strong>Ilość:</strong> <span th:text="*{amount}">10</span></p>
+  <p><strong>Status:</strong> <span th:text="*{status}">AVAILABLE</span></p>
+  <p><strong>Typ:</strong> <span th:text="*{resourceType}">PHYSICAL</span></p>
+  <p><strong>Do oddania?:</strong> <span th:text="*{toGive}">false</span></p>
+</div>
+
+<p>
+  <a th:href="@{/resources}">Powrót do listy</a>
+</p>
+
+</body>
+</html>

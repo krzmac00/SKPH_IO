@@ -3,9 +3,7 @@ package com.example.skph.controller;
 import com.example.skph.model.Resource;
 import com.example.skph.model.User;
 import com.example.skph.model.enums.ResourceStatus;
-import com.example.skph.model.enums.ResourceType;
 import com.example.skph.model.users.AidOrganization;
-import com.example.skph.model.enums.UserRole;
 import com.example.skph.service.ResourceService;
 import com.example.skph.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,61 +28,44 @@ public class ResourceController {
     }
 
     /**
-     * Zwraca listę wszystkich zasobów w systemie (lub filtrowaną wg roli użytkownika).
+     * Zwraca listę zasobów (filtrowaną wg roli użytkownika, jeśli userId != null).
      */
     @GetMapping
-    public ResponseEntity<List<Resource>> getAllResources(
-            @RequestParam(required = false) Long userId
-    ) {
+    public ResponseEntity<List<Resource>> getAllResources(@RequestParam(required = false) Long userId) {
         if (userId != null) {
             User user = userService.findById(userId)
-                    .orElseThrow(() -> new NoSuchElementException("User not found"));
+                    .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
 
             switch (user.getRole()) {
                 case AUTHORITY:
+                    // Przedstawiciel władz widzi wszystkie zasoby
                     return ResponseEntity.ok(resourceService.getAllResources());
+
                 case AID_ORGANIZATION:
+                    // Organizacja widzi tylko zasoby przypisane do niej
                     AidOrganization orgUser = (AidOrganization) user;
-                    // np. getId() -> logika
                     List<Resource> assignedToOrg = resourceService.getResourcesAssignedToOrganization(orgUser.getId());
                     return ResponseEntity.ok(assignedToOrg);
-//                case DONOR:
-//                    // Darczyńca – np. getResourcesDonatedBy(donorId) → do zaimplementowania
-//                    return ResponseEntity.ok(/*...*/);
+
                 default:
+                    // Inne role – brak dostępu
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
         }
+        // Bez userId zwraca wszystkie zasoby
         return ResponseEntity.ok(resourceService.getAllResources());
     }
 
-
     /**
-     * Zwraca tylko zasoby o konkretnym statusie (np. AVAILABLE).
+     * Zwraca zasoby o konkretnym statusie (AVAILABLE, IN_USE, ALLOCATED, UNAVAILABLE).
      */
     @GetMapping("/status/{status}")
     public ResponseEntity<List<Resource>> getResourcesByStatus(@PathVariable("status") ResourceStatus status) {
         return ResponseEntity.ok(resourceService.findByStatus(status));
     }
 
-//    /**
-//     * Zwraca tylko zasoby danego typu (PHYSICAL, HUMAN, etc.).
-//     */
-//    @GetMapping("/type/{resourceType}")
-//    public ResponseEntity<List<Resource>> getResourcesByType(@PathVariable("resourceType") ResourceType resourceType) {
-//        return ResponseEntity.ok(resourceService.findResourcesByType(resourceType));
-//    }
-
-//    /**
-//     * Zwraca zasoby przypisane do organizacji o danym ID.
-//     */
-//    @GetMapping("/organization/{orgId}")
-//    public ResponseEntity<List<Resource>> getResourcesByOrganization(@PathVariable("orgId") Long orgId) {
-//        return ResponseEntity.ok(resourceService.getResourcesAssignedToOrganization(orgId));
-//    }
-
     /**
-     * Zwraca zasoby dostępne (AVAILABLE).
+     * Zwraca zasoby o statusie AVAILABLE.
      */
     @GetMapping("/available")
     public ResponseEntity<List<Resource>> getAvailableResources() {
@@ -92,19 +73,19 @@ public class ResourceController {
     }
 
     /**
-     * Zwraca zasoby przydzielone (IN_USE, ALLOCATED).
+     * Zwraca zasoby o statusie IN_USE lub ALLOCATED.
      */
     @GetMapping("/assigned")
     public ResponseEntity<List<Resource>> getAssignedResources() {
-        List<Resource> all = resourceService.getAllResources();
-        List<Resource> assigned = all.stream()
+        List<Resource> assigned = resourceService.getAllResources().stream()
                 .filter(r -> r.getStatus() == ResourceStatus.IN_USE || r.getStatus() == ResourceStatus.ALLOCATED)
                 .toList();
         return ResponseEntity.ok(assigned);
     }
 
-    // --------------------- CRUD / inne operacje -------------------------
-
+    /**
+     * Znajdź zasób po ID.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Resource> getResourceById(@PathVariable Long id) {
         return resourceService.findById(id)
@@ -112,18 +93,21 @@ public class ResourceController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * Tworzy nowy zasób (np. PhysicalResource, FinancialResource, itp.).
+     */
     @PostMapping
     public ResponseEntity<Resource> createResource(@RequestBody Resource resource) {
-        Resource createdResource = resourceService.addResource(resource);
-        return ResponseEntity.ok(createdResource);
+        Resource created = resourceService.addResource(resource);
+        return ResponseEntity.ok(created);
     }
 
     /**
-     * Przypisanie zasobu do zadania.
+     * Przydziela zasób do zadania (relacja 1:1).
      */
     @PostMapping("/{resourceId}/assign/{taskId}")
     public ResponseEntity<Resource> assignResourceToTask(@PathVariable Long resourceId, @PathVariable Long taskId) {
-        Resource updatedResource = resourceService.assignResourceToTask(resourceId, taskId);
-        return ResponseEntity.ok(updatedResource);
+        Resource updated = resourceService.assignResourceToTask(resourceId, taskId);
+        return ResponseEntity.ok(updated);
     }
 }

@@ -5,6 +5,14 @@
 </head>
 <body>
 <h1>Lista Zasobów</h1>
+
+<p>
+  <a th:href="@{/resources/new}">Dodaj nowy zasób</a> |
+  <a th:href="@{/resources}">Wszystkie zasoby</a> |
+  <a th:href="@{/resources/available}">Dostępne</a> |
+  <a th:href="@{/resources/assigned}">Przydzielone</a>
+</p>
+
 <table border="1">
   <thead>
   <tr>
@@ -24,6 +32,10 @@
     <td th:text="${resource.status}">AVAILABLE</td>
     <td th:text="${resource.resourceType}">PHYSICAL</td>
     <td th:text="${resource.toGive}">false</td>
+
+    <td>
+      <a th:href="@{'/resources/' + ${res.id}}">Szczegóły</a>
+    </td>
   </tr>
   </tbody>
 </table>

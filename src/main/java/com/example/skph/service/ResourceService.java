@@ -47,8 +47,9 @@ public class ResourceService {
         return resourceRepository.findById(id);
     }
 
-    public List<Resource> findResourcesByTaskId(Long taskId) {
-        return resourceRepository.findByAssignedTaskId(taskId);
+    public Resource findResourceByTaskId(Long taskId) {
+        return taskRepository.findResourceByTaskId(taskId)
+                .orElseThrow(() -> new NoSuchElementException("Resource not found for Task ID: " + taskId));
     }
 
     public List<Resource> findResourcesByType(ResourceType type) {
@@ -56,8 +57,7 @@ public class ResourceService {
     }
 
     public List<Resource> findByStatus(ResourceStatus status) {
-        List<Resource> all = resourceRepository.findAll();
-        return all.stream()
+        return resourceRepository.findAll().stream()
                 .filter(r -> r.getStatus() == status)
                 .toList();
     }
