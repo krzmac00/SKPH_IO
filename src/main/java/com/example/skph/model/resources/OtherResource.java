@@ -3,6 +3,7 @@ package com.example.skph.model.resources;
 // Reprezentuje inne zasoby w systemie.
 // Dziedziczy właściwości i metody z klasy bazowej Resource.
 import com.example.skph.model.Resource;
+import com.example.skph.model.enums.ResourceType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,5 +26,10 @@ public class OtherResource extends Resource {
     // Sprawdza, czy zasób jest dostępny.
     public boolean isAvailable() {
         return getStatus() == ResourceStatus.AVAILABLE;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.setResourceType(ResourceType.OTHER);
     }
 }

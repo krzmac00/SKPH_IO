@@ -3,6 +3,7 @@ package com.example.skph.model.resources;
 // Reprezentuje zasoby ludzkie w systemie.
 // Dziedziczy właściwości i metody z klasy bazowej Resource.
 import com.example.skph.model.Resource;
+import com.example.skph.model.enums.ResourceType;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -24,6 +25,11 @@ public class HumanResource extends Resource {
     // Sprawdza, czy zasób ludzki jest dostępny.
     public boolean isAvailable() {
         return getStatus() == ResourceStatus.AVAILABLE && availability;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.setResourceType(ResourceType.HUMAN);
     }
 
     // Przypisuje zasób ludzki do zadania.

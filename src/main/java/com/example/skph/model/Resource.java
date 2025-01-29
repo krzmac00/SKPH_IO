@@ -2,6 +2,7 @@ package com.example.skph.model;
 
 // Abstrakcyjna klasa reprezentująca zasób w systemie.
 import com.example.skph.model.enums.ResourceStatus;
+import com.example.skph.model.enums.ResourceType;
 import com.example.skph.model.users.AidOrganization;
 import com.example.skph.model.users.Organization;
 import com.example.skph.model.victimRequest.Request;
@@ -54,7 +55,9 @@ public abstract class Resource {
     @ManyToOne
     private Request request;
 
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "resource_type")
+    private ResourceType resourceType;
 
 //    @PrePersist
 //    public void onCreate() {

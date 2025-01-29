@@ -3,6 +3,7 @@ package com.example.skph.model.resources;
 // Reprezentuje zasoby finansowe, które są częścią systemu zarządzania zasobami.
 // Dziedziczy właściwości i metody z klasy bazowej Resource.
 import com.example.skph.model.Resource;
+import com.example.skph.model.enums.ResourceType;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -27,6 +28,11 @@ public class FinancialResource extends Resource {
     // Sprawdza, czy zasoby finansowe są dostępne.
     public boolean isAvailable() {
         return getStatus() == ResourceStatus.AVAILABLE && value.compareTo(BigDecimal.ZERO) > 0;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.setResourceType(ResourceType.FINANCIAL);
     }
 
     // Alokuje określoną kwotę z dostępnych środków.

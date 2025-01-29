@@ -4,6 +4,7 @@ package com.example.skph.model.resources;
 // Dziedziczy właściwości i metody z klasy bazowej Resource.
 import com.example.skph.model.Resource;
 import com.example.skph.model.enums.PhysicalResourceType;
+import com.example.skph.model.enums.ResourceType;
 import com.example.skph.model.enums.TransportType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,11 @@ public class PhysicalResource extends Resource {
     // Sprawdza, czy zasób fizyczny jest dostępny.
     public boolean isAvailable() {
         return getStatus() == ResourceStatus.AVAILABLE && quantity > 0;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.setResourceType(ResourceType.PHYSICAL);
     }
 
     // Alokuje określoną ilość zasobów fizycznych.

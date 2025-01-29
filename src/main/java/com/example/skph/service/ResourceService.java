@@ -47,13 +47,13 @@ public class ResourceService {
         return resourceRepository.findById(id);
     }
 
-//    public List<Resource> findResourcesByTaskId(Long taskId) {
-//        return resourceRepository.findByAssignedTaskId(taskId);
-//    }
+    public List<Resource> findResourcesByTaskId(Long taskId) {
+        return resourceRepository.findByAssignedTaskId(taskId);
+    }
 
-//    public List<Resource> findResourcesByType(ResourceType type) {
-//        return resourceRepository.findByResourceType(type);
-//    }
+    public List<Resource> findResourcesByType(ResourceType type) {
+        return resourceRepository.findByResourceType(type);
+    }
 
     public List<Resource> findByStatus(ResourceStatus status) {
         List<Resource> all = resourceRepository.findAll();
@@ -62,10 +62,10 @@ public class ResourceService {
                 .toList();
     }
 
-//    public List<Resource> getResourcesAssignedToOrganization(Long orgId) {
-//        // W ResourceRepository mamy metodę findByAssignedOrganizationId(orgId)
-//        return resourceRepository.findByAssignedOrganizationId(orgId);
-//    }
+    public List<Resource> getResourcesAssignedToOrganization(Long orgId) {
+        // W ResourceRepository mamy metodę findByAssignedOrganizationId(orgId)
+        return resourceRepository.findByAssignedOrganizationId(orgId);
+    }
 
     /**
      * Przypisuje zasób o ID resourceId do zadania o ID taskId.

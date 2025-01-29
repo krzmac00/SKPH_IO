@@ -47,10 +47,10 @@ public class TaskService {
         }
     }
 
-    // Wyszukanie Task po Resource ID
-    public List<Task> getTasksByResourceId(Long resourceId) {
-        return taskRepository.findByResourceId(resourceId);
-    }
+//    // Wyszukanie Task po Resource ID
+//    public List<Task> getTasksByResourceId(Long resourceId) {
+//        return taskRepository.findByResourceId(resourceId);
+//    }
 
     // Wyszukanie ukończonych Task
     public List<Task> getAccomplishedTasks() {

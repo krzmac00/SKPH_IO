@@ -32,31 +32,32 @@ public class ResourceController {
     /**
      * Zwraca listę wszystkich zasobów w systemie (lub filtrowaną wg roli użytkownika).
      */
-//    @GetMapping
-//    public ResponseEntity<List<Resource>> getAllResources(
-//            @RequestParam(required = false) Long userId
-//    ) {
-//        // jeśli podamy userId, sprawdzamy rolę
-//        if (userId != null) {
-//            User user = userService.findById(userId)
-//                    .orElseThrow(() -> new NoSuchElementException("User not found"));
-//
-//            if (user.getRole() == UserRole.AUTHORITY) {
-//                // Authority widzi wszystkie zasoby
-//                return ResponseEntity.ok(resourceService.getAllResources());
-//            } else if (user.getRole() == UserRole.AID_ORGANIZATION) {
-//                // Organizacja pomocowa widzi tylko zasoby przypisane do siebie (domyślnie)
-//                AidOrganization orgUser = (AidOrganization) user;
-//                List<Resource> assignedToOrg = resourceService.getResourcesAssignedToOrganization(orgUser.getId());
-//                return ResponseEntity.ok(assignedToOrg);
-//            }
-//            // Ewentualnie inne role, np. DONOR, VOLUNTEER, VICTIM - można tu opisać
-//            // Domyślnie brak dostępu
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-//        }
-//        // Bez userId zwróć np. wszystkie zasoby
-//        return ResponseEntity.ok(resourceService.getAllResources());
-//    }
+    @GetMapping
+    public ResponseEntity<List<Resource>> getAllResources(
+            @RequestParam(required = false) Long userId
+    ) {
+        if (userId != null) {
+            User user = userService.findById(userId)
+                    .orElseThrow(() -> new NoSuchElementException("User not found"));
+
+            switch (user.getRole()) {
+                case AUTHORITY:
+                    return ResponseEntity.ok(resourceService.getAllResources());
+                case AID_ORGANIZATION:
+                    AidOrganization orgUser = (AidOrganization) user;
+                    // np. getId() -> logika
+                    List<Resource> assignedToOrg = resourceService.getResourcesAssignedToOrganization(orgUser.getId());
+                    return ResponseEntity.ok(assignedToOrg);
+//                case DONOR:
+//                    // Darczyńca – np. getResourcesDonatedBy(donorId) → do zaimplementowania
+//                    return ResponseEntity.ok(/*...*/);
+                default:
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }
+        return ResponseEntity.ok(resourceService.getAllResources());
+    }
+
 
     /**
      * Zwraca tylko zasoby o konkretnym statusie (np. AVAILABLE).
