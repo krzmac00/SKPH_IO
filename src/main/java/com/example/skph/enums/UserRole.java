@@ -1,5 +1,8 @@
 package com.example.skph.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum UserRole {
 
     VICTIM("victim"),
@@ -20,11 +23,12 @@ public enum UserRole {
 
     public static UserRole fromValue(String value) {
         for (UserRole type : UserRole.values()) {
-            if (type.value == value) {
+            if (type.value.equals(value)) { // Zmiana == na equals()
                 return type;
             }
         }
         throw new IllegalArgumentException("Invalid UserRole value: " + value);
     }
+
 }
 

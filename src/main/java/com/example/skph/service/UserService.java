@@ -1,17 +1,13 @@
 package com.example.skph.service;
-import com.example.skph.model.Role;
+
+import com.example.skph.enums.UserRole;
 import com.example.skph.model.User;
 import com.example.skph.repository.UserRepository;
-import com.example.skph.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.skph.config.PasswordConfig;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -67,6 +63,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(newPassword));  // Kodowanie nowego hasła
         return userRepository.save(user);
     }
+
     //public Account activateAccount(Long id) {
         //Account account = accountRepository.findById(id).orElseThrow(() -> new ChangeSetPersister.NotFoundException("Account not found!"));
 

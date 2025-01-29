@@ -1,13 +1,12 @@
 package com.example.skph.model;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import com.example.skph.enums.UserRole;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,10 +23,15 @@ public class User {
     private String username;
     private String password;
 
+
     @Enumerated(EnumType.STRING)
     @JsonDeserialize(using = UserRoleDeserializer.class)
     @Column(name = "role")
     private UserRole role;
+
+    public UserRole getRole() {
+        return role;
+    }
 
     private String email;
     private String organization;

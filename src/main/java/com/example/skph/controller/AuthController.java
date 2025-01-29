@@ -70,12 +70,11 @@ public class AuthController {
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestBody PasswordResetRequest request) {
         try {
-            // Sprawdzanie czy stare hasło jest poprawne
+
             if (!userService.validateOldPassword(request.getUsername(), request.getOldPassword())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect old password");
             }
 
-            // Zmienianie hasła
             userService.resetPassword(request.getUsername(), request.getNewPassword());
             return ResponseEntity.ok("Password reset successful");
         } catch (ChangeSetPersister.NotFoundException e) {
@@ -85,9 +84,14 @@ public class AuthController {
         }
     }
     @GetMapping("/main")
-    public String mainPage() {
-        return "main"; // Widok main.html, w którym będziemy używać ${username}
-    }
+    public String mainPage(Model model, Principal principal) {
+
+            if (principal == null) {
+                return "redirect:/auth/login";
+            }
+            return "main";
+        }
+
 
 }
 
