@@ -37,9 +37,6 @@ public class Task {
     //    private Location location;
 
     @ManyToOne
-    Request request;
-
-    @ManyToOne
     Organization organization;
 
     @ManyToOne
@@ -67,14 +64,7 @@ public class Task {
     @JoinColumn(name = "request_id") //resource department use it to access address of task;
     private Request request;
 
-    /*@Getter
-    @Setter
-    int grade; //type will be assigned by volunteer module, needs to be inserted as a column of task table
 
-    @Getter
-    @Setter
-    Volunteer volunteer; //type will be assigned by volunteer module, needs to be inserted as a column of task table*/
-    //type Volunteer is not created in this module
     @Getter
     @Setter
     @OneToMany
@@ -100,13 +90,8 @@ public class Task {
         resource.assignTask(this);
     }
 
-    public Task(Resource resource, Request request) {
-        this.resource = resource;
+    public Task(Request request) {
         this.request = request;
-    }
-
-    public List<Day> getStatusHistory() {
-        return statusHistory;
     }
 
     public void releaseResource(Resource resource) {

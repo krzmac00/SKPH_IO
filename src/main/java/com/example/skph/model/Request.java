@@ -31,7 +31,7 @@ public class Request {
     private Address address;
 
 
-    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @NotNull
     @Getter
     private List<Task> taskList = new ArrayList<>();
@@ -55,14 +55,19 @@ public class Request {
     @Getter
     private LocalDate endDate;
 
-    public ArrayList<Task> generateTasks() {
+    private ArrayList<Task> generateTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
-        for (RequestResource rr : resourceList) {
-            if (rr != null) {
-                tasks.add(new Task(rr.getResource(), this/*, statuses*/));
+        for (Resource resource : resourceList) {
+            if (resource != null) {
+                ArrayList<String> status = new ArrayList<>();
+                int resourceAmount = resource.getAmount();
+                for (int i = 0; i < resourceAmount + 1; i++) {
+                    //change instead of last day giving final status, it will have 1 additional "day" that will represent that
+                    status.add("created");
+                }
+                tasks.add(new Task(resource, status));
             }
         }
-        this.taskList = tasks;
         return tasks;
     }
 
@@ -76,57 +81,151 @@ public class Request {
         this.endDate = endDate;
     }
 
-    public Request(Requester requester, Address address) {
-        this.requester = requester;
-        this.address = address;
-        this.accomplished = false;
-        this.resourceList = new HashSet<>();
-        this.startDate = LocalDateTime.now();
-        this.endDate = null;
-    }
-
     public Request() {
         this.startDate = LocalDate.now();
     }
 
-    @NotNull
-    public boolean isAccomplished() {
-        return accomplished;
-    }
-
     public boolean accomplishedCheck() {
         boolean accomplished = true;
-
         for (Task task : this.getTaskList()) {
-            Optional<Day> lastDay = task.getStatusHistory().stream()
-                    .max(Comparator.comparingInt(Day::getDayIndex));
-
-            if (lastDay.isPresent()) {
-                Status lastDayStatus = lastDay.get().getStatus();
-                //Check if the last day's status is CREATED, PENDING, IN_PROGRESS or COMPLETED
-                if (lastDayStatus.equals(Status.fromValue(1)) || //CREATED
-                        lastDayStatus.equals(Status.fromValue(2)) || //PENDING
-                        lastDayStatus.equals(Status.fromValue(3)) || //IN_PROGRESS
-                        lastDayStatus.equals(Status.fromValue(4))) { //COMPLETED
-                    accomplished = false;
-                }
+            String status = task.getDaysList().getLast();
+            if (status.equals("created") || status.equals("pending") || status.equals("inProgress")) {
+                accomplished = false;
             }
-        }
-
-        if (accomplished) { //set endDate when request is accomplished. Otherwise just leave it null
-            setEndDate(LocalDateTime.now());
         }
         return accomplished;
     }
-
-//    public boolean accomplishedCheck() {
-//        boolean accomplished = true;
-//        for (Task task : this.getTaskList()) {
-//            String status = task.getDaysList().getLast();
-//            if (status.equals("created") || status.equals("pending") || status.equals("inProgress")) {
-//                accomplished = false;
-//            }
-//        }
-//        return accomplished;
-//    }
 }
+
+//package com.example.skph.model;
+//
+//import jakarta.persistence.*;
+//import jakarta.validation.constraints.NotNull;
+//import lombok.Getter;
+//
+//import java.time.LocalDate;
+//import java.util.List;
+//
+//@jakarta.persistence.Entity
+//@Table(name="request")
+//public class Request {
+//
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+//
+//    private String requesterFirstName;
+//    private String requesterLastName;
+//    private String address;
+//
+//    // Możesz zdefiniować pole typu String, aby przechować wybór typu zasobu
+//    @ElementCollection
+//    private List<String> resourceList;
+//
+//    // Możesz również zdefiniować inne pola, np. dla różnych typów zasobów
+//    private String foodTemperature;
+//    private boolean foodAllergyFree;
+//    private String clothesSize;
+//    private String clothesSex;
+//    private boolean shelterWithAnimals;
+//    private String otherDescription;
+//        @Column
+//    @NotNull
+//    @Getter
+//    private LocalDate startDate;
+//
+//    @Column
+//    @Getter
+//    private LocalDate endDate;
+//
+//    // Gettery i settery
+//
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
+//
+//    public String getRequesterFirstName() {
+//        return requesterFirstName;
+//    }
+//
+//    public void setRequesterFirstName(String requesterFirstName) {
+//        this.requesterFirstName = requesterFirstName;
+//    }
+//
+//    public String getRequesterLastName() {
+//        return requesterLastName;
+//    }
+//
+//    public void setRequesterLastName(String requesterLastName) {
+//        this.requesterLastName = requesterLastName;
+//    }
+//
+//    public String getAddress() {
+//        return address;
+//    }
+//
+//    public void setAddress(String address) {
+//        this.address = address;
+//    }
+//
+//    public List<String> getResourceList() {
+//        return resourceList;
+//    }
+//
+//    public void setResourceList(List<String> resourceList) {
+//        this.resourceList = resourceList;
+//    }
+//
+//    public String getFoodTemperature() {
+//        return foodTemperature;
+//    }
+//
+//    public void setFoodTemperature(String foodTemperature) {
+//        this.foodTemperature = foodTemperature;
+//    }
+//
+//    public boolean isFoodAllergyFree() {
+//        return foodAllergyFree;
+//    }
+//
+//    public void setFoodAllergyFree(boolean foodAllergyFree) {
+//        this.foodAllergyFree = foodAllergyFree;
+//    }
+//
+//    public String getClothesSize() {
+//        return clothesSize;
+//    }
+//
+//    public void setClothesSize(String clothesSize) {
+//        this.clothesSize = clothesSize;
+//    }
+//
+//    public String getClothesSex() {
+//        return clothesSex;
+//    }
+//
+//    public void setClothesSex(String clothesSex) {
+//        this.clothesSex = clothesSex;
+//    }
+//
+//    public boolean isShelterWithAnimals() {
+//        return shelterWithAnimals;
+//    }
+//
+//    public void setShelterWithAnimals(boolean shelterWithAnimals) {
+//        this.shelterWithAnimals = shelterWithAnimals;
+//    }
+//
+//    public String getOtherDescription() {
+//        return otherDescription;
+//    }
+//
+//    public void setOtherDescription(String otherDescription) {
+//        this.otherDescription = otherDescription;
+//    }
+//}
+

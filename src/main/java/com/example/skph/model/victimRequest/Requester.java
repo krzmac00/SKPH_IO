@@ -48,7 +48,6 @@ public class Requester {
         this.firstName = firstName;
     }
 
-    public Requester(String firstName, String lastName) {
     public Requester(@NonNull String firstName, @NonNull String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
