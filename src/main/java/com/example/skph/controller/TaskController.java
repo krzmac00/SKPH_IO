@@ -76,35 +76,3 @@ public class TaskController {
     }
 }
 
-//@Controller
-//@RequestMapping("/tasks")
-//public class TaskController {
-//    // Wyświetlenie listy zadań
-//    @GetMapping
-//    public String listTasks(Model model) {
-//        List<Task> tasks = taskService.getAllTasks();
-//        model.addAttribute("tasks", tasks);
-//        return "taskList"; // zmienione na taskList
-//    }
-//
-//    // Formularz dodawania nowego zadania
-//    @GetMapping("/add")
-//    public String addTaskForm(Model model) {
-//        model.addAttribute("task", new Task());
-//        return "taskAdd"; // zmienione na taskAdd
-//    }
-//
-//    // Formularz edycji zadania
-//    @GetMapping("/edit/{id}")
-//    public String editTaskForm(@PathVariable Long id, Model model) {
-//        Optional<Task> task = taskService.getTaskById(id);
-//        if (task.isPresent()) {
-//            model.addAttribute("task", task.get());
-//            return "taskEdit"; // zmienione na taskEdit
-//        } else {
-//            return "redirect:/tasks";
-//        }
-//    }
-//}
-
-

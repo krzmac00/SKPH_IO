@@ -17,9 +17,9 @@ public class Shelter extends Resource {
 
     public Shelter(String name, int amount, boolean withAnimals) {
 
-        super(); // Wywołanie konstruktora klasy bazowej
-        this.name = name; // Ustawienie nazwy z klasy bazowej
-        this.amount = amount; // Ustawienie ilości z klasy bazowej
+        super();
+        this.name = name;
+        this.amount = amount;
         this.withAnimals = withAnimals;
     }
 }

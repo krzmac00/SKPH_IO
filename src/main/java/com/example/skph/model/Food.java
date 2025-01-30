@@ -15,13 +15,6 @@ public class Food extends Resource {
     @Setter
     private boolean allergyFree;
 
-//    public Food() {
-//    }
-//
-//    public Food(String temperature, boolean allergyFree) {
-//        this.temperature = temperature;
-//        this.allergyFree = allergyFree;
-//    }
 
     public Food() {
         super(); // Konstruktor klasy bazowej (Resource) wywołany domyślnie
@@ -29,9 +22,9 @@ public class Food extends Resource {
 
     // Konstruktor z parametrami dla klasy Food
     public Food(String name, int amount, String temperature, boolean allergyFree) {
-        super(); // Wywołanie konstruktora klasy bazowej
-        this.name = name; // Ustawienie nazwy z klasy bazowej
-        this.amount = amount; // Ustawienie ilości z klasy bazowej
+        super();
+        this.name = name;
+        this.amount = amount;
         this.temperature = temperature;
         this.allergyFree = allergyFree;
     }

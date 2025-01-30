@@ -1,192 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Request Form</title>-->
-<!--    <style>-->
-<!--        body {-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            background-color: #f4f4f9;-->
-<!--            margin: 0;-->
-<!--            padding: 0;-->
-<!--            display: flex;-->
-<!--            justify-content: center;-->
-<!--            align-items: center;-->
-<!--            height: 100vh;-->
-<!--        }-->
-
-<!--        .container {-->
-<!--            background: white;-->
-<!--            padding: 30px;-->
-<!--            border-radius: 8px;-->
-<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
-<!--            max-width: 500px;-->
-<!--            width: 90%;-->
-<!--        }-->
-
-<!--        h1 {-->
-<!--            text-align: center;-->
-<!--            color: #333;-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-
-<!--        label {-->
-<!--            display: block;-->
-<!--            font-weight: bold;-->
-<!--            margin-top: 10px;-->
-<!--        }-->
-
-<!--        input, select {-->
-<!--            width: 100%;-->
-<!--            padding: 10px;-->
-<!--            margin-top: 5px;-->
-<!--            border: 1px solid #ccc;-->
-<!--            border-radius: 5px;-->
-<!--            font-size: 16px;-->
-<!--        }-->
-
-<!--        select {-->
-<!--            cursor: pointer;-->
-<!--            background-color: #fff;-->
-<!--        }-->
-
-<!--        input[type="checkbox"] {-->
-<!--            width: auto;-->
-<!--            margin-left: 5px;-->
-<!--        }-->
-
-<!--        .dynamic-fields {-->
-<!--            display: none;-->
-<!--            margin-top: 15px;-->
-<!--            padding: 10px;-->
-<!--            border: 1px solid #ddd;-->
-<!--            border-radius: 5px;-->
-<!--            background-color: #f9f9f9;-->
-<!--        }-->
-
-<!--        .submit-btn {-->
-<!--            display: block;-->
-<!--            width: 100%;-->
-<!--            padding: 12px;-->
-<!--            margin-top: 20px;-->
-<!--            background-color: #007bff;-->
-<!--            color: white;-->
-<!--            font-size: 18px;-->
-<!--            border: none;-->
-<!--            border-radius: 5px;-->
-<!--            cursor: pointer;-->
-<!--            transition: background-color 0.3s ease;-->
-<!--        }-->
-
-<!--        .submit-btn:hover {-->
-<!--            background-color: #0056b3;-->
-<!--        }-->
-
-<!--        @media (max-width: 600px) {-->
-<!--            .container {-->
-<!--                width: 100%;-->
-<!--                padding: 20px;-->
-<!--            }-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-
-<!--<div class="container">-->
-<!--    <h1>Request Form</h1>-->
-<!--    <form th:action="@{/requests/submit}" th:object="${request}" method="post">-->
-
-<!--        <label>Requester First Name:</label>-->
-<!--        <input type="text" name="requesterFirstName" th:field="*{requester.firstName}" placeholder="First Name" required>-->
-
-<!--        <label>Requester Last Name:</label>-->
-<!--        <input type="text" name="requesterLastName" th:field="*{requester.lastName}" placeholder="Last Name" required>-->
-
-<!--        <label>Address:</label>-->
-<!--        <input type="text" name="address" th:field="*{address.address}" placeholder="Address" required>-->
-
-<!--        <label>Select Resource Type:</label>-->
-<!--        <select id="resourceSelect" required>-->
-<!--            <option value="" disabled selected>Choose resource</option>-->
-<!--            <option value="food">Food</option>-->
-<!--            <option value="clothes">Clothes</option>-->
-<!--            <option value="shelter">Shelter</option>-->
-<!--            <option value="other">Other</option>-->
-<!--        </select>-->
-
-<!--        &lt;!&ndash; Dynamic Fields &ndash;&gt;-->
-<!--        <div id="foodFields" class="dynamic-fields">-->
-<!--            <label>Name:</label>-->
-<!--            <input type="text" name="foodName" th:field="${food.name}" placeholder="Name">-->
-<!--            <label>Amount:</label>-->
-<!--            <input type="number" name="foodAmount" th:field="${food.amount}">-->
-<!--            <label>Temperature:</label>-->
-<!--            <input type="text" name="foodTemperature" th:field="${food.temperature}" placeholder="Temperature">-->
-<!--            <label>Allergy Free:</label>-->
-<!--            <input type="checkbox" name="foodAllergyFree" th:field="${food.allergyFree}">-->
-<!--        </div>-->
-
-<!--        <div id="clothesFields" class="dynamic-fields">-->
-<!--            <label>Name:</label>-->
-<!--            <input type="text" name="clothesName" th:field="${clothes.name}" placeholder="Name">-->
-<!--            <label>Amount:</label>-->
-<!--            <input type="number" name="clothesAmount" th:field="${clothes.amount}">-->
-<!--            <label>Size:</label>-->
-<!--            <input type="text" name="clothesSize" th:field="${clothes.size}" placeholder="Size">-->
-<!--            <label>Sex:</label>-->
-<!--            <input type="text" name="clothesSex" th:field="${clothes.sex}" placeholder="Sex">-->
-<!--        </div>-->
-
-<!--        <div id="shelterFields" class="dynamic-fields">-->
-<!--            <label>Name:</label>-->
-<!--            <input type="text" name="shelterName" th:field="${shelter.name}" placeholder="Name">-->
-<!--            <label>Amount:</label>-->
-<!--            <input type="number" name="shelterAmount" th:field="${shelter.amount}">-->
-<!--            <label>With Animals:</label>-->
-<!--            <input type="checkbox" name="shelterWithAnimals" th:field="${shelter.withAnimals}">-->
-<!--        </div>-->
-
-<!--        <div id="otherFields" class="dynamic-fields">-->
-<!--            <label>Name:</label>-->
-<!--            <input type="text" name="otherName" th:field="${other.name}" placeholder="Name">-->
-<!--            <label>Amount:</label>-->
-<!--            <input type="number" name="otherAmount" th:field="${other.amount}">-->
-<!--            <label>Description:</label>-->
-<!--            <input type="text" name="otherDescription" th:field="${other.description}" placeholder="Description">-->
-<!--        </div>-->
-
-<!--        <input type="submit" class="submit-btn" value="Submit">-->
-<!--    </form>-->
-<!--</div>-->
-
-<!--<script>-->
-<!--    document.getElementById('resourceSelect').addEventListener('change', function() {-->
-<!--        let selectedValue = this.value;-->
-
-<!--        // Hide all dynamic fields-->
-<!--        document.querySelectorAll('.dynamic-fields').forEach(field => {-->
-<!--            field.style.display = 'none';-->
-<!--        });-->
-
-<!--        // Show the selected field-->
-<!--        if (selectedValue === 'food') {-->
-<!--            document.getElementById('foodFields').style.display = 'block';-->
-<!--        } else if (selectedValue === 'clothes') {-->
-<!--            document.getElementById('clothesFields').style.display = 'block';-->
-<!--        } else if (selectedValue === 'shelter') {-->
-<!--            document.getElementById('shelterFields').style.display = 'block';-->
-<!--        } else if (selectedValue === 'other') {-->
-<!--            document.getElementById('otherFields').style.display = 'block';-->
-<!--        }-->
-<!--    });-->
-<!--</script>-->
-
-<!--</body>-->
-<!--</html>-->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -194,8 +5,97 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Request Form</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        label {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        input[type="checkbox"] {
+            margin-top: 10px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.2rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .nav-button {
+            display: inline-block;
+            padding: 12px 30px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .nav-button:hover {
+            background-color: #0056b3;
+        }
+
+        .resource-fields {
+            margin-bottom: 20px;
+        }
+
+        .resource-fields input[type="text"],
+        .resource-fields input[type="number"] {
+            width: calc(100% - 20px);
+        }
+
+    </style>
 </head>
 <body>
+
+<h1>Request Form</h1>
 <form action="/requests/submit" method="post">
 
     <!-- Common Fields -->
@@ -218,42 +118,42 @@
     </select>
 
     <!-- Resource Fields (hidden until a type is selected) -->
-    <div id="foodFields" style="display: none;">
+    <div id="foodFields" class="resource-fields" style="display: none;">
         <label>Name:</label>
         <input type="text" name="foodName">
         <label>Amount:</label>
-        <input type="number" name="foodAmount">
+        <input type="number" name="foodAmount" min="1" step="1">
         <label>Temperature:</label>
         <input type="text" name="foodTemperature">
         <label>Allergy Free:</label>
         <input type="checkbox" name="foodAllergyFree">
     </div>
 
-    <div id="clothesFields" style="display: none;">
+    <div id="clothesFields" class="resource-fields" style="display: none;">
         <label>Name:</label>
         <input type="text" name="clothesName">
         <label>Amount:</label>
-        <input type="number" name="clothesAmount">
+        <input type="number" name="clothesAmount" min="1" step="1">
         <label>Size:</label>
         <input type="text" name="clothesSize">
         <label>Sex:</label>
         <input type="text" name="clothesSex">
     </div>
 
-    <div id="shelterFields" style="display: none;">
+    <div id="shelterFields" class="resource-fields" style="display: none;">
         <label>Name:</label>
         <input type="text" name="shelterName">
         <label>Amount:</label>
-        <input type="number" name="shelterAmount">
+        <input type="number" name="shelterAmount" min="1" step="1">
         <label>With Animals:</label>
         <input type="checkbox" name="shelterWithAnimals">
     </div>
 
-    <div id="otherFields" style="display: none;">
+    <div id="otherFields" class="resource-fields" style="display: none;">
         <label>Name:</label>
         <input type="text" name="otherName">
         <label>Amount:</label>
-        <input type="number" name="otherAmount">
+        <input type="number" name="otherAmount" min="1" step="1">
         <label>Description:</label>
         <input type="text" name="otherDescription">
     </div>
@@ -273,6 +173,7 @@
         }
     });
 </script>
+
 </body>
 </html>
 

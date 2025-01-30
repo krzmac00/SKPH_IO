@@ -20,13 +20,6 @@ public class RequestResource {
     @JoinColumn(name = "resource_id")
     private Resource resource;
 
-    /*@Column
-    @Getter
-    private Long requestId;
-
-    @Column
-    @Getter
-    private Long resourceId;*/
 
     public RequestResource(Request request, Resource resource) {
         this.request = request;

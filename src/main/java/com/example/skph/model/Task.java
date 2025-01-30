@@ -60,11 +60,6 @@ public class Task {
         //this.daysList = statuses;
     }
 
-//    public Task(Resource resource, Request request) {
-//        this.resource = resource;
-//        this.request = request;
-//        this.statuses = new HashSet<>(); // lub domyślne wartości
-//    }
 
     public List<Day> getStatusHistory() {
         return statusHistory;

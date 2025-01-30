@@ -27,9 +27,6 @@ public class RequestResourceService {
         return requestResourceRepository.findById(id).orElse(null);
     }
 
-//    public List<Request> getRequestsByRequester(Requester requester) {
-//        return requestRepository.findByRequester(requester); // Zakładając, że masz metodę w repozytorium
-//    }
     public List<RequestResource> getByRequestId(Long requestId) {
         return requestResourceRepository.findByRequest(requestId);
     }
