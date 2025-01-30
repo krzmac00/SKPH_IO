@@ -6,6 +6,7 @@ import com.example.skph.repository.TaskRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -27,6 +28,11 @@ public class TaskService {
     }
 
     @Transactional
+    public Task saveTask(Task task) {
+        return taskRepository.save(task);
+    }
+
+    @Transactional
     public void delete(Long taskId) {
         taskRepository.deleteById(taskId);
     }
@@ -44,6 +50,8 @@ public class TaskService {
                 .orElseThrow(() -> new NoSuchElementException("Task not found with ID: " + id));
     }
 
+    // Usunięcie Task po ID
+    @Transactional
     public void deleteTaskById(Long id) {
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
@@ -57,10 +65,15 @@ public class TaskService {
         return taskRepository.findByResourceId(resourceId);
     }
 
-    // Wyszukanie ukończonych Task
-    public List<Task> getAccomplishedTasks() {
-        return taskRepository.findAccomplishedTasks();
+    // Wyszukanie Task po Request ID
+    public List<Task> getTasksByRequestId(Long requestId) {
+        return taskRepository.findByRequestId(requestId);
     }
+
+    // Wyszukanie ukończonych Task
+//    public List<Task> getAccomplishedTasks() {
+//        return taskRepository.findAccomplishedTasks();
+//    }
 
     // Aktualizacja stanu ukończenia Task
     public Task updateTaskAccomplished(Long taskId, boolean accomplished) {

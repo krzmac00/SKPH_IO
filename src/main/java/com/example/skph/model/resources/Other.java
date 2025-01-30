@@ -15,7 +15,11 @@ public class Other extends Resource {
     public Other() {
     }
 
-    public Other(String description) {
+    public Other(String name, int amount, String description) {
+
+        super();
+        this.name = name;
+        this.amount = amount;
         this.description = description;
     }
 

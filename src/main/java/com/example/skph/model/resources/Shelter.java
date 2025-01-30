@@ -16,7 +16,11 @@ public class Shelter extends Resource {
     public Shelter() {
     }
 
-    public Shelter(boolean withAnimals) {
+    public Shelter(String name, int amount, boolean withAnimals) {
+
+        super();
+        this.name = name;
+        this.amount = amount;
         this.withAnimals = withAnimals;
     }
 

@@ -22,12 +22,16 @@ import java.util.List;
 public abstract class Resource {
 
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Identyfikator zasobu.
 
     @Getter
     @Setter
     private String name;
+
+    @OneToMany(mappedBy = "resource")
+    Set<RequestResource> resourceList;
 
     @Getter
     @Setter
@@ -52,6 +56,9 @@ public abstract class Resource {
     @ManyToOne
     private Request request;
 
+    @Getter
+    @Setter
+    public boolean toGive; //to differentiate between what we have and what is needed
 
 
     @PrePersist

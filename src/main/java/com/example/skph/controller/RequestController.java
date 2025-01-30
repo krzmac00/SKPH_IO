@@ -1,11 +1,7 @@
 package com.example.skph.controller;
 
-import com.example.skph.model.resources.Other;
-import com.example.skph.model.resources.Shelter;
-import com.example.skph.model.resources.physical.Clothes;
-import com.example.skph.model.resources.physical.Food;
-import com.example.skph.model.victimRequest.Request;
-import com.example.skph.service.victimRequest.RequestService;
+import com.example.skph.model.*;
+import com.example.skph.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,27 +11,124 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.util.List;
 
+
 @Controller  // Zmieniamy na @Controller
 @RequestMapping("/requests")
 public class RequestController {
 
     private final RequestService requestService;
+    private final RequestResourceService requestResourceService;
+    private final ResourceService resourceService;
+    private final TaskService taskService;
+    private final StatusHistoryService statusHistoryService;
 
     @Autowired
-    public RequestController(RequestService requestService) {
+    public RequestController(RequestService requestService, RequestResourceService requestResourceService,
+                             ResourceService resourceService, TaskService taskService, StatusHistoryService statusHistoryService) {
         this.requestService = requestService;
+        this.requestResourceService = requestResourceService;
+        this.resourceService = resourceService;
+        this.taskService = taskService;
+        this.statusHistoryService = statusHistoryService;
     }
 
-    // Endpointy REST pozostają bez zmian
-    @GetMapping("/{id}")
-    public Request getRequestById(@PathVariable Long id) {
-        return requestService.getRequestById(id);
+    @GetMapping("/")
+    public String showRequestsPage() {
+        return "requestChoice";  // Refers to requests.html in templates folder
     }
 
-//    @GetMapping("/byRequester")
-//    public List<Request> getRequestsByRequester(@RequestBody Requester requester) {
-//        return requestService.getRequestsByRequester(requester);
-//    }
+    @GetMapping("/form")
+    public String showRequestForm() {
+
+        return "requestForm";
+    }
+
+    @PostMapping("/submit")
+    public String submitRequest(
+            @RequestParam String requesterFirstName,
+            @RequestParam String requesterLastName,
+            @RequestParam String address,
+            @RequestParam String resourceType,
+            @RequestParam(required = false) String foodName,
+            @RequestParam(required = false) Integer foodAmount,
+            @RequestParam(required = false) String foodTemperature,
+            @RequestParam(required = false) Boolean foodAllergyFree,
+            @RequestParam(required = false) String clothesName,
+            @RequestParam(required = false) Integer clothesAmount,
+            @RequestParam(required = false) String clothesSize,
+            @RequestParam(required = false) String clothesSex,
+            @RequestParam(required = false) String shelterName,
+            @RequestParam(required = false) Integer shelterAmount,
+            @RequestParam(required = false) Boolean shelterWithAnimals,
+            @RequestParam(required = false) String otherName,
+            @RequestParam(required = false) Integer otherAmount,
+            @RequestParam(required = false) String otherDescription,
+            Model model) {
+
+        // Utworzenie obiektu Request
+        Requester requester = new Requester(requesterFirstName, requesterLastName);
+        Address requestAddress = new Address(address);
+        Request request = new Request(requester, requestAddress); // Przykład daty końcowej
+        requestService.saveRequest(request); // Zapisujemy Request
+
+        // Na podstawie wybranego typu zasobu tworzymy odpowiedni obiekt
+        Resource resource = null;
+
+        if ("food".equals(resourceType)) {
+            // Sprawdzamy, czy foodAllergyFree jest null, jeśli tak, ustawiamy domyślnie false
+            foodAllergyFree = (foodAllergyFree != null) ? foodAllergyFree : false;
+
+            Food food = new Food(foodName, foodAmount, foodTemperature, foodAllergyFree);
+            resourceService.saveResource(food);
+            resource = food;
+        } else if ("clothes".equals(resourceType)) {
+            Clothes clothes = new Clothes(clothesName, clothesAmount, clothesSize, clothesSex);
+            resourceService.saveResource(clothes);
+            resource = clothes;
+        } else if ("shelter".equals(resourceType)) {
+            // Sprawdzamy, czy shelterWithAnimals jest null, jeśli tak, ustawiamy domyślnie false
+            shelterWithAnimals = (shelterWithAnimals != null) ? shelterWithAnimals : false;
+
+            Shelter shelter = new Shelter(shelterName, shelterAmount, shelterWithAnimals);
+            resourceService.saveResource(shelter);
+            resource = shelter;
+        } else if ("other".equals(resourceType)) {
+            Other other = new Other(otherName, otherAmount, otherDescription);
+            resourceService.saveResource(other);
+            resource = other;
+        }
+
+        // Tworzymy powiązanie Request - Resource
+        if (resource != null) {
+            RequestResource requestResource = new RequestResource(request, resource);
+            requestResourceService.saveRequestResource(requestResource);
+        }
+
+        // Generowanie zadań na podstawie powiązanych zasobów
+        request.generateTasks();
+
+        model.addAttribute("successMessage", "Request submitted successfully.");
+        return "formSuccess";
+    }
+
+
+    @GetMapping("/request-details")
+    public String getRequestDetails(@RequestParam("requesterId") Long requesterId, Model model) {
+        // Pobieramy dane na podstawie requesterId
+        RequestDTO requestDTO = requestService.getRequestDetailsByRequesterId(requesterId);
+
+        // Dodajemy dane do modelu, które będą dostępne w widoku HTML
+        if (requestDTO != null) {
+            model.addAttribute("request", requestDTO);
+        } else {
+            model.addAttribute("error", "Request not found for requester ID: " + requesterId);
+        }
+
+        return "requestDetails";
+    }
+
+
+
 
     @GetMapping("/byStartDate")
     public List<Request> getRequestsByStartDate(@RequestParam String startDate) {
@@ -59,12 +152,7 @@ public class RequestController {
         model.addAttribute("other", other);
 
 
-//        model.addAttribute("food", new Food());
-//        model.addAttribute("clothes", new Clothes());
-//        model.addAttribute("shelter", new Shelter());
-//        model.addAttribute("other", new Other());
-        return "requestForm"; // Użycie Thymeleaf template 'requestForm.html'
-    }
+}
 
     // Metoda do obsługi zgłoszeń z formularza
 //    @PostMapping("/submit")

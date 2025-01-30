@@ -16,10 +16,16 @@ public class Food extends Resource {
     @Setter
     private boolean allergyFree;
 
+
     public Food() {
+        super(); // Konstruktor klasy bazowej (Resource) wywołany domyślnie
     }
 
-    public Food(String temperature, boolean allergyFree) {
+    // Konstruktor z parametrami dla klasy Food
+    public Food(String name, int amount, String temperature, boolean allergyFree) {
+        super();
+        this.name = name;
+        this.amount = amount;
         this.temperature = temperature;
         this.allergyFree = allergyFree;
     }

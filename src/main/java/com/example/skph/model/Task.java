@@ -5,12 +5,14 @@ import com.example.skph.model.enums.TaskStatus;
 import com.example.skph.model.users.Organization;
 import com.example.skph.model.users.Volunteer;
 import com.example.skph.model.victimRequest.Request;
+import com.example.skph.enums.Status;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Data
@@ -21,6 +23,7 @@ import java.util.List;
 public class Task {
 
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -59,6 +62,27 @@ public class Task {
         updatedAt = LocalDateTime.now(); // Ustawia datę aktualizacji przed zapisaniem.
     }
 
+    @Getter
+    @ManyToOne
+    @JoinColumn(name = "request_id") //resource department use it to access address of task;
+    private Request request;
+
+    /*@Getter
+    @Setter
+    int grade; //type will be assigned by volunteer module, needs to be inserted as a column of task table
+
+    @Getter
+    @Setter
+    Volunteer volunteer; //type will be assigned by volunteer module, needs to be inserted as a column of task table*/
+    //type Volunteer is not created in this module
+    @Getter
+    @Setter
+    @OneToMany
+    @JoinColumn(name = "task_id")
+    private List<Day> statusHistory;
+    //private DaysList daysList;
+    //status: created, pending, inProgress, completed, closed, canceled
+
     public Task() {
         createdAt = LocalDateTime.now();
     }
@@ -76,12 +100,22 @@ public class Task {
         resource.assignTask(this);
     }
 
+    public Task(Resource resource, Request request) {
+        this.resource = resource;
+        this.request = request;
+    }
+
+    public List<Day> getStatusHistory() {
+        return statusHistory;
+    }
+
     public void releaseResource(Resource resource) {
         assignedResources.remove(resource);
     }
 
-    public void setStatus(TaskStatus status) {
-        this.updatedAt = LocalDateTime.now();
-        this.status = status;
+    public void setStatus(Status status) { //or a number i dont know
+        int newDay = statusHistory.getLast().getDayIndex() + 1;
+        Day day = new Day(status, newDay);
+        this.statusHistory.add(day);
     }
 }

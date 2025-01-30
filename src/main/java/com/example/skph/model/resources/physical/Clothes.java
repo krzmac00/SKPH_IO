@@ -17,9 +17,13 @@ public class Clothes extends Resource {
     private String sex;
 
     public Clothes() {
+        super(); // Konstruktor klasy bazowej (Resource) wywołany domyślnie
     }
 
-    public Clothes(String size, String sex) {
+    public Clothes(String name, int amount, String size, String sex) {
+        super();
+        this.name = name;
+        this.amount = amount;
         this.size = size;
         this.sex = sex;
     }
