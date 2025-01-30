@@ -26,6 +26,22 @@ public class Requester {
     public Requester() {
     }
 
+    public @NonNull String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(@NonNull String lastName) {
+        this.lastName = lastName;
+    }
+
+    public @NotNull String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(@NotNull String firstName) {
+        this.firstName = firstName;
+    }
+
     public Requester(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;

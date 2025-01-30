@@ -14,7 +14,11 @@ public class Other extends Resource {
     public Other() {
     }
 
-    public Other(String description) {
+    public Other(String name, int amount, String description) {
+
+        super(); // Wywołanie konstruktora klasy bazowej
+        this.name = name; // Ustawienie nazwy z klasy bazowej
+        this.amount = amount; // Ustawienie ilości z klasy bazowej
         this.description = description;
     }
 }

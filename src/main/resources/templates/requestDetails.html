@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Details</title>
+</head>
+<body>
+<h1>Request Details</h1>
+
+<div th:if="${request != null}">
+    <p><strong>Requester:</strong> <span th:text="${request.requesterFullName}"></span></p>
+    <p><strong>Address:</strong> <span th:text="${request.address}"></span></p>
+    <p><strong>Start Date:</strong> <span th:text="${request.startDate}"></span></p>
+    <p><strong>End Date:</strong> <span th:text="${request.endDate != null ? request.endDate : 'Not set'}"></span></p>
+    <p><strong>Is accomplished:</strong> <span th:text="${request.isAccomplished()} ? 'Yes' : 'No'"></span></p>
+
+    <h2>Resources</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>To Give</th>
+            <th>Additional Info</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="resource : ${request.resources}">
+            <td th:text="${resource.name}"></td>
+            <td th:text="${resource.amount}"></td>
+            <td th:text="${resource.toGive} ? 'No' : 'Yes'"></td>
+            <td>
+                        <span th:if="${resource.temperature != null}">
+                            Temperature: <span th:text="${resource.temperature}"></span><br>
+                        </span>
+                <span th:if="${resource.allergyFree != null}">
+                            Allergy Free: <span th:text="${resource.allergyFree} ? 'Yes' : 'No'"></span><br>
+                        </span>
+                <span th:if="${resource.size != null}">
+                            Size: <span th:text="${resource.size}"></span><br>
+                        </span>
+                <span th:if="${resource.sex != null}">
+                            Sex: <span th:text="${resource.sex}"></span><br>
+                        </span>
+                <span th:if="${resource.withAnimals != null}">
+                            With Animals: <span th:text="${resource.withAnimals} ? 'Yes' : 'No'"></span><br>
+                        </span>
+                <span th:if="${resource.description != null}">
+                            Description: <span th:text="${resource.description}"></span><br>
+                        </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/requests/" class="nav-button">Back to home</a>
+</div>
+
+<div th:if="${error != null}">
+    <p th:text="${error}"></p>
+
+
+
+
+
+</div>
+</body>
+</html>

@@ -8,7 +8,7 @@ public class DayDTO {
     private Status status;
     private LocalDateTime time;
 
-    public DayDTO(Status status, LocalDateTime time) {
+    public DayDTO(Status status, int dayIndex, LocalDateTime time) {
         this.status = status;
         this.time = time;
     }

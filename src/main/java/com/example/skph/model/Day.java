@@ -24,6 +24,9 @@ public class Day {
     @Enumerated(EnumType.STRING) // Store Status as a string
     private Status status;
 
+
+
+    @Getter
     @Setter
     @NotNull
     private int dayIndex; // Represents the day or sequence of the status
@@ -44,4 +47,6 @@ public class Day {
         this.status = status;
         this.time = LocalDateTime.now();
     }
+
+
 }

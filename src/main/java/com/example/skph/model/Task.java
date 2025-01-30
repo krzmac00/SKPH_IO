@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @jakarta.persistence.Entity
@@ -23,6 +24,8 @@ public class Task {
     @OneToOne
     @JoinColumn(name = "resource")
     private Resource resource;
+
+
 
     @Getter
     @Setter
@@ -57,6 +60,15 @@ public class Task {
         //this.daysList = statuses;
     }
 
+//    public Task(Resource resource, Request request) {
+//        this.resource = resource;
+//        this.request = request;
+//        this.statuses = new HashSet<>(); // lub domyślne wartości
+//    }
+
+    public List<Day> getStatusHistory() {
+        return statusHistory;
+    }
     public void setStatus(Status status) { //or a number i dont know
         int newDay = statusHistory.getLast().getDayIndex() + 1;
         Day day = new Day(status, newDay);

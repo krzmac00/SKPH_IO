@@ -13,6 +13,8 @@ import java.util.*;
 @Getter
 @Table(name="request")
 public class Request {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,6 +35,8 @@ public class Request {
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Task> taskList;
 
+
+
     @Column
     @NotNull
     private boolean accomplished;
@@ -40,6 +44,10 @@ public class Request {
     @Setter
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<RequestResource> resourceList;
+
+
+//    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<RequestResource> resourceList = new HashSet<>();
 
 
     @Column
@@ -61,13 +69,47 @@ public class Request {
         return tasks;
     }
 
-    public Request(Requester requester, Address address,  LocalDateTime endDate) {
+//    public ArrayList<Task> generateTasks() {
+//        if (resourceList == null || resourceList.isEmpty()) {
+//            System.out.println("resourceList is null or empty");
+//            return new ArrayList<>();
+//        }
+//
+//        ArrayList<Task> tasks = new ArrayList<>();
+//        for (RequestResource rr : resourceList) {
+//            if (rr == null) {
+//                System.out.println("Found null RequestResource in resourceList!");
+//                continue;
+//            }
+//
+//            if (rr.getResource() == null) {
+//                System.out.println("RequestResource found, but getResource() is null!");
+//                continue;
+//            }
+//
+//            Task task = new Task(rr.getResource(), this);
+//            tasks.add(task);
+//        }
+//
+//        System.out.println("Generated " + tasks.size() + " tasks.");
+//        this.taskList = tasks;
+//        return tasks;
+//    }
+
+
+    public Request(Requester requester, Address address) {
         this.requester = requester;
         this.address = address;
         this.accomplished = false;
         this.resourceList = new HashSet<>();
         this.startDate = LocalDateTime.now();
-        this.endDate = endDate;
+        this.endDate = null;
+    }
+
+
+    @NotNull
+    public boolean isAccomplished() {
+        return accomplished;
     }
 
     public Request() {
