@@ -3,16 +3,12 @@ package com.example.skph.model;
 // Abstrakcyjna klasa reprezentująca zasób w systemie.
 import com.example.skph.model.enums.ResourceStatus;
 import com.example.skph.model.enums.ResourceType;
-import com.example.skph.model.users.AidOrganization;
 import com.example.skph.model.users.Organization;
 import com.example.skph.model.victimRequest.Request;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -37,8 +33,6 @@ public abstract class Resource {
     @Getter
     @Enumerated(EnumType.STRING)
     private ResourceStatus status; // Status zasobu.
-
-    private boolean toGive;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aid_organization_id")

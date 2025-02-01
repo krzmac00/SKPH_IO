@@ -2,8 +2,6 @@ package com.example.skph.model.users;
 
 // Reprezentuje organizacje pomocowe w systemie.
 // Dziedziczy właściwości i metody z klasy bazowej User.
-import com.example.skph.model.Resource;
-import com.example.skph.model.Task;
 import com.example.skph.model.User;
 import jakarta.persistence.*;
 import lombok.*;

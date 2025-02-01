@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 public class ResourceForm {
     private String name;
     private int amount;
-    private boolean toGive;
     private ResourceStatus status;
     private ResourceType resourceType;
 

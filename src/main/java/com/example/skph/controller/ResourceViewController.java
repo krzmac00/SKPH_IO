@@ -90,7 +90,6 @@ public class ResourceViewController {
                 PhysicalResource pr = new PhysicalResource();
                 pr.setName(form.getName());
                 pr.setAmount(form.getAmount());
-                pr.setToGive(form.isToGive());
                 pr.setStatus(form.getStatus());
                 pr.setType(form.getPhysicalType()); // np. FOOD, WATER
                 pr.setQuantity(form.getAmount());   // zakładamy, że quantity = amount
@@ -100,7 +99,6 @@ public class ResourceViewController {
                 FinancialResource fr = new FinancialResource();
                 fr.setName(form.getName());
                 fr.setAmount(form.getAmount());
-                fr.setToGive(form.isToGive());
                 fr.setStatus(form.getStatus());
                 fr.setValue(form.getFinancialValue() != null ? form.getFinancialValue() : BigDecimal.ZERO);
                 fr.setCurrency(form.getCurrency());
@@ -110,7 +108,6 @@ public class ResourceViewController {
                 HumanResource hr = new HumanResource();
                 hr.setName(form.getName());
                 hr.setAmount(form.getAmount());
-                hr.setToGive(form.isToGive());
                 hr.setStatus(form.getStatus());
                 hr.setRole(form.getHumanRole());
                 hr.setAvailability(form.isAvailability());
@@ -120,7 +117,6 @@ public class ResourceViewController {
                 TransportResource tr = new TransportResource();
                 tr.setName(form.getName());
                 tr.setAmount(form.getAmount());
-                tr.setToGive(form.isToGive());
                 tr.setStatus(form.getStatus());
                 tr.setCapacity(form.getCapacity());
                 tr.setType(form.getTransportType());
@@ -130,7 +126,6 @@ public class ResourceViewController {
                 OtherResource or = new OtherResource();
                 or.setName(form.getName());
                 or.setAmount(form.getAmount());
-                or.setToGive(form.isToGive());
                 or.setStatus(form.getStatus());
                 or.setDescription(form.getDescription());
                 return or;
