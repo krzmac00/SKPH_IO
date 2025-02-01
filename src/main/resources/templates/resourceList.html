@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
   <title>Lista Zasobów</title>
 </head>
 <body>
 <h1>Lista Zasobów</h1>
-
 <p>
-  <a th:href="@{/resources/new}">Dodaj nowy zasób</a> |
-  <a th:href="@{/resources}">Wszystkie zasoby</a> |
-  <a th:href="@{/resources/available}">Dostępne</a> |
-  <a th:href="@{/resources/assigned}">Przydzielone</a>
+  <a th:href="@{/resources/new}">Dodaj nowy zasób</a>
 </p>
-
 <table border="1">
   <thead>
   <tr>
@@ -20,18 +16,17 @@
     <th>Nazwa</th>
     <th>Ilość</th>
     <th>Status</th>
-    <th>Typ Zasobu</th>
-    <th>Do Oddania</th>
+    <th>Typ</th>
+    <th>Akcje</th>
   </tr>
   </thead>
   <tbody>
-  <tr th:each="resource : ${resources}">
-    <td th:text="${resource.id}">1</td>
-    <td th:text="${resource.name}">Nazwa</td>
-    <td th:text="${resource.amount}">10</td>
-    <td th:text="${resource.status}">AVAILABLE</td>
-    <td th:text="${resource.resourceType}">PHYSICAL</td>
-
+  <tr th:each="res : ${resources}">
+    <td th:text="${res.id}"></td>
+    <td th:text="${res.name}"></td>
+    <td th:text="${res.amount}"></td>
+    <td th:text="${res.status}"></td>
+    <td th:text="${res.resourceType}"></td>
     <td>
       <a th:href="@{'/resources/' + ${res.id}}">Szczegóły</a>
     </td>
