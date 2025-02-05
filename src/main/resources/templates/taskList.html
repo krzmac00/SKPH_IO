@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Lista zadań</title>
+</head>
+<body>
+<h1>Lista zadań</h1>
+<p><a th:href="@{/}">Powrót do strony głównej</a></p>
+
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Nazwa</th>
+    <th>Status</th>
+    <th>Akcje</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="t : ${tasks}">
+    <td th:text="${t.id}"></td>
+    <td th:text="${t.name}"></td>
+    <td th:text="${t.status}"></td>
+    <td>
+      <a th:href="@{'/tasks/' + ${t.id}}">Szczegóły</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

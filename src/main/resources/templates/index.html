@@ -1,0 +1,38 @@
+<!-- src/main/resources/templates/index.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Strona główna</title>
+</head>
+<body>
+<h1>Witaj w naszej aplikacji!</h1>
+
+<!-- Przykładowe menu / nawigacja: -->
+<ul>
+    <li><a th:href="@{/resources}">Lista wszystkich zasobów</a></li>
+    <li><a th:href="@{/resources/available}">Zasoby dostępne</a></li>
+    <li><a th:href="@{/resources/assigned}">Zasoby przydzielone</a></li>
+    <li><a th:href="@{/resources/human}">Zasoby ludzkie</a></li>
+    <li><a th:href="@{/resources/physical}">Zasoby fizyczne</a></li>
+    <li><a th:href="@{/resources/new}">Dodaj nowy zasób</a></li>
+</ul>
+
+<!-- Link do widoku AidOrganization (tylko jeśli jesteś zalogowany jako AidOrganization).
+     W realnej aplikacji sprawdzałbyś rolę / Security, tutaj pokazujemy przykład: -->
+<p>
+    <a th:href="@{/resources/org}">Widok organizacji (AidOrganization)</a>
+</p>
+
+<!-- Linki do zadań: -->
+<ul>
+    <li><a th:href="@{/tasks}">Lista zadań</a></li>
+    <!-- Jeżeli masz endpoint do tworzenia nowego zadania, wstaw tu link: -->
+    <!-- <li><a th:href="@{/tasks/new}">Utwórz nowe zadanie</a></li> -->
+</ul>
+
+<!-- Tutaj możesz też ewentualnie umieścić linki do logowania, rejestracji itp. -->
+<!-- <p><a th:href="@{/auth/login}">Zaloguj się</a> | <a th:href="@{/auth/register}">Zarejestruj się</a></p> -->
+
+</body>
+</html>

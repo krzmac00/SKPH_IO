@@ -14,11 +14,16 @@ public class HelloController {
     @Autowired
     private EntityService entityService;
 
+//    @GetMapping("/")
+//    public String index(Model model) {
+//        String message = entityService.getEntity(1L).getName();
+//        model.addAttribute("message", message);
+//        return "ThymeleafDemo";
+//    }
+
     @GetMapping("/")
-    public String index(Model model) {
-        String message = entityService.getEntity(1L).getName();
-        model.addAttribute("message", message);
-        return "ThymeleafDemo";
+    public String home() {
+        return "index"; // nazwa pliku index.html
     }
 
 }

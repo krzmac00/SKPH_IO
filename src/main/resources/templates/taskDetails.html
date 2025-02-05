@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Szczegóły zadania</title>
+</head>
+<body>
+<h1>Szczegóły zadania</h1>
+<p><a th:href="@{/tasks}">Powrót do listy zadań</a></p>
+
+<div th:object="${task}">
+    <p><strong>ID:</strong> <span th:text="*{id}">1</span></p>
+    <p><strong>Nazwa:</strong> <span th:text="*{name}">Nazwa zadania</span></p>
+    <p><strong>Status:</strong> <span th:text="*{status}">CREATED</span></p>
+    <!-- itp. -->
+</div>
+
+<!-- Informacja o przypisanym zasobie (jeśli jest 1:1) -->
+<div th:if="${task.resource != null}">
+    <h3>Przypisany zasób:</h3>
+    <p th:text="${task.resource.name}">Zasób</p>
+</div>
+<div th:if="${task.resource == null}">
+    <h3>Brak przypisanego zasobu</h3>
+</div>
+
+<hr/>
+<!-- Formularz do przypisania zasobu do zadania (wybieramy z listy dostępnych) -->
+<h3>Przypisz zasób</h3>
+<form th:action="@{'/tasks/' + ${task.id} + '/assignResource'}" method="post">
+    <label for="resSelect">Wybierz zasób:</label>
+    <select id="resSelect" name="resourceId">
+        <option th:each="r : ${availableResources}"
+                th:value="${r.id}"
+                th:text="${r.name}">Zasób</option>
+    </select>
+    <button type="submit">Dodaj</button>
+</form>
+
+</body>
+</html>
