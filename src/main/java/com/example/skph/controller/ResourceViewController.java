@@ -7,6 +7,7 @@ import com.example.skph.model.User;
 import com.example.skph.model.enums.ResourceStatus;
 import com.example.skph.model.enums.ResourceType;
 import com.example.skph.model.enums.UserRole;
+import com.example.skph.model.resources.*;
 import com.example.skph.service.ResourceService;
 import com.example.skph.service.TaskService;
 import com.example.skph.service.UserService;
@@ -201,10 +202,63 @@ public class ResourceViewController {
      * (PhysicalResource, FinancialResource, HumanResource, etc.)
      */
     private Resource convertFormToResource(ResourceForm form) {
-        // TODO: Zaimplementuj logikę tworzenia np. PhysicalResource/FinancialResource/HumanResource w zależności od form.getResourceType()
-        // Kod skrócony, bo w Twoim projekcie pewnie jest już taki fragment
-        return null;
+        // Na podstawie form.getResourceType() tworzysz odpowiednią subklasę
+        switch (form.getResourceType()) {
+            case PHYSICAL:
+                PhysicalResource pr = new PhysicalResource();
+                pr.setName(form.getName());
+                pr.setAmount(form.getAmount());
+                pr.setStatus(form.getStatus());
+                // Ustaw typ (choć w PhysicalResource jest @PrePersist, to i tak:
+                pr.setResourceType(ResourceType.PHYSICAL);
+
+                // Ewentualnie w ResourceForm dajesz pole physicalType i przypisujesz pr.setType(...)
+                // pr.setQuantity(...) itd.
+
+                return pr;
+
+            case HUMAN:
+                HumanResource hr = new HumanResource();
+                hr.setName(form.getName());
+                hr.setAmount(form.getAmount());
+                hr.setStatus(form.getStatus());
+                hr.setResourceType(ResourceType.HUMAN);
+                // hr.setRole(form.getHumanRole());
+                // hr.setAvailability(form.isAvailability());
+                return hr;
+
+            case FINANCIAL:
+                FinancialResource fr = new FinancialResource();
+                fr.setName(form.getName());
+                fr.setAmount(form.getAmount());
+                fr.setStatus(form.getStatus());
+                fr.setResourceType(ResourceType.FINANCIAL);
+                // fr.setValue(form.getFinancialValue());
+                // fr.setCurrency(form.getCurrency());
+                return fr;
+
+            case TRANSPORT:
+                TransportResource tr = new TransportResource();
+                tr.setName(form.getName());
+                tr.setAmount(form.getAmount());
+                tr.setStatus(form.getStatus());
+                tr.setResourceType(ResourceType.TRANSPORT);
+                // tr.setCapacity(form.getCapacity());
+                // tr.setType(form.getTransportType());
+                return tr;
+
+            case OTHER:
+            default:
+                OtherResource or = new OtherResource();
+                or.setName(form.getName());
+                or.setAmount(form.getAmount());
+                or.setStatus(form.getStatus());
+                or.setResourceType(ResourceType.OTHER);
+                // or.setDescription(form.getDescription());
+                return or;
+        }
     }
+
 
     /**
      * Wewnętrzna klasa pomocnicza do formularza przydzielania.
