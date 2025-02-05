@@ -10,6 +10,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
 
 
+
+
+
     //@Query("SELECT DISTINCT u.role FROM User u WHERE u.role LIKE %:query%")
     //List<Role> findDistinctRoles(@Param("query") String query);
 

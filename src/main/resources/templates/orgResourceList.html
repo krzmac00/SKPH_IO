@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Organizacja - zasoby</title>
+</head>
+<body>
+<h1>Zasoby dla mojej organizacji</h1>
+
+<h2>Moje zasoby (przypisane do organizacji)</h2>
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Nazwa</th>
+    <th>Status</th>
+    <th>Typ</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="res : ${myResources}">
+    <td th:text="${res.id}"></td>
+    <td th:text="${res.name}"></td>
+    <td th:text="${res.status}"></td>
+    <td th:text="${res.resourceType}"></td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>Wszystkie zasoby w systemie</h2>
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Nazwa</th>
+    <th>Status</th>
+    <th>Typ</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="res : ${allResources}">
+    <td th:text="${res.id}"></td>
+    <td th:text="${res.name}"></td>
+    <td th:text="${res.status}"></td>
+    <td th:text="${res.resourceType}"></td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

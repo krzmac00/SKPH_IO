@@ -1,0 +1,33 @@
+<!-- resourceAssign.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Przydziel zasób do zadania</title>
+</head>
+<body>
+<h1>Przydziel zasób: <span th:text="${resource.name}"></span></h1>
+<p>Typ: <span th:text="${resource.resourceType}"></span></p>
+<p>Status: <span th:text="${resource.status}"></span></p>
+
+<form th:action="@{/resources/{id}/assign(id=${resource.id})}" th:object="${assignForm}" method="post">
+  <!-- Ukryte pole z ID zasobu, choć mamy je też w ścieżce -->
+  <input type="hidden" th:field="*{resourceId}" />
+  <p>
+    <label for="taskSelect">Wybierz zadanie:</label>
+    <select id="taskSelect" th:field="*{taskId}">
+      <option th:each="t : ${tasks}"
+              th:value="${t.id}"
+              th:text="${t.name}">Zadanie</option>
+    </select>
+  </p>
+  <p>
+    <button type="submit">Zatwierdź przydział</button>
+  </p>
+</form>
+
+<p>
+  <a th:href="@{/resources}">Powrót do listy zasobów</a>
+</p>
+</body>
+</html>

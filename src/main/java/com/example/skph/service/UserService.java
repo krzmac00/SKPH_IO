@@ -80,6 +80,11 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(newPassword));  // Kodowanie nowego hasła
         return userRepository.save(user);
     }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     //public Account activateAccount(Long id) {
     //Account account = accountRepository.findById(id).orElseThrow(() -> new ChangeSetPersister.NotFoundException("Account not found!"));
 

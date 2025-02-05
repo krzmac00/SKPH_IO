@@ -1,3 +1,4 @@
+<!-- resourceList.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -6,9 +7,20 @@
 </head>
 <body>
 <h1>Lista Zasobów</h1>
+
+<!-- Link do formularza nowego zasobu -->
 <p>
   <a th:href="@{/resources/new}">Dodaj nowy zasób</a>
 </p>
+
+<!-- Możesz dodać linki do filtrowania wg roli / statusu -->
+<p>
+  <a th:href="@{/resources/human}">Zasoby ludzkie</a> |
+  <a th:href="@{/resources/physical}">Zasoby fizyczne</a> |
+  <a th:href="@{/resources/available}">Dostępne</a> |
+  <a th:href="@{/resources/assigned}">Przydzielone</a>
+</p>
+
 <table border="1">
   <thead>
   <tr>
@@ -29,6 +41,11 @@
     <td th:text="${res.resourceType}"></td>
     <td>
       <a th:href="@{'/resources/' + ${res.id}}">Szczegóły</a>
+      <!-- Tylko jeśli zasób jest dostępny lub ALLOCATED, można przydzielić -->
+      <span th:if="${res.status.name() == 'AVAILABLE' or res.status.name() == 'ALLOCATED'}">
+         |
+         <a th:href="@{'/resources/' + ${res.id} + '/assign'}">[Przydziel]</a>
+      </span>
     </td>
   </tr>
   </tbody>
