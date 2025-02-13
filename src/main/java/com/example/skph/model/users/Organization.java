@@ -86,7 +86,10 @@ public class Organization extends User {
 
     @Setter
     @Getter
+    @Column(name = "name")
     private String name;        // nazwa organizacji
+    @Column(name = "type")
     private String type;        // typ organizacji (NGO, fundacja, itp.)
+    @Column(name = "contact_info")
     private String contactInfo; // dane kontaktowe
 }

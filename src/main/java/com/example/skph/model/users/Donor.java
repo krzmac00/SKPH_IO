@@ -59,6 +59,7 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "id")
 public class Donor extends User {
 
+    @Column(name = "bank_account_number")
     private String bankAccountNumber;
 
     @OneToMany(mappedBy = "donor")
