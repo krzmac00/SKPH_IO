@@ -1,154 +1,143 @@
 -- liquibase formatted sql
--- changeset userName:Tabless
+-- changeset yourName:CreateAllTables
 
--- -----------------------------------------
--- -- 1. Create the base "users" table (zamiast "user")
--- -----------------------------------------
--- CREATE TABLE users (
---                        id              BIGSERIAL PRIMARY KEY,
---                        first_name      VARCHAR(255),
---                        last_name       VARCHAR(255),
---                        email           VARCHAR(255),
---                        contact_number  VARCHAR(255),
---                        username        VARCHAR(255),
---                        password        VARCHAR(255),
---                        role            VARCHAR(50)
--- );
--- ALTER TABLE users OWNER TO postgres;
---
--- -----------------------------------------
--- -- 2. Create the table for AidOrganization (subclass of User).
--- -----------------------------------------
--- CREATE TABLE aid_organization (
---                                   id BIGINT NOT NULL PRIMARY KEY,
---                                   CONSTRAINT fk_aidorg_user FOREIGN KEY (id) REFERENCES users(id)
--- );
--- ALTER TABLE aid_organization OWNER TO postgres;
---
--- -----------------------------------------
--- -- 3. Create the table for Donor (subclass of User).
--- -----------------------------------------
--- CREATE TABLE donor (
---                        id BIGINT NOT NULL PRIMARY KEY,
---                        bank_account_number VARCHAR(255),
---                        CONSTRAINT fk_donor_user FOREIGN KEY (id) REFERENCES users(id)
--- );
--- ALTER TABLE donor OWNER TO postgres;
---
--- -----------------------------------------
--- -- 4. Create the table for Organization (subclass of User).
--- -----------------------------------------
--- CREATE TABLE organization (
---                               id          BIGINT NOT NULL PRIMARY KEY,
---                               name        VARCHAR(255),
---                               type        VARCHAR(255),
---                               contact_info VARCHAR(255),
---                               CONSTRAINT fk_org_user FOREIGN KEY (id) REFERENCES users(id)
--- );
--- ALTER TABLE organization OWNER TO postgres;
---
--- -----------------------------------------
--- -- 5. Create the table for Authority (extends Organization).
--- -----------------------------------------
--- CREATE TABLE authority (
---                            id BIGINT NOT NULL PRIMARY KEY,
---                            CONSTRAINT fk_authority_org FOREIGN KEY (id) REFERENCES organization(id)
--- );
--- ALTER TABLE authority OWNER TO postgres;
---
--- -----------------------------------------
--- -- 6. Create the table for Volunteer (subclass of User) with many-to-one to AidOrganization.
--- -----------------------------------------
--- CREATE TABLE volunteer (
---                            id                      BIGINT NOT NULL PRIMARY KEY,
---                            availability            BOOLEAN,
---                            skills                  VARCHAR(255),
---                            assigned_organization_id BIGINT,
---                            CONSTRAINT fk_volunteer_user   FOREIGN KEY (id) REFERENCES users(id),
---                            CONSTRAINT fk_volunteer_aidorg FOREIGN KEY (assigned_organization_id) REFERENCES aid_organization(id)
--- );
--- ALTER TABLE volunteer OWNER TO postgres;
---
--- -----------------------------------------
--- -- 7. Create the base table for Resource.
--- -----------------------------------------
--- CREATE TABLE resource (
---                           id                BIGSERIAL PRIMARY KEY,
---                           name              VARCHAR(255),
---                           amount            INTEGER,
---                           status            VARCHAR(50),
---                           aid_organization_id BIGINT,
---                           request_id        BIGINT,
---                           resource_type     VARCHAR(50),
---                           CONSTRAINT fk_resource_aidorg FOREIGN KEY (aid_organization_id) REFERENCES aid_organization(id)
--- );
--- ALTER TABLE resource OWNER TO postgres;
---
--- -----------------------------------------
--- -- 8. Create the table for TransportResource (subclass of Resource).
--- -----------------------------------------
--- CREATE TABLE transport_resource (
---                                     id       BIGINT NOT NULL PRIMARY KEY,
---                                     capacity INTEGER,
---                                     type     VARCHAR(50),
---                                     CONSTRAINT fk_transport_id_res FOREIGN KEY (id) REFERENCES resource(id)
--- );
--- ALTER TABLE transport_resource OWNER TO postgres;
---
--- -----------------------------------------
--- -- 9. Create the table for PhysicalResource (subclass of Resource).
--- -----------------------------------------
--- CREATE TABLE physical_resources (
---                                     id       BIGINT NOT NULL PRIMARY KEY,
---                                     type     VARCHAR(50),
---                                     quantity INTEGER,
---                                     CONSTRAINT fk_phys_id_res FOREIGN KEY (id) REFERENCES resource(id)
--- );
--- ALTER TABLE physical_resources OWNER TO postgres;
---
--- -----------------------------------------
--- -- 10. Create the table for HumanResource (subclass of Resource).
--- -----------------------------------------
--- CREATE TABLE human_resource (
---                                 id           BIGINT NOT NULL PRIMARY KEY,
---                                 role         VARCHAR(100),
---                                 availability BOOLEAN,
---                                 CONSTRAINT fk_human_id_res FOREIGN KEY (id) REFERENCES resource(id)
--- );
--- ALTER TABLE human_resource OWNER TO postgres;
---
--- -----------------------------------------
--- -- 11. Create the table for FinancialResource (subclass of Resource).
--- -----------------------------------------
--- CREATE TABLE financial_resources (
---                                      id       BIGINT NOT NULL PRIMARY KEY,
---                                      value    NUMERIC(19,2),
---                                      currency VARCHAR(10),
---                                      CONSTRAINT fk_fin_id_res FOREIGN KEY (id) REFERENCES resource(id)
--- );
--- ALTER TABLE financial_resources OWNER TO postgres;
---
--- -----------------------------------------
--- -- 12. Create the table for OtherResource (subclass of Resource).
--- -----------------------------------------
--- CREATE TABLE other_resources (
---                                  id          BIGINT NOT NULL PRIMARY KEY,
---                                  description VARCHAR(255),
---                                  CONSTRAINT fk_other_id_res FOREIGN KEY (id) REFERENCES resource(id)
--- );
--- ALTER TABLE other_resources OWNER TO postgres;
---
--- -----------------------------------------
--- -- 13. Create the table for Task.
--- -----------------------------------------
--- CREATE TABLE task (
---                       id               BIGSERIAL PRIMARY KEY,
---                       name             VARCHAR(255),
---                       organization_id  BIGINT,
---                       request_id       BIGINT,
---                       resource_id      BIGINT,
---                       review           VARCHAR(255),
---                       status           VARCHAR(50),
---                       volunteer_id     BIGINT
--- );
--- ALTER TABLE task OWNER TO postgres;
+-- 1. Create the base "users" table (for User)
+CREATE TABLE users (
+                       id BIGSERIAL PRIMARY KEY,
+                       first_name VARCHAR(255),
+                       last_name VARCHAR(255),
+                       email VARCHAR(255),
+                       contact_number VARCHAR(255),
+                       username VARCHAR(255),
+                       password VARCHAR(255),
+                       role VARCHAR(50)
+);
+ALTER TABLE users OWNER TO postgres;
+
+-- 2. Create the table for AidOrganization (subclass of User)
+CREATE TABLE aid_organization (
+                                  id BIGINT NOT NULL PRIMARY KEY,
+                                  CONSTRAINT fk_aidorg_user FOREIGN KEY (id) REFERENCES users(id)
+);
+ALTER TABLE aid_organization OWNER TO postgres;
+
+-- 3. Create the table for Donor (subclass of User)
+CREATE TABLE donor (
+                       id BIGINT NOT NULL PRIMARY KEY,
+                       bank_account_number VARCHAR(255),
+                       CONSTRAINT fk_donor_user FOREIGN KEY (id) REFERENCES users(id)
+);
+ALTER TABLE donor OWNER TO postgres;
+
+-- 4. Create the table for Organization (subclass of User)
+CREATE TABLE organization (
+                              id BIGINT NOT NULL PRIMARY KEY,
+                              name VARCHAR(255),
+                              type VARCHAR(255),
+                              contact_info VARCHAR(255),
+                              CONSTRAINT fk_org_user FOREIGN KEY (id) REFERENCES users(id)
+);
+ALTER TABLE organization OWNER TO postgres;
+
+-- 5. Create the table for Authority (extends Organization)
+CREATE TABLE authority (
+                           id BIGINT NOT NULL PRIMARY KEY,
+                           CONSTRAINT fk_authority_org FOREIGN KEY (id) REFERENCES organization(id)
+);
+ALTER TABLE authority OWNER TO postgres;
+
+-- 6. Create the table for Volunteer (subclass of User)
+CREATE TABLE volunteer (
+                           id BIGINT NOT NULL PRIMARY KEY,
+                           availability BOOLEAN,
+                           skills VARCHAR(255),
+                           assigned_organization_id BIGINT,
+                           CONSTRAINT fk_volunteer_user FOREIGN KEY (id) REFERENCES users(id),
+                           CONSTRAINT fk_volunteer_aidorg FOREIGN KEY (assigned_organization_id) REFERENCES aid_organization(id)
+);
+ALTER TABLE volunteer OWNER TO postgres;
+
+-- 7. Create the base table for Resource
+CREATE TABLE resource (
+                          id BIGSERIAL PRIMARY KEY,
+                          name VARCHAR(255),
+                          amount INTEGER,
+                          status VARCHAR(50),
+                          aid_organization_id BIGINT,
+                          request_id BIGINT,
+                          resource_type VARCHAR(50),
+                          CONSTRAINT fk_resource_org FOREIGN KEY (aid_organization_id) REFERENCES organization(id)
+);
+ALTER TABLE resource OWNER TO postgres;
+
+-- 8. Create the table for TransportResource (subclass of Resource)
+CREATE TABLE transport_resource (
+                                    id BIGINT NOT NULL PRIMARY KEY,
+                                    capacity INTEGER,
+                                    type VARCHAR(50),
+                                    CONSTRAINT fk_transport_id_res FOREIGN KEY (id) REFERENCES resource(id)
+);
+ALTER TABLE transport_resource OWNER TO postgres;
+
+-- 9. Create the table for PhysicalResource (subclass of Resource)
+CREATE TABLE physical_resources (
+                                    id BIGINT NOT NULL PRIMARY KEY,
+                                    type VARCHAR(50),
+                                    quantity INTEGER,
+                                    CONSTRAINT fk_phys_id_res FOREIGN KEY (id) REFERENCES resource(id)
+);
+ALTER TABLE physical_resources OWNER TO postgres;
+
+-- 10. Create the table for HumanResource (subclass of Resource)
+CREATE TABLE human_resource (
+                                id BIGINT NOT NULL PRIMARY KEY,
+                                role VARCHAR(100),
+                                availability BOOLEAN,
+                                CONSTRAINT fk_human_id_res FOREIGN KEY (id) REFERENCES resource(id)
+);
+ALTER TABLE human_resource OWNER TO postgres;
+
+-- 11. Create the table for FinancialResource (subclass of Resource)
+CREATE TABLE financial_resources (
+                                     id BIGINT NOT NULL PRIMARY KEY,
+                                     value NUMERIC(19,2),
+                                     currency VARCHAR(10),
+                                     CONSTRAINT fk_fin_id_res FOREIGN KEY (id) REFERENCES resource(id)
+);
+ALTER TABLE financial_resources OWNER TO postgres;
+
+-- 12. Create the table for OtherResource (subclass of Resource)
+CREATE TABLE other_resources (
+                                 id BIGINT NOT NULL PRIMARY KEY,
+                                 description VARCHAR(255),
+                                 CONSTRAINT fk_other_id_res FOREIGN KEY (id) REFERENCES resource(id)
+);
+ALTER TABLE other_resources OWNER TO postgres;
+
+-- 13. Create the table for Donation
+CREATE TABLE donation (
+                          id BIGSERIAL PRIMARY KEY,
+                          type VARCHAR(255),
+                          value NUMERIC(19,2),
+                          donor_id BIGINT,
+                          resource_type VARCHAR(50),
+                          status VARCHAR(50),
+                          CONSTRAINT fk_donation_donor FOREIGN KEY (donor_id) REFERENCES donor(id)
+);
+ALTER TABLE donation OWNER TO postgres;
+
+-- 14. Create the table for Task
+CREATE TABLE task (
+                      id BIGSERIAL PRIMARY KEY,
+                      name VARCHAR(255),
+                      organization_id BIGINT,
+                      request_id BIGINT,
+                      resource_id BIGINT,
+                      review VARCHAR(255),
+                      status VARCHAR(50),
+                      volunteer_id BIGINT,
+                      CONSTRAINT fk_task_org FOREIGN KEY (organization_id) REFERENCES organization(id),
+                      CONSTRAINT fk_task_resource FOREIGN KEY (resource_id) REFERENCES resource(id),
+                      CONSTRAINT fk_task_volunteer FOREIGN KEY (volunteer_id) REFERENCES volunteer(id)
+);
+ALTER TABLE task OWNER TO postgres;
